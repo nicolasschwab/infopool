@@ -41,6 +41,10 @@
         } );
         $('#datetimepicker2').datetimepicker({            
         });
+        
+        $(document).ready(function() {
+            $('#myTab').tab();
+        } );
     });    
 </script>
 

@@ -43,7 +43,7 @@
 								<td><s:url id="verDetalle" action="detalle">
 									<s:param name="id" value="%{id}"></s:param>
 								</s:url>
-								<s:a href="%{verDetalle}"   class="btn btn-default btn-xs">ver detalle</s:a> </td>
+								<s:a href="%{verDetalle}" cssClass="btn btn-default btn-xs">ver detalle</s:a> </td>
 							</tr>
 						</s:iterator>                          
               </tbody>      
