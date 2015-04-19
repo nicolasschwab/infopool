@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE validators PUBLIC "-//Apache Struts//XWork Validator 1.0.2//EN" "http://struts.apache.org/dtds/xwork-validator-1.0.2.dtd">
+<validators>
+    <field name="nombreUsuario">
+        <field-validator type="requiredstring">
+            <message>Debe ingresar su nombre</message>
+        </field-validator>
+    </field>
+    <field name="apellidoUsuario">
+        <field-validator type="requiredstring">
+            <message>Debe ingresar su apellido</message>
+        </field-validator>
+    </field>
+    <field name="fechaUsuario">
+    	<field-validator type="requiredstring">
+            <message>Debe ingresar su fecha de nacimiento</message>
+        </field-validator>        
+        <field-validator type="regex">
+      		<param name="expression">[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]</param>
+      		<message>La fecha ingresada debe ser con el formato aaaa-mm-dd</message>
+ 		</field-validator>
+    </field>   
+    <field name="telefonoUsuario">
+        <field-validator type="requiredstring">
+            <message>Debe ingresar un telefono</message>
+        </field-validator>
+    </field>   
+    <field name="mailUsuario">
+    	<field-validator type="requiredstring">
+            <message>Debe ingresar su mail</message>
+        </field-validator>
+        <field-validator type="email">
+            <message>El mail ingresado es incorrecto</message>
+        </field-validator>
+    </field>   
+    <field name="usuario">
+        <field-validator type="requiredstring">
+            <message>Debe ingresar su nombre de usuario</message>
+        </field-validator>
+    </field>   
+    <field name="clave">
+        <field-validator type="requiredstring">
+            <message>Debe ingresar una clave</message>
+        </field-validator>
+    </field>   
+    <field name="rClave">
+        <field-validator type="requiredstring">
+            <message>Debe re ingresar la clave</message>
+        </field-validator>
+        <field-validator type="fieldexpression">      
+	      <param name="expression">clave.equals(rClave)</param>
+	      <message>Las claves ingresadas no coinciden</message>
+	  	</field-validator>
+    </field>
+    <field name="prefUsuario">
+        <field-validator type="requiredstring">
+            <message>Debe ingresar al menos una preferencia</message>
+        </field-validator>
+    </field>
+</validators>

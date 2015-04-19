@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd" >
+<struts>
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<constant name="struts.devMode" value="true" />
+	<package name="default" namespace="" extends="struts-default">
+
+		<!-- Actions Usuarios -->
+		<action name="validarLogin" method="validarLogin" class="loginAction">
+			<result name="success">/index.jsp</result>
+			<result name="input">/login.jsp</result>
+			<result name="conectado">/index.jsp</result>
+		</action>
+
+		<action name="registrarUsuario" method="registrarUsuario" class="loginAction">
+			<interceptor-ref name="fileUpload">
+				<param name="maximumSize">2097152</param>
+				<param name="allowedTypes">image/png,image/gif,image/jpeg,image/pjpeg</param>
+			</interceptor-ref>
+			<interceptor-ref name="defaultStack"></interceptor-ref>
+			<result name="success">/login.jsp</result>
+			<result name="input">/registro.jsp</result>
+			<result name="conectado">/index.jsp</result>
+		</action>
+
+		<action name="cerrarSesion" method="cerrarSesion" class="loginAction">			
+			<result name="success">/index.jsp</result>
+		</action>
+
+		<action name="miPerfil" method="miPerfil" class="loginAction">			
+			<result name="success">/ver_detalle_viajero.jsp</result>
+		</action>
+
+		<!-- Actions Eventos -->
+		<action name="paginaBuscarViajes" method="listarEventos" class="eventoAction">
+			<result name="success">/buscar_viajes.jsp</result>
+		</action>
+
+		<action name="registroEvento" method="registroEvento" class="eventoAction">
+			<result name="success">/registrar_evento.jsp</result>
+		</action>
+
+		<action name="registrarEvento" method="registrarEvento" class="eventoAction">
+			<result name="success" type="redirect">listarEventos</result>
+			<result name="input">/registrar_evento.jsp</result>
+			<result name="login">/login.jsp</result>
+			<result name="sinpermisos">/index.jsp</result>
+		</action>
+
+		<action name="listarEventos" method="listarEventos" class="eventoAction">
+			<result name="success">/eventos.jsp</result>
+		</action>
+
+		<action name="eventos" method="eventos" class="eventoAction">
+			<result name="success" type="redirect">listarEventos</result>
+		</action>
+
+		<action name="detalleEvento" method="detalleEvento" class="eventoAction">
+			<result name="success">/detalle_evento.jsp</result>
+		</action>
+		
+		<action name="edicionEvento" method="edicionEvento" class="eventoAction">
+			<result name="success">/editar_evento.jsp</result>
+		</action>
+		
+		<action name="editarEvento" method="editarEvento" class="eventoAction">
+			<result name="success" type="redirect">listarEventos</result>
+			<result name="input">/editar_evento.jsp</result>
+		</action>
+
+		<!-- Actions Viajeros -->
+		<action name="viajeros" method="viajeros" class="viajeroAction">
+			<result name="success">/viajeros.jsp</result>
+		</action>
+		
+		<action name="detalleViajero" method="detalleViajero" class="viajeroAction">
+			<result name="success">/detalle_viajero.jsp</result>
+		</action>
+		
+		<action name="desactivarViajero" method="desactivarViajero" class="viajeroAction">
+			<result name="success" type="redirect">viajeros</result>
+		</action>
+		
+		<action name="activarViajero" method="activarViajero" class="viajeroAction">
+			<result name="success" type="redirect">viajeros</result>
+		</action>
+
+		<!-- Actions Denuncias -->
+		<action name="denuncias" method="denuncias" class="denunciaAction">
+			<result name="success">/denuncias.jsp</result>
+		</action>
+		
+		<action name="denunciasviajero" method="denunciasviajero" class="denunciaAction">
+			<result name="success">/denuncias_viajero.jsp</result>
+		</action>
+		
+		<action name="nuevaDenuncia" method="nuevaDenuncia" class="denunciaAction">
+			<result name="success">/registrar_denuncia.jsp</result>
+		</action>
+		
+		<action name="registrarDenuncia" method="registrarDenuncia" class="denunciaAction">
+			<result name="success" type="redirect">listarViajes</result>
+			<result name="login">/login.jsp</result>
+			<result name="sinpermisos">/index.jsp</result>
+		</action>
+
+		<!-- Actions Viajes -->
+		<action name="listarViajes" method="listarViajes" class="viajeAction">
+			<result name="success">/viajes.jsp</result>
+		</action>
+
+		<action name="viajes" method="viajes" class="viajeAction">
+			<result name="success" type="redirect">listarViajes</result>
+		</action>
+
+		<action name="registroViaje" method="registroViaje" class="viajeAction">
+			<result name="success">/registrar_viaje.jsp</result>
+		</action>
+
+		<action name="registrarViaje" method="registrarViaje" class="viajeAction">
+			<result name="success" type="redirect">listarViajes</result>
+			<result name="input" >/registrar_viaje.jsp</result>			
+		</action>
+		
+		<action name="edicionViaje" method="edicionViaje" class="viajeAction">			
+			<result name="success">/editar_viaje.jsp</result>
+		</action>
+				
+		<action name="editarViaje" method="editarViaje" class="viajeAction">
+			<result name="success" type="redirect">listarViajes</result>
+			<result name="input">/editar_viaje.jsp</result>
+		</action>
+		
+		<action name="cancelarViaje" method="cancelarViaje" class="viajeAction">
+			<result name="success">listarViajes</result>
+		</action>
+
+		<action name="buscarViaje" method="buscarViaje" class="viajeAction">
+			<result name="success" type="redirect">paginaBuscarViajes</result>
+		</action>
+
+		<!-- <action name="buscarViajePorEvento" method="buscarViajePorEvento" 
+			class="viajeAction"> <result name="success" type="redirect">listarTodosLosViajes</result> 
+			</action> -->
+
+		<action name="listarTodosLosViajes" method="listarTodosLosViajes" class="viajeAction">
+			<result name="success">/buscar_viajes.jsp</result>
+		</action>
+
+		<action name="detalleViaje" method="detalleViaje" class="viajeAction">
+			<result name="success">/ver_detalle_viaje.jsp</result>
+		</action>
+		
+		<action name="listarPorFecha" method="listarPorFecha" class="viajeAction">
+			<result name="success">/buscar_viajes.jsp</result>
+		</action>
+		
+		<action name="listarPorDireccion" method="listarPorDireccion" class="viajeAction">
+			<result name="success">/buscar_viajes.jsp</result>
+		</action>
+
+		<!-- Actions SolicitudesViaje -->
+		<action name="solicitudesViaje" method="solicitudesViaje" class="solicitudViajeAction">
+			<result name="success">/solicitudes.jsp</result>
+		</action>
+
+		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">
+			<result name="success">ver_detalle_viaje.jsp</result>
+		</action>		
+
+		<action name="aceptarSolicitudViaje" method="aceptarSolicitudViaje" class="solicitudViajeAction">
+			<result name="success">/solicitudes.jsp</result>
+		</action>
+
+		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
+			<result name="success">/solicitudes.jsp</result>
+		</action>	
+		
+		<!-- Actions Mensajes -->
+		<action name="listarMensajes" method="listarMensajes" class="mensajeAction">
+			<result name="success">/mensajes.jsp</result>
+		</action>
+		
+		<action name="nuevoMensaje" method="nuevoMensaje" class="mensajeAction">
+			<result name="success">/registrar_mensaje.jsp</result>
+		</action>
+		
+		<action name="enviarMensaje" method="enviarMensaje" class="mensajeAction">
+			<result name="success"  type="redirect">listarMensajes</result>
+			<result name="input">/registrar_mensaje.jsp</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="detalle" method="detalle" class="mensajeAction">
+			<result name="success">/ver_detalle_mensaje.jsp</result>			
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="responder" method="responder" class="mensajeAction">
+			<result name="success" type="redirect">listarMensajes</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+	</package>
+	
+	<package name="image" namespace="/" extends="struts-default">
+		<result-types>
+		  <result-type name="imageResult" class="actions.CustomImageBytesResults" />
+		</result-types>
+		
+		<action name="ImageAction" class="actions.ImageAction">
+			<result name="success" type="imageResult"></result>
+		</action>
+	</package>
+</struts>

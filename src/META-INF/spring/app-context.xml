@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc 
+							http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+							http://www.springframework.org/schema/beans 
+							http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+							http://www.springframework.org/schema/tx 
+							http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+							http://www.springframework.org/schema/context 
+							http://www.springframework.org/schema/context/spring-context-3.0.xsd
+							http://www.springframework.org/schema/aop 
+							http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+	<tx:annotation-driven />
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="infopool2015@gmail.com" />
+		<property name="password" value="infopoolTTPS2015" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="mailMail" class="actions.Mail">
+		<property name="mailSender" ref="mailSender" />
+	</bean>
+
+	<bean id="usuarioDAO" class="implementacionesDAO.UsuarioDAOjpa" />
+	<bean id="loginAction" class="actions.LoginAction" scope="prototype">
+		<property name="usuarioDAO" ref="usuarioDAO" />
+	</bean>
+
+	<bean id="eventoDAO" class="implementacionesDAO.EventoDAOjpa" />
+	<bean id="eventoAction" class="actions.EventoAction" scope="prototype">
+		<property name="eventoDAO" ref="eventoDAO" />
+	</bean>
+
+	<bean id="viajeroDAO" class="implementacionesDAO.ViajeroDAOjpa" />
+	<bean id="viajeroAction" class="actions.ViajeroAction" scope="prototype">
+		<property name="viajeroDAO" ref="viajeroDAO" />
+	</bean>
+
+	<bean id="denunciaDAO" class="implementacionesDAO.DenunciaDAOjpa" />
+	<bean id="denunciaAction" class="actions.DenunciaAction" scope="prototype">
+		<property name="denunciaDAO" ref="denunciaDAO" />
+	</bean>
+
+	<bean id="viajeDAO" class="implementacionesDAO.ViajeDAOjpa" />
+	<bean id="viajeAction" class="actions.ViajeAction" scope="prototype">
+		<property name="viajeDAO" ref="viajeDAO" />
+	</bean>
+	
+	<bean id="mensajeDAO" class="implementacionesDAO.MensajeDAOjpa"/>
+	<bean id="mensajeAction" class="actions.MensajeAction" scope="prototype">
+		<property name="mensajeDAO" ref="mensajeDAO"/>
+	</bean>
+
+	<bean id="solicitudViajeDAO" class="implementacionesDAO.SolicitudViajeDAOjpa" />
+	<bean id="solicitudViajeAction" class="actions.SolicitudViajeAction"
+		scope="prototype">
+		<property name="solicitudViajeDAO" ref="solicitudViajeDAO" />
+	</bean>
+	
+	<bean id="logAspect" class="aop.DenunciaAspect" />	
+	<aop:aspectj-autoproxy/>	
+	<aop:config proxy-target-class="true"> 
+	  <aop:aspect ref="logAspect">
+	    <aop:pointcut id="pointCutBefore" expression="execution(* interfacesDAO.DenunciaDAO.registrar(..))" /> 
+	    <aop:before pointcut-ref="pointCutBefore" method="enviarMail"/> 
+	  </aop:aspect> 
+	</aop:config>
+
+</beans>
