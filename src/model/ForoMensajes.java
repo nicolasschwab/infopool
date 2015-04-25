@@ -25,12 +25,12 @@ public class ForoMensajes implements Serializable{
 		super();
 	}
 	
-	public ForoMensajes(int id, Date fechaPublicacion, Viajero viajero, String mensaje) {
+	public ForoMensajes( Date fechaPublicacion, Viajero viajero, String mensaje, Viaje viaje) {
 		super();
-		this.id = id;
 		this.fechaPublicacion = fechaPublicacion;
 		this.viajero = viajero;
 		this.mensaje = mensaje;
+		this.viaje=viaje;
 	}
 	
 	public Date getFechaPublicacion() {

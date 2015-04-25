@@ -7,6 +7,8 @@
 <title>InfoPool</title>
 <%@ include file="views/heads.jsp"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+<link href="css/foro.css" rel='stylesheet' type='text/css' />
+<script type="text/javascript" src="js/foro.js"></script>
 </head>
 <body
 	onload="inicializarRecorridoViaje('<s:property value="viaje.direccionOrigen" />','<s:property value="viaje.direccionDestino" />')">
@@ -155,7 +157,75 @@
 							<s:url id="mensaje" action="nuevoMensaje">
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>					
-							<s:a href="%{mensaje}" cssClass="btn btn-primary btn-block" role="button">Registrar Mensaje</s:a>
+							<s:a href="%{mensaje}" cssClass="btn btn-primary btn-block" role="button">Registrar Mensaje a Usuario</s:a>
+							<br><br>
+
+
+
+							<div class="container">
+								<div class="row chat-window col-xs-5 col-md-3"
+									id="chat_window_1" ">
+									<div class="col-xs-12 col-md-12">
+										<div class="panel panel-default">
+											<div class="panel-heading top-bar">
+												<div class="col-md-8 col-xs-8">
+													<h3 class="panel-title">
+														<span class="glyphicon glyphicon-comment"></span> Chat -
+														Foro
+													</h3>
+												</div>
+												<div class="col-md-4 col-xs-4" style="text-align: right;">
+													<a href="#"><span id="minim_chat_window"
+														class="glyphicon glyphicon-minus icon_minim"></span></a> 
+												</div>
+											</div>
+											
+											  <s:iterator value="viaje.mensajes" >
+												<div class="panel-body msg_container_base">
+													<div class="row msg_container base_sent">
+														<div class="col-md-10 col-xs-10">
+															<div class="messages msg_sent">
+																<p><s:property value="mensaje" /></p>
+																<time datetime="2009-11-13T20:00"> <s:property value="viajero.nombre" />  <s:date name="fechaPublicacion" format="dd/MM/YYYY" /> </time>
+															</div>
+														</div>
+														<div class="col-md-2 col-xs-2 avatar">
+															<img
+																src="images/foro.png"
+																class=" img-responsive ">
+														</div>
+													</div>	
+												</div>
+											</s:iterator>
+
+										</div>
+										<div class="panel-footer">
+											<div class="input-group">
+												<form action="">
+													<input id="btn-input" type="text"
+														class="form-control input-sm chat_input"
+														placeholder="Escriba su mensaje aquí.." /> <span
+														class="input-group-btn">
+														<s:submit cssClass="btn btn-primary" value="Enviar"/>
+													</span>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+
+
+
+
+							
+							<s:url id="mensajeForo" action="nuevoMensajeForo">
+								<s:param name="id" value="%{id}"></s:param>
+							</s:url>					
+							<s:a href="%{mensajeForo}" cssClass="btn btn-primary btn-block" role="button">Registrar Mensaje al foro</s:a>
+														
 						</div>
 					</div>
 				</div>

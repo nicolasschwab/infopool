@@ -36,9 +36,9 @@
 			  		<h3 class="tituloSeccion">Asunto</h3>	   				
 	   				<p><s:property   value="%{asunto}"   />  </p>
 	   				<h3 class="tituloSeccion">Mensaje</h3>		   			
-	   				<p><s:property   value="%{detalle}"   /></p>			   		
-	   				<h3 class="tituloSeccion">Respuesta</h3>
-	   				<s:if test="%{queNoSos=='Emisor'}">
+	   				<p><s:property   value="%{detalle}"   /></p>
+	   				<s:if test="%{queNoSos=='Emisor'}">		   		
+	   					<h3 class="tituloSeccion">Respuesta</h3>	   				
 		   				<s:form role="form" theme="simple" cssClass="form-signin" action="responder">
 		   					<div class="form-group">
 					  			<s:textarea cssClass="form-control" name="respDetalle"  cols="80" rows="7"></s:textarea>
@@ -51,11 +51,6 @@
 				            </div>
 					  	</s:form>
 				  	</s:if>
-				  	<s:else>
-				  		<div class="form-group">
-				  			<s:textarea cssClass="form-control" name="respDetalle" readonly="true"  cols="80" rows="7"></s:textarea>
-				  		</div>
-				  	</s:else>
 		   		</div>
 		  	</div>		  			   				
 		</div>

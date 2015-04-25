@@ -204,6 +204,18 @@
 			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
+		<action name="nuevoMensajeForo" method="nuevoMensajeForo" class="mensajeAction">
+			<result name="success" >/registrar_mensaje_foro.jsp</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="enviarMensajeForo" method="enviarMensajeForo" class="mensajeAction">
+			<result name="success" type="redirect">listarMensajes</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
 	</package>
 	
 	<package name="image" namespace="/" extends="struts-default">

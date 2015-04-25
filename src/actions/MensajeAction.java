@@ -1,17 +1,23 @@
 package actions;
 
 import implementacionesDAO.FactoryDAO;
+import implementacionesDAO.ForoMensajesDAOjpa;
 import implementacionesDAO.MensajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
 import implementacionesDAO.ViajeroDAOjpa;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import model.ForoMensajes;
 import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
@@ -37,6 +43,7 @@ public class MensajeAction extends ActionSupport {
 	private ViajeDAOjpa viajeDAO=(ViajeDAOjpa) FactoryDAO.getViajeDAO();
 	private List<Viajero> listaReceptores ;
 	private ViajeroDAOjpa viajeroDAO = (ViajeroDAOjpa) FactoryDAO.getViajeroDAO();
+	private ForoMensajesDAOjpa foroMensajeDAO=(ForoMensajesDAOjpa) FactoryDAO.getForoMensajesDAO();
 	private String receptorID;
 	private List<Viajero> lista;
 	private int viajeId;
@@ -149,7 +156,7 @@ public class MensajeAction extends ActionSupport {
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		String[] elId= request.getParameterValues("id");
 		this.setViajeId(Integer.parseInt(elId[0]));
-		this.listaUsuarios();		
+		this.listaUsuarios();
 		return SUCCESS;
 	}
 	
@@ -225,7 +232,11 @@ public class MensajeAction extends ActionSupport {
 					}
 				this.asunto=elMensaje.getAsunto();    // setea datos en comun entre emisor y receptor
 				this.detalle=elMensaje.getDetalle();
-				this.estado=elMensaje.getEstado();	
+				this.estado=elMensaje.getEstado();
+				System.out.println(elMensaje.getAsunto());
+				if(elMensaje.isMensaje_sistema()){   // si es un mensaje enviado automaticamente por el sistema
+					this.queNoSos="Receptor";
+				}
 				return SUCCESS;
 			}		
 			else {
@@ -267,4 +278,60 @@ public class MensajeAction extends ActionSupport {
 		}
 	}
 
+	
+	public String nuevoMensajeForo(){
+		String resul=this.validarSesion();
+		if(resul.equals(SUCCESS)){
+				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+				String[] elId= request.getParameterValues("id");
+				this.setViajeId(Integer.parseInt(elId[0]));		
+		}
+		return resul;
+			
+	}
+	private String validarSesion(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		Usuario user = (Usuario) session.get("usrLogin");
+		if (user != null) {
+			if (user.getPerfil().equals("viajero")) {				
+				return SUCCESS;
+			}		
+			else {
+				return "sinpermisos";
+			}
+		} else {
+			return "login";
+		}
+	}
+	
+	public String enviarMensajeForo() throws ParseException{
+		String resul=this.validarSesion();
+		if(resul.equals(SUCCESS)){
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			Usuario user = (Usuario) session.get("usrLogin");
+			Viaje elViaje=viajeDAO.encontrar(this.viajeId);
+			ForoMensajes nuevoMensaje= new ForoMensajes (new Date(),(Viajero)user,this.detalle,elViaje);
+			this.foroMensajeDAO.registrar(nuevoMensaje);
+			Collection<Viajero> lista=elViaje.getPasajeros();
+			Viajero elViajero=null;
+		
+			for (Viajero viajero : lista) {	
+				if (viajero.getId()==user.getId()){
+					elViajero=viajero;
+				}							
+			}	
+			
+						
+			if(elViajero!=null){
+				lista.remove(elViajero);
+				lista.add(elViaje.getConductor());
+			}
+			for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
+				Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+elViaje.getDireccionDestino()+" el "+elViaje.getFechaInicio(),"pendiente",user,i.next(),true);
+				this.mensajeDAO.registrar(Mensaje);
+			}
+			
+		}
+		return resul;
+	}
 }

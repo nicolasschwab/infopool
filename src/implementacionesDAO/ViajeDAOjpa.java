@@ -1,14 +1,20 @@
 package implementacionesDAO;
 
 import interfacesDAO.ViajeDAO;
+
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 import model.Evento;
+import model.ForoMensajes;
 import model.SolicitudViaje;
 import model.Viaje;
 import model.Viajero;
+
 import org.hibernate.HibernateException;
+
 import util.EntityFactoryUtil;
 
 public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
@@ -100,6 +106,9 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			}
 			if(resultado.getDiasSemana().size() > 0){
 				resultado.misDias();
+			}
+			for (ForoMensajes mensaje : resultado.getMensajes()) {
+				mensaje.getFechaPublicacion();
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();

@@ -21,7 +21,8 @@ public class Mensaje implements Serializable{
 	private Usuario emisor;
 	@ManyToOne
 	private Usuario receptor;
-	
+	private boolean mensaje_sistema;	
+
 	public Mensaje() {		
 	}
 
@@ -34,10 +35,30 @@ public class Mensaje implements Serializable{
 		this.emisor = emisor;
 		this.receptor = receptor;
 	}
+	
+	public Mensaje( Date fecha, String asunto, String detalle, String estado, Usuario emisor, Usuario receptor,boolean mensaje_sistema) {
+		super();
+		this.fecha = fecha;
+		this.asunto = asunto;
+		this.detalle = detalle;
+		this.estado = estado;
+		this.emisor = emisor;
+		this.receptor = receptor;
+		this.mensaje_sistema=mensaje_sistema;
+	}
 
 	public int getId() {
 		return id;
 	}
+	
+	public boolean isMensaje_sistema() {
+		return mensaje_sistema;
+	}
+
+	public void setMensaje_sistema(boolean mensaje_sistema) {
+		this.mensaje_sistema = mensaje_sistema;
+	}
+	
 	public Date getFecha() {
 		return fecha;
 	}

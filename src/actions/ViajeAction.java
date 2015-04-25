@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import model.DiasSemana;
 import model.Evento;
+import model.ForoMensajes;
+import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
@@ -59,6 +61,13 @@ public class ViajeAction extends ActionSupport {
 	private String dirDestino;
 	private Viaje viaje = new Viaje();	
 	private Usuario usrlogueado;
+	private List<ForoMensajes> foroMensajes;
+	
+	
+
+
+	
+
 	private boolean esPasajero;
 	
 	/*
@@ -71,9 +80,17 @@ public class ViajeAction extends ActionSupport {
 	public void setActivo(int activo) {
 		this.activo = activo;
 	}
-
+	
 	public int getAsientos() {
 		return asientos;
+	}
+	
+	public List<ForoMensajes> getForoMensajes() {
+		return foroMensajes;
+	}
+
+	public void setForoMensajes(List<ForoMensajes> foroMensajes) {
+		this.foroMensajes = foroMensajes;
 	}
 
 	public void setAsientos(int asientos) {
@@ -584,6 +601,7 @@ public class ViajeAction extends ActionSupport {
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
 		esPasajero = viaje.esPasajero(usrlogueado);
+		foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
 		return SUCCESS;
 	}
 
