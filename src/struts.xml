@@ -139,12 +139,12 @@
 			<result name="success" type="redirect">paginaBuscarViajes</result>
 		</action>
 
-		<!-- <action name="buscarViajePorEvento" method="buscarViajePorEvento" 
-			class="viajeAction"> <result name="success" type="redirect">listarTodosLosViajes</result> 
-			</action> -->
-
 		<action name="listarTodosLosViajes" method="listarTodosLosViajes" class="viajeAction">
 			<result name="success">/buscar_viajes.jsp</result>
+		</action>
+		
+		<action name="buscarViajePorEvento" method="buscarViajePorEvento" class="viajeAction"> 
+			<result name="success">/buscar_viajes.jsp</result> 
 		</action>
 
 		<action name="detalleViaje" method="detalleViaje" class="viajeAction">

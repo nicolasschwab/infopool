@@ -3,6 +3,7 @@ package actions;
 import implementacionesDAO.EventoDAOjpa;
 import implementacionesDAO.FactoryDAO;
 import interfacesDAO.EventoDAO;
+import interfacesDAO.ViajeDAO;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,6 +15,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Evento;
+import model.Viaje;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -155,6 +157,35 @@ public class EventoAction extends ActionSupport {
 				}
 			}
 			else{
+				return "sinpermisos";
+			}
+		}
+		else{
+			return "login";
+		}
+	}
+	
+	public String cancelarEvento() throws ParseException{		
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String user = (String) session.get("perfil");
+		if (user != null) {	
+			if (user.equals("administrador")) {
+				EventoDAO evento = FactoryDAO.getEventoDAO();
+				ViajeDAO viajedao = FactoryDAO.getViajeDAO();
+				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+				evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+				evnt.setActivo(false);
+				evento.modificar(evnt);
+				
+				//Cancelamos los viajes correspondientes al evento y se notifica a los viajeros
+				for (Viaje viaje : evnt.getViajes()) {
+					viaje.setActivo(false);
+					viajedao.modificar(viaje);
+				}
+				
+				//FALTA AVISAR A LOS VIAJES REGISTRADOS
+				return SUCCESS;
+			}else{
 				return "sinpermisos";
 			}
 		}

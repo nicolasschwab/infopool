@@ -1,5 +1,6 @@
 package model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -11,7 +12,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Evento {
+public class Evento implements Serializable{	
+	private static final long serialVersionUID = 1L;
+	
 	@Id @GeneratedValue
 	private int id;
 	private String nombre;
@@ -20,6 +23,7 @@ public class Evento {
 	private String ubicacion;	
 	@OneToMany(mappedBy="evento", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Viaje> viajes;
+	private boolean activo;
 	
 	public Evento() {
 		super();
@@ -63,6 +67,12 @@ public class Evento {
 	}
 	public void setViajes(Collection<Viaje> viajes) {
 		this.viajes = viajes;
+	}
+	public boolean getActivo() {
+		return activo;
+	}
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 	public int getId() {
 		return id;

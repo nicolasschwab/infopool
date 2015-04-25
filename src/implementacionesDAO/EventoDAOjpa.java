@@ -1,11 +1,17 @@
 package implementacionesDAO;
 
 import interfacesDAO.EventoDAO;
+
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 import model.Evento;
+import model.Viaje;
+
 import org.hibernate.HibernateException;
+
 import util.EntityFactoryUtil;
 
 public class EventoDAOjpa extends GenericDAOjpa<Evento> implements EventoDAO {
@@ -53,8 +59,8 @@ public class EventoDAOjpa extends GenericDAOjpa<Evento> implements EventoDAO {
 		return existe;
 	}
 	
-	public Evento encontrarObjeto(int id){
-		Evento existe = null;
+	public Evento encontrar(int id){
+		Evento evento = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{
 			String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.id = :ev ";
@@ -62,13 +68,18 @@ public class EventoDAOjpa extends GenericDAOjpa<Evento> implements EventoDAO {
 			consulta.setParameter("ev", id);
 			List<EventoDAO> resultado = (List<EventoDAO>) consulta.getResultList();
 			if (resultado.size() > 0){				
-				existe = (Evento) resultado.get(0);
+				evento = (Evento) resultado.get(0);
+				System.out.println("Ingreso al encontrar de EventoDAOjpa");				
+				for (Viaje viaje : evento.getViajes()) {
+					System.out.println("Viaje ID:"+viaje.getId());
+					viaje.getId();
+				}
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();			
 		}finally{
 			em.close();
 		}
-		return existe;
+		return evento;
 	}
 }

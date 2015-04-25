@@ -54,11 +54,11 @@
 					
 					<div class="tab-pane" id="bsqevento">
 						<s:form cssClass="form-signin" theme="simple" role="form"
-							action="listarTodosLosViajes">
+							action="buscarViajePorEvento">
 							<div class="form-group col-md-4">
 								<label for="exampleInputEmail1">Evento</label>
 								<s:select list="eventoLista" listKey="id" listValue="nombre"
-									headerKey="-1" headerValue="" name="valor"
+									headerKey="1" headerValue="" name="evento_id"
 									value="eventoLista.{id}" cssClass="form-control" />
 							</div>
 							<div class="form-group col-md-1">
@@ -102,17 +102,23 @@
 							<th>Acciones</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody>						
 						<s:iterator value="viajeLista">
 							<tr>
 								<td><s:property value="direccionOrigen" /></td>
 								<td><s:property value="direccionDestino" /></td>
-								<td><s:date name="fechaInicio" format="dd/MM/YYYY" /> <s:date
-										name="horaPartida" format="HH:mm" /></td>
-								<td><s:property value="" /></td>
+								<td><s:date name="fechaInicio" format="dd/MM/YYYY" /> <s:date name="horaPartida" format="HH:mm" /></td>
+								<td>
+									<s:if test="%{evento==null}">
+										-
+									</s:if>
+									<s:else>
+										<s:property value="evento.nombre" />
+									</s:else>
+								</td>
 								<td><s:url id="detalleURL" action="detalleViaje">
 										<s:param name="id" value="%{id}"></s:param>
-									</s:url> <s:a href="%{detalleURL}" class="btn btn-default btn-xs">ver detalle</s:a>
+									</s:url> <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs">ver detalle</s:a>
 								</td>
 							</tr>
 						</s:iterator>

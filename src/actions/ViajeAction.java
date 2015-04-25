@@ -347,10 +347,6 @@ public class ViajeAction extends ActionSupport {
 	public String buscarViaje() {
 		return SUCCESS;
 	}
-
-	public String buscarViajePorEvento() {
-		return SUCCESS;
-	}
 	
 	public String buscarFecha() {
 		return SUCCESS;
@@ -552,6 +548,15 @@ public class ViajeAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
+	public String buscarViajePorEvento() {		
+		EventoDAOjpa eventodao = new EventoDAOjpa();
+		Evento evento = (Evento) eventodao.encontrar(this.evento_id);
+		eventoLista = eventodao.listar();
+		System.out.println("Cantidad de Viajes: "+evento.getViajes().size());		
+		this.viajeLista = (List<Viaje>) evento.getViajes();		
+		return SUCCESS;			
+	}
+	
 	public String listarPorFecha() throws ParseException {
 		EventoDAOjpa unEvento = new EventoDAOjpa();
 		eventoLista = unEvento.listar();
@@ -610,7 +615,7 @@ public class ViajeAction extends ActionSupport {
 		Usuario user = (Usuario) session.get("usrLogin");
 		EventoDAOjpa unEvento = new EventoDAOjpa();
 		eventoLista = unEvento.listar();
-		viajeLista = viajeDAO.listarViajesNoAsociados(user,unEvento.encontrarObjeto(this.valor));
+		viajeLista = viajeDAO.listarViajesNoAsociados(user,unEvento.encontrar(this.valor));
 		return SUCCESS;
 	}
 
