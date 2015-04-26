@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import model.DiasSemana;
 import model.Evento;
 import model.ForoMensajes;
-import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
@@ -51,7 +50,7 @@ public class ViajeAction extends ActionSupport {
 	private ViajeDAOjpa viajeDAO;
 	private List<Viaje> viajeListaConductor = new ArrayList<Viaje>();
 	private List<Viaje> viajeListaPasajero = new ArrayList<Viaje>();
-	private List<Viaje> viajeLista = new ArrayList<Viaje>();
+	private List<Viaje> viajeLista;
 	private int valor = -3;
 	private int cantpasajeros;
 	private int cantsolicitudes;
@@ -455,8 +454,7 @@ public class ViajeAction extends ActionSupport {
 			for (int i = 0; i < categorias.length; i++) {
 				diasSemana.add(DiasSemana.valueOf(categorias[i]));
 			}
-		}	
-		
+		}			
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user != null) {
@@ -465,8 +463,7 @@ public class ViajeAction extends ActionSupport {
 					if ( this.getTipoViaje().equals("vp") || ((this.getTipoViaje().equals("vd")) && (this.getDiasSemana().size() > 0))){
 						if ((this.getHoraPartida().length() > 0) && (this.getHoraRegreso().length() > 0)){
 							if (this.getAsientos() > 0){
-								if ((this.getDireccionDestino().length() > 0) && (this.getDireccionOrigen().length() > 0)){				
-									
+								if ((this.getDireccionDestino().length() > 0) && (this.getDireccionOrigen().length() > 0)){
 									ViajeDAO viaje = FactoryDAO.getViajeDAO();
 									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");				
 									Date fechai = null;
@@ -489,9 +486,8 @@ public class ViajeAction extends ActionSupport {
 									Date horar = null;
 									if (this.getHoraRegreso().length() > 0){
 										horar = sdh.parse(this.getHoraRegreso());
-									}		
-									Viajero conductor = (Viajero) session.get("usrLogin");
-									
+									}
+							
 									Viaje v = viaje.encontrar(this.id);
 									v.setAsientos(this.getAsientos());
 									v.setFechaInicio(fechai);
@@ -551,8 +547,13 @@ public class ViajeAction extends ActionSupport {
 		usrlogueado = (Usuario) session.get("usrLogin");
 		viaje = viajeDAO.encontrar(this.id);
 		EventoDAOjpa eventodao = new EventoDAOjpa();
-		Evento evento = (Evento) eventodao.encontrar(this.evento_id);
+		Evento evento = (Evento) eventodao.encontrar(this.evento_id);		
+		//Actualizamos el viaje con los valores del evento
 		viaje.setEvento(evento);
+		viaje.setDiasSemana(null);
+		viaje.setDireccionDestino(evento.getUbicacion());
+		viaje.setFechaInicio(evento.getFechaHora());
+		viaje.setFechaFin(null);
 		viajeDAO.modificar(viaje);
 		return SUCCESS;
 	}
@@ -571,9 +572,8 @@ public class ViajeAction extends ActionSupport {
 	public String buscarViajePorEvento() {		
 		EventoDAOjpa eventodao = new EventoDAOjpa();
 		Evento evento = (Evento) eventodao.encontrar(this.evento_id);
-		eventoLista = eventodao.listar();
-		System.out.println("Cantidad de Viajes: "+evento.getViajes().size());		
-		this.viajeLista = (List<Viaje>) evento.getViajes();		
+		eventoLista = eventodao.listar();				
+		viajeLista = (List<Viaje>) evento.getViajes();		
 		return SUCCESS;			
 	}
 	
@@ -584,7 +584,7 @@ public class ViajeAction extends ActionSupport {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date fecha = sdf.parse(this.getFecha());
 			ViajeDAOjpa unViaje = new ViajeDAOjpa();
-			this.viajeLista = unViaje.buscarPorFecha(fecha);
+			viajeLista = unViaje.buscarPorFecha(fecha);
 			return SUCCESS;
 		} else {
 			addFieldError("loginError", "Por favor seleccione una fecha");
