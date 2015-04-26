@@ -21,15 +21,16 @@
 				<h3 class="tituloSeccion margentb2">Edición del Viaje</h3>
 				<s:fielderror />				
 				<s:form role="form" theme="simple" cssClass="form-signin" action="editarViaje">
-					<s:if test="%{viaje.fechaFin==null}">
-						<s:set var="dispVP" value="" />
-						<s:set var="dispVD" value="%{'display:none'}" />
-						<s:set var="listV" value="#{'vp':'Viaje Puntual','vd':'Viaje Diario'}" />
-					</s:if>
-					<s:else>
+					
+					<s:if test="%{viaje.fechaFin!=null}">						
 						<s:set var="dispVP" value="%{'display:none'}" />
 						<s:set var="dispVD" value="" />
 						<s:set var="listV" value="#{'vd':'Viaje Diario','vp':'Viaje Puntual'}" />
+					</s:if>
+					<s:else>
+						<s:set var="dispVP" value="" />
+						<s:set var="dispVD" value="%{'display:none'}" />
+						<s:set var="listV" value="#{'vp':'Viaje Puntual','vd':'Viaje Diario'}" />
 					</s:else>
 					
 					<div class="form-group">
@@ -37,10 +38,10 @@
 							<div class="col-md-12">
 								<label>Seleccione el tipo de viaje que va a realizar</label>
 								<br>
-								<s:select cssClass="form-control" id="tipoViaje" name="tipoViaje" list="listV" onchange="javascript:cambiarTipoViaje()" />								
+								<s:select cssClass="form-control" id="tipoViaje" name="tipoViaje" list="listV" onchange="javascript:cambiarTipoViaje()"/>								
 							</div>							
 						</div>												
-					</div>					
+					</div>	
 					<div id="vpPanel" class="form-group" style="<s:property value='dispVP'/>">
 						<div class="row">							
 							<div class="col-md-6">
@@ -136,11 +137,11 @@
 						<label>Direcci&oacute;n de origen</label>
 						<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" label="Ingrese la direcci&oacute;n de origen" value="%{viaje.direccionOrigen}"/>						
 					</div>
-
+					
 					<div class="form-group">
 						<label>Direcci&oacute;n destino</label>
 						<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" label="Ingrese la direcci&oacute;n de origen" value="%{viaje.direccionDestino}"/>						
-					</div>
+					</div>								
 
 					<div class="form-group">
 						<label>Recorrido GoogleMap</label>
@@ -148,8 +149,7 @@
 						<br><br>
 						<div id="map-canvas" style="height: 500px"></div>
 					</div>
-										
-					<br>
+					
 					<s:hidden name="id" value="%{viaje.id}"></s:hidden>
 					<div class="form-group">
 						<s:submit cssClass="btn btn-primary" value="Editar"/>

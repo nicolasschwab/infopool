@@ -26,7 +26,7 @@ body {
 	padding-top: 2%;
 	padding-bottom: 2%;
 }
-.tituloSeccion{	
+.tituloSeccion{
 	color: #3276B1;
 	text-decoration: underline;
 }
@@ -162,6 +162,16 @@ body {
 	font-size: 13px;
 	padding: 20px 30px;
 	text-transform: uppercase;
+}
+
+.nav-tabs .active{
+	border-right: none;
+}
+.nav-tabs{
+	border-botom: 1px solid #FFF;
+}
+.tab-buscadores, .tab-content > .active, .tab-contentbsq{
+	background-color: #DDD;
 }
 
 /* start main */
@@ -716,8 +726,9 @@ body {
 	border-color: #196A99;
 }
 .errorMessage{
-	color:#A60000;
-	padding: 5px;
+	list-style: none;
+	margin-left: -10px;		
+	color:#D43F3A;	
 }
 .errorMessageL{
 	color:#A60000;

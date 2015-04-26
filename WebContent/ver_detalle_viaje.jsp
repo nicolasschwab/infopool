@@ -127,6 +127,13 @@
 								</s:url>
 								<s:a href="%{edicionViajeURL}" cssClass="btn btn-primary btn-block" role="button">Modificar Viaje</s:a>
 								
+								<s:if test="%{viaje.evento==null}">
+									<s:url id="asociacionEventoURL" action="asociacionEvento">
+										<s:param name="id" value="%{id}"></s:param>
+									</s:url>
+									<s:a href="%{asociacionEventoURL}" cssClass="btn btn-primary btn-block" role="button">Asociar evento</s:a>
+								</s:if>
+								
 								<s:url id="cancelacionViajeURL" action="cancelarViaje" encode="true">
 									<s:param name="id" value="%{id}"></s:param>
 								</s:url>																
@@ -159,12 +166,10 @@
 							</s:url>					
 							<s:a href="%{mensaje}" cssClass="btn btn-primary btn-block" role="button">Registrar Mensaje a Usuario</s:a>
 							<br><br>
-
-
-
+							
 							<div class="container">
 								<div class="row chat-window col-xs-5 col-md-3"
-									id="chat_window_1" ">
+									id="chat_window_1">
 									<div class="col-xs-12 col-md-12">
 										<div class="panel panel-default">
 											<div class="panel-heading top-bar">

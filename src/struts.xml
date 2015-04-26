@@ -131,6 +131,15 @@
 			<result name="input">/editar_viaje.jsp</result>
 		</action>
 		
+		<action name="asociacionEvento" method="asociacionEvento" class="viajeAction">
+			<result name="success">/asociar_evento.jsp</result>
+		</action>
+		
+		<action name="asociarEvento" method="asociarEvento" class="viajeAction">
+			<result name="success" type="redirect">listarViajes</result>
+			<result name="input">/asociar_evento.jsp</result>
+		</action>
+		
 		<action name="cancelarViaje" method="cancelarViaje" class="viajeAction">
 			<result name="success">listarViajes</result>
 		</action>

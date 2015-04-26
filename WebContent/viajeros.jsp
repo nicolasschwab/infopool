@@ -15,9 +15,8 @@
 	
 	<div class="main_bg">		
 		<div class="container">
-			<div class="main row">
-				<h3 class="tituloSeccion">Viajeros registrados</h3>
-				<br>
+			<div class="main row">				
+				<h3 class="tituloSeccion">Viajeros registrados</h3>				
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
@@ -36,10 +35,10 @@
 								<td><s:property value="mail"/></td>
 								<td>
 									<s:if test="%{activo}">
-										Activada
+										Activo
 									</s:if>
 									<s:else>
-										Desactivada
+										Inactivo
 									</s:else>
 								</td>																
 								<td>

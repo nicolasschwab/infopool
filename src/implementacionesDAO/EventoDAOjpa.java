@@ -68,10 +68,8 @@ public class EventoDAOjpa extends GenericDAOjpa<Evento> implements EventoDAO {
 			consulta.setParameter("ev", id);
 			List<EventoDAO> resultado = (List<EventoDAO>) consulta.getResultList();
 			if (resultado.size() > 0){				
-				evento = (Evento) resultado.get(0);
-				System.out.println("Ingreso al encontrar de EventoDAOjpa");				
-				for (Viaje viaje : evento.getViajes()) {
-					System.out.println("Viaje ID:"+viaje.getId());
+				evento = (Evento) resultado.get(0);								
+				for (Viaje viaje : evento.getViajes()) {					
 					viaje.getId();
 				}
 			}

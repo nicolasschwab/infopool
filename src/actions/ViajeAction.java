@@ -537,6 +537,26 @@ public class ViajeAction extends ActionSupport {
 		//FALTA LA PARTE DE AVISAR A LOS PASAJEROS DE LA MODIFICACION
 	}
 	
+	public String asociacionEvento(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		usrlogueado = (Usuario) session.get("usrLogin");
+		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
+		eventoLista = FactoryDAO.getEventoDAO().listar();
+		return SUCCESS;
+	}
+	
+	public String asociarEvento(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		usrlogueado = (Usuario) session.get("usrLogin");
+		viaje = viajeDAO.encontrar(this.id);
+		EventoDAOjpa eventodao = new EventoDAOjpa();
+		Evento evento = (Evento) eventodao.encontrar(this.evento_id);
+		viaje.setEvento(evento);
+		viajeDAO.modificar(viaje);
+		return SUCCESS;
+	}
+	
 	public String cancelarViaje(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		usrlogueado = (Usuario) session.get("usrLogin");
@@ -570,24 +590,19 @@ public class ViajeAction extends ActionSupport {
 			addFieldError("loginError", "Por favor seleccione una fecha");
 			return SUCCESS;
 		}
-
 	}
 
 	public String listarPorDireccion() {
+		EventoDAOjpa unEvento = new EventoDAOjpa();
+		eventoLista = unEvento.listar();
 		if (this.direccionOrigen != null && !this.direccionOrigen.equals("")) {
-			if (this.direccionDestino != null
-					&& !this.direccionDestino.equals("")) {
-				viajeLista = this.viajeDAO.buscarPorDireccion(
-						this.getDireccionOrigen(), this.getDireccionDestino());
-
+			if (this.direccionDestino != null && !this.direccionDestino.equals("")) {
+				viajeLista = this.viajeDAO.buscarPorDireccion(this.getDireccionOrigen(), this.getDireccionDestino());
 			} else {
-				addFieldError("loginError",
-						"Por favor ingrese la direccion destino");
-
+				addFieldError("loginError", "Por favor ingrese la direccion destino");
 			}
 		} else {
 			addFieldError("loginError", "Por favor ingrese la direccion origen");
-
 		}
 		return SUCCESS;
 	}

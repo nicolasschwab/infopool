@@ -91,15 +91,21 @@ public class EventoAction extends ActionSupport {
 		String user = (String) session.get("perfil");
 		if (user != null) {	
 			if (user.equals("administrador")) {
-				if(!eventoDAO.existeNombreEvento(this.getNombre())){
-					EventoDAO evento = FactoryDAO.getEventoDAO();				
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-					Date fechaeve = sdf.parse(this.getFechaHora());
-					Evento eve = new Evento(this.getNombre(),fechaeve,this.getWeb(),this.getUbicacion());				
-					evento.registrar(eve);
-					return SUCCESS;
-				}else{
-					addFieldError("nombre", "El nombre del evento ya existe!");
+				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
+					if(!eventoDAO.existeNombreEvento(this.getNombre())){					
+						EventoDAO evento = FactoryDAO.getEventoDAO();				
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+						Date fechaeve = sdf.parse(this.getFechaHora());
+						Evento eve = new Evento(this.getNombre(),fechaeve,this.getWeb(),this.getUbicacion());				
+						evento.registrar(eve);
+						return SUCCESS;										
+					}else{
+						addFieldError("nombre", "El nombre del evento ya existe!");
+						return INPUT;
+					}
+				}
+				else{
+					addFieldError("obligatorios", "Los campos Nombre, Fecha y Ubicación son obligatorios!");
 					return INPUT;
 				}
 			}
@@ -138,21 +144,27 @@ public class EventoAction extends ActionSupport {
 		String user = (String) session.get("perfil");
 		if (user != null) {	
 			if (user.equals("administrador")) {
-				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-				evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-				if (!eventoDAO.existeNombreEvento(this.getNombre(),evnt.getId())){
-					EventoDAO evento = FactoryDAO.getEventoDAO();				
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-					Date fechaeve = sdf.parse(this.getFechaHora());
-					evnt.setNombre(this.getNombre());
-					evnt.setFechaHora(fechaeve);
-					evnt.setWeb(this.getWeb());
-					evnt.setUbicacion(this.getUbicacion());
-					evento.modificar(evnt);
-					//FALTA AVISAR A LOS VIAJES REGISTRADOS
-					return SUCCESS;
-				}else{
-					addFieldError("nombre", "El nombre del evento ya existe!");
+				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
+					HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+					evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+					if (!eventoDAO.existeNombreEvento(this.getNombre(),evnt.getId())){
+						EventoDAO evento = FactoryDAO.getEventoDAO();				
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+						Date fechaeve = sdf.parse(this.getFechaHora());
+						evnt.setNombre(this.getNombre());
+						evnt.setFechaHora(fechaeve);
+						evnt.setWeb(this.getWeb());
+						evnt.setUbicacion(this.getUbicacion());
+						evento.modificar(evnt);
+						//FALTA AVISAR A LOS VIAJES REGISTRADOS
+						return SUCCESS;
+					}else{
+						addFieldError("nombre", "El nombre del evento ya existe!");
+						return INPUT;
+					}
+				}
+				else{
+					addFieldError("obligatorios", "Los campos Nombre, Fecha y Ubicación son obligatorios!");
 					return INPUT;
 				}
 			}
