@@ -15,7 +15,7 @@
 
 	<div class="main_bg">		
 		<div class="container">
-			<div class="margentb2 row">
+			<div class="main row">
 				<div class="col-md-12">
 					<h3 class="tituloSeccion">Detalle del Evento</h3>
 					<div class="col-md-9">						
@@ -50,7 +50,7 @@
 							<div class="col-md-12">
 								<p>
 									<strong>Web del evento:</strong>
-									<s:property value="evnt.web" />
+									<s:a href="%{evnt.web}" target="_blank"><s:property value="evnt.web" /></s:a>
 								</p>
 							</div>
 						</div>
@@ -64,8 +64,7 @@
 						<s:url id="cancelacionEventoURL" action="cancelarEvento" encode="true">
 							<s:param name="id" value="%{id}"></s:param>
 						</s:url>																
-						<s:a href="%{cancelacionEventoURL}" cssClass="btn btn-primary btn-block" role="button">Cancelar Evento</s:a>						
-						
+						<s:a href="%{cancelacionEventoURL}" cssClass="btn btn-primary btn-block" role="button">Cancelar Evento</s:a>
 					</div>
 				</div>
 				

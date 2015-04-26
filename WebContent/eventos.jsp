@@ -27,7 +27,8 @@
 							<tr>
 								<th>Nombre</th>
 								<th>Ubicaci&oacute;n</th>
-								<th>Fecha del evento</th>							
+								<th>Fecha del evento</th>
+								<th>Estado</th>				
 								<th>Acciones</th>
 							</tr>
 						</thead>
@@ -36,7 +37,11 @@
 								<tr>
 									<td><s:property value="nombre" /></td>
 									<td><s:property value="ubicacion" /></td>
-									<td><s:date name="fechaHora" format="dd/MM/yyyy HH:mm" /></td>								
+									<td><s:date name="fechaHora" format="dd/MM/yyyy HH:mm" /></td>
+									<td>
+										<s:if test="%{activo!=null}">Activo</s:if>
+										<s:else>Cancelado</s:else>			
+									</td>					
 									<td>
 										<s:url id="detalleURL" action="detalleEvento">
 											<s:param name="id" value="%{id}"></s:param>

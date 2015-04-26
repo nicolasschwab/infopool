@@ -63,8 +63,7 @@
 						<br>
 						<br>
 						<div id="map-canvas" style="width: 100%; height: 500px"></div>
-					</div>
-					<br>
+					</div>					
 					<div class="form-group">				
 						<s:if test="%{evnt.id!=null}">		
 							<s:hidden name="id" value="%{evnt.id}"></s:hidden>

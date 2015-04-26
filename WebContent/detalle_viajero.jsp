@@ -16,7 +16,6 @@
 	</jsp:include>
 
 	<div class="main_bg">
-		<!-- start main -->
 		<div class="container">
 			<div class="main row">
 				<div class="col-md-12">
@@ -24,7 +23,7 @@
 						<div class="col-md-2">
 							<img src="<s:url action="ImageAction">
 								<s:param name="id" value="%{viajero.id}"></s:param>
-							</s:url>" />
+							</s:url>" class="img-thumbnail"/>
 						</div>
 						<div class="col-md-5">
 							<p>
@@ -86,7 +85,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- end main -->
 	<%@ include file="views/footer.jsp"%>
 </body>
 </html>
