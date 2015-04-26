@@ -619,7 +619,13 @@ public class ViajeAction extends ActionSupport {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		usrlogueado = (Usuario) session.get("usrLogin");
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
+		if(request.getParameter("id")!=null){
+			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+		}
+		else{
+			viaje = viajeDAO.encontrar(Integer.parseInt(session.get("id").toString()));
+			
+		}
 		esPasajero = viaje.esPasajero(usrlogueado);
 		foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
 		return SUCCESS;
