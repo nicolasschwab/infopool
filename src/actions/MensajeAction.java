@@ -313,24 +313,15 @@ public class MensajeAction extends ActionSupport {
 			ForoMensajes nuevoMensaje= new ForoMensajes (new Date(),(Viajero)user,this.detalle,elViaje);
 			this.foroMensajeDAO.registrar(nuevoMensaje);
 			Collection<Viajero> lista=elViaje.getPasajeros();
-			Viajero elViajero=null;
-		
-			for (Viajero viajero : lista) {	
-				if (viajero.getId()==user.getId()){
-					elViajero=viajero;
-				}							
-			}	
-			
-						
-			if(elViajero!=null){
-				lista.remove(elViajero);
-				lista.add(elViaje.getConductor());
-			}
+			session.put("id",this.viajeId);
+			lista.add(elViaje.getConductor());
 			for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
-				Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+elViaje.getDireccionDestino()+" el "+elViaje.getFechaInicio(),"pendiente",user,i.next(),true);
-				this.mensajeDAO.registrar(Mensaje);
-			}
-			
+				Viajero elViajero=i.next();
+				if(elViajero.getId()!=user.getId()){
+					Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+elViaje.getDireccionDestino()+" el "+elViaje.getFechaInicio(),"pendiente",user,elViajero,true);
+					this.mensajeDAO.registrar(Mensaje);
+				}				
+			}			
 		}
 		return resul;
 	}

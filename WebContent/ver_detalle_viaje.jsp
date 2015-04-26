@@ -165,8 +165,7 @@
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>					
 							<s:a href="%{mensaje}" cssClass="btn btn-primary btn-block" role="button">Registrar Mensaje a Usuario</s:a>
-							<br><br>
-							
+							<br><br>							
 							<div class="container">
 								<div class="row chat-window col-xs-5 col-md-3"
 									id="chat_window_1">
@@ -175,16 +174,10 @@
 											<div class="panel-heading top-bar">
 												<div class="col-md-8 col-xs-8">
 													<h3 class="panel-title">
-														<span class="glyphicon glyphicon-comment"></span> Chat -
-														Foro
+														 Chat -	Foro
 													</h3>
 												</div>
-												<div class="col-md-4 col-xs-4" style="text-align: right;">
-													<a href="#"><span id="minim_chat_window"
-														class="glyphicon glyphicon-minus icon_minim"></span></a> 
-												</div>
-											</div>
-											
+											</div>											
 											  <s:iterator value="viaje.mensajes" >
 												<div class="panel-body msg_container_base">
 													<div class="row msg_container base_sent">
@@ -202,35 +195,23 @@
 													</div>	
 												</div>
 											</s:iterator>
-
 										</div>
 										<div class="panel-footer">
 											<div class="input-group">
-												<form action="">
-													<input id="btn-input" type="text"
+												<s:form role="form" action="enviarMensajeForo">
+													<s:hidden  name="viajeId" value="%{viaje.id}"> </s:hidden>
+													<input id="btn-input" name="detalle" type="text"
 														class="form-control input-sm chat_input"
-														placeholder="Escriba su mensaje aquí.." /> <span
-														class="input-group-btn">
+														placeholder="Escriba su mensaje aquí.." /> 
+													<span class="input-group-btn">
 														<s:submit cssClass="btn btn-primary" value="Enviar"/>
 													</span>
-												</form>
+												</s:form>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-
-
-
-
-
-
-							
-							<s:url id="mensajeForo" action="nuevoMensajeForo">
-								<s:param name="id" value="%{id}"></s:param>
-							</s:url>					
-							<s:a href="%{mensajeForo}" cssClass="btn btn-primary btn-block" role="button">Registrar Mensaje al foro</s:a>
-														
+							</div>														
 						</div>
 					</div>
 				</div>
