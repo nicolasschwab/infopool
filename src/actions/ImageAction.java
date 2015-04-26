@@ -37,8 +37,7 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
 		this.imageId = imageId;
 	}
 
-	public ImageAction() {
-		System.out.println("ImageAction");
+	public ImageAction() {		
 	}
 
 	public String execute() {

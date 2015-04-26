@@ -14,15 +14,13 @@
 		<jsp:param name="itemActivo" value="3" />
 	</jsp:include>
 
-	<div class="main_bg">
-		<!-- start main -->
+	<div class="main_bg">		
 		<div class="container">
 			<div class="main row">
-
 				<div>
 					<s:a href="javascript:history.back();" cssClass="btn btn-primary">Regresar</s:a>
 				</div>
-				<h3 class="tituloSeccion margentb2">Solicitudes para el viaje</h3>
+				<h3 class="tituloSeccion">Solicitudes para el viaje</h3>
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
@@ -61,7 +59,6 @@
 			</div>
 		</div>
 	</div>
-	<!-- end main -->
 	<%@ include file="views/footer.jsp"%>
 </body>
 </html>

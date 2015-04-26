@@ -91,41 +91,46 @@
 				</div>
 								
 				<div class="row">	
-					<s:if test="%{viajeLista.size()>0}">						
-						<h3 class="tituloSeccion">Viajes Encontrados</h3>
-						<table class="table" id="datatable">
-							<thead>
-								<tr>
-									<th>Origen</th>
-									<th>Destino</th>
-									<th>Fecha</th>
-									<th>Evento</th>
-									<th>Acciones</th>
-								</tr>
-							</thead>
-							<tbody>						
-								<s:iterator value="viajeLista">
+					<s:if test="%{viajeLista!=null}">
+						<s:if test="%{viajeLista.size()>0}">						
+							<h3 class="tituloSeccion">Viajes Encontrados</h3>
+							<table class="table" id="datatable">
+								<thead>
 									<tr>
-										<td><s:property value="direccionOrigen" /></td>
-										<td><s:property value="direccionDestino" /></td>
-										<td><s:date name="fechaInicio" format="dd/MM/YYYY" /> <s:date name="horaPartida" format="HH:mm" /></td>
-										<td>
-											<s:if test="%{evento==null}">
-												-
-											</s:if>
-											<s:else>
-												<s:property value="evento.nombre" />
-											</s:else>
-										</td>
-										<td><s:url id="detalleURL" action="detalleViaje">
-												<s:param name="id" value="%{id}"></s:param>
-											</s:url> <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs">ver detalle</s:a>
-										</td>
+										<th>Origen</th>
+										<th>Destino</th>
+										<th>Fecha</th>
+										<th>Evento</th>
+										<th>Acciones</th>
 									</tr>
-								</s:iterator>
-							</tbody>
-						</table>
-					</s:if>	
+								</thead>
+								<tbody>						
+									<s:iterator value="viajeLista">
+										<tr>
+											<td><s:property value="direccionOrigen" /></td>
+											<td><s:property value="direccionDestino" /></td>
+											<td><s:date name="fechaInicio" format="dd/MM/YYYY" /> <s:date name="horaPartida" format="HH:mm" /></td>
+											<td>
+												<s:if test="%{evento==null}">
+													-
+												</s:if>
+												<s:else>
+													<s:property value="evento.nombre" />
+												</s:else>
+											</td>
+											<td><s:url id="detalleURL" action="detalleViaje">
+													<s:param name="id" value="%{id}"></s:param>
+												</s:url> <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs">ver detalle</s:a>
+											</td>
+										</tr>
+									</s:iterator>
+								</tbody>
+							</table>
+						</s:if>
+						<s:else>
+							<p>No se encontraron resultados</p>
+						</s:else>	
+					</s:if>					
 				</div>			
 			</div>
 		</div>
