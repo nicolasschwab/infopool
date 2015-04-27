@@ -30,13 +30,13 @@
 							<th style="width:15%">Acciones</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody>						
 						<s:iterator value="pasajeros">
-							<tr>
+							<tr>								
 								<td>
 									<img src="<s:url action="ImageAction">
 											  <s:param name="id" value="%{id}"></s:param>
-											  </s:url>"  height="100">
+											  </s:url>"  height="100" />
 								</td>
 								<td>
 									<s:property value="nombre" /> <s:property value="apellido" />									
@@ -60,6 +60,7 @@
 											<input  class="btn btn-primary" type="submit" value="calificar">
 										</div>
 									</form>
+
 								</td> 
 							</tr>
 						</s:iterator>

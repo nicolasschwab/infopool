@@ -33,18 +33,16 @@
 								<s:form cssClass="form-signin" theme="simple" role="form" action="listarPorDireccion">
 									<div class="col-md-12 tab-contentbsq">
 										<div class="form-group col-md-5">
-											<label for="exampleInputEmail1">Direcci&oacute;n Origen</label>
-											<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" placeholder="Ingrese la direccion de origen" />
+											<label><s:text name="viaje.dirorigen"/></label>
+											<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" />
 										</div>
 										<div class="form-group col-md-5">
-											<label for="exampleInputPassword1">Direcci&oacute;n Destino</label>
-											<s:textfield cssClass="form-control" id="dirDestino"
-												name="direccionDestino"
-												placeholder="Ingrese la direccion de destino" />
+											<label><s:text name="viaje.dirdestino"/></label>
+											<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" />
 										</div>
 										<div class="col-md-2 form-group">
 											<br>
-											<button type="submit" class="btn btn-primary">Buscar</button>
+											<s:submit cssClass="btn btn-primary" value="%{getText('global.buscar')}" />
 										</div>
 									</div>
 								</s:form>
@@ -54,12 +52,12 @@
 								<s:form cssClass="form-signin" theme="simple" role="form" action="buscarViajePorEvento">
 									<div class="col-md-12 tab-contentbsq">								
 										<div class="form-group col-md-5">
-											<label for="exampleInputEmail1">Evento</label>
+											<label><s:text name="viaje.evento" /></label>
 											<s:select list="eventoLista" listKey="id" listValue="nombre" name="evento_id" value="eventoLista.{id}" cssClass="form-control" />
 										</div>
 										<div class="form-group col-md-1">
 											<br>
-											<s:submit cssClass="btn btn-primary" value="Buscar" />
+											<s:submit cssClass="btn btn-primary" value="%{getText('global.buscar')}" />
 										</div>
 									</div>
 			
@@ -70,17 +68,15 @@
 								<s:form cssClass="form-signin" theme="simple" role="form" action="listarPorFecha">
 									<div class="col-md-12 tab-contentbsq">
 										<div class="form-group col-md-5">
-											<label for="exampleInputEmail1">Fecha</label>
+											<label><s:text name="busqueda.fecha"/></label>
 											<div class='input-group date datepicker'>
-												<s:textfield type='text' onfocus="this.blur()" name="fecha"
-													id="fecha" data-date-format="YYYY-MM-DD"
-													cssClass="form-control" />
+												<s:textfield type='text' onfocus="this.blur()" name="fecha" id="fecha" data-date-format="YYYY-MM-DD" cssClass="form-control" />
 												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>
 										</div>
 										<div class="form-group col-md-2">
 											<br>
-											<s:submit cssClass="btn btn-primary" value="Buscar" />
+											<s:submit cssClass="btn btn-primary" value="%{getText('global.buscar')}" />
 										</div>
 									</div>		
 								</s:form>
@@ -93,15 +89,15 @@
 				<div class="row">	
 					<s:if test="%{viajeLista!=null}">
 						<s:if test="%{viajeLista.size()>0}">						
-							<h3 class="tituloSeccion">Viajes Encontrados</h3>
+							<h3 class="tituloSeccion"><s:text name="busqueda.viajelistado" /></h3>
 							<table class="table" id="datatable">
 								<thead>
-									<tr>
-										<th>Origen</th>
-										<th>Destino</th>
-										<th>Fecha</th>
-										<th>Evento</th>
-										<th>Acciones</th>
+									<tr>									
+										<th><s:text name="viaje.dirorigen" /></th>
+										<th><s:text name="viaje.dirdestino" /></th>
+										<th><s:text name="viaje.fechapartida" /></th>
+										<th><s:text name="viaje.evento" /></th>
+										<th><s:text name="global.acciones" /></th>
 									</tr>
 								</thead>
 								<tbody>						
