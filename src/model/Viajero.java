@@ -191,5 +191,17 @@ public class Viajero extends Usuario implements Serializable{
 		}
 		return out;
 	}
+	
+	public Float calificacionActual(){
+		int total=0;
+		for(Calificacion unaCalificacion : this.misCalificacionesRecibidas){
+				total+=unaCalificacion.getCalificacion();
+		}
+		if(total==0){
+			return (float)0;
+		}else{
+			return (float) (total/this.misCalificacionesRecibidas.size());
+		}
+	}
 		
 }

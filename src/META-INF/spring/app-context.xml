@@ -29,9 +29,17 @@
 		</property>
 	</bean>
 
+	
+
 	<bean id="mailMail" class="actions.Mail">
 		<property name="mailSender" ref="mailSender" />
 	</bean>
+	
+	<bean id="calificacionDAO" class="implementacionesDAO.CalificacionDAOjpa" />
+	<bean id="calificacionAction" class="actions.CalificacionAction"	scope="prototype">
+		<property name="calificacionDAO" ref="calificacionDAO" />
+	</bean>
+	
 
 	<bean id="usuarioDAO" class="implementacionesDAO.UsuarioDAOjpa" />
 	<bean id="loginAction" class="actions.LoginAction" scope="prototype">
