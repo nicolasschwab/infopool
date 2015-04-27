@@ -1,16 +1,11 @@
 @CHARSET "ISO-8859-1";
-.col-md-2, .col-md-10{
-    padding:0;
-}
+
 .panel{
     margin-bottom: 0px;
     overflow-y:scroll;
     height:300px;
 }
 
-.chat-window > div > .panel{
-    border-radius: 5px 5px 0 0;
-}
 .icon_minim{
     padding:2px 10px;
 }
@@ -80,18 +75,6 @@ img {
   justify-content: flex-end;
   align-items: flex-end;
 }
-.base_sent > .avatar:after {
-    content: "";
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 0;
-    border: 5px solid white;
-    border-right-color: transparent;
-    border-top-color: transparent;
-    box-shadow: 1px 1px 2px rgba(black, 0.2); // not quite perfect but close
-}
 
 .msg_sent > time{
     float: right;
@@ -117,8 +100,6 @@ img {
     background-color: #555;
 }
 
-.btn-group.dropup{
-    position:fixed;
-    left:0px;
-    bottom:0;
+#btn-input{
+    margin-bottom:5px;
 }

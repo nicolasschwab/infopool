@@ -16,15 +16,15 @@
 	<div class="main_bg">		
 		<div class="container">
 			<div class="main row">				
-				<h3 class="tituloSeccion">Viajeros registrados</h3>				
+				<h3 class="tituloSeccion"><s:text name="viajero.listado" /></h3>				
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
-							<th>Nombre Viajero</th>
-							<th>Teléfono</th>
-							<th>Mail</th>
-							<th>Estado</th>
-							<th>Acciones</th>
+							<th><s:text name="viajero.nombre" /></th>
+							<th><s:text name="viajero.telefono" /></th>
+							<th><s:text name="viajero.mail" /></th>
+							<th><s:text name="viajero.estado" /></th>
+							<th><s:text name="global.acciones" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -35,17 +35,17 @@
 								<td><s:property value="mail"/></td>
 								<td>
 									<s:if test="%{activo}">
-										Activo
+										<s:text name="global.activo" />
 									</s:if>
 									<s:else>
-										Inactivo
+										<s:text name="global.inactivo" />
 									</s:else>
 								</td>																
 								<td>
 									<s:url id="detalleURL" action="detalleViajero">
 										<s:param name="id" value="%{id}"></s:param>
 									</s:url>
-									<s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs">ver detalle</s:a>
+									<s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs"><s:text name="global.verdetalle" /></s:a>
 								</td>
 							</tr>
 						</s:iterator>						

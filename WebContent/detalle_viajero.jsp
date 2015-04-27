@@ -27,38 +27,38 @@
 						</div>
 						<div class="col-md-5">
 							<p>
-								<strong>Nombre:</strong>
+								<strong><s:text name="viajero.nombre" />:</strong>
 								<s:property value="viajero.nombre" />
 								<s:property value="viajero.apellido" />
 							</p>
 							<p>
-								<strong>Mail:</strong>
+								<strong><s:text name="viajero.mail" />:</strong>
 								<s:property value="viajero.mail" />
 							</p>
 							<p>
-								<strong>Telefono:</strong>
+								<strong><s:text name="viajero.telefono" />:</strong>
 								<s:property value="viajero.telefono" />
 							</p>
 							<p>
-								<strong>Fecha Nacimiento:</strong>
+								<strong><s:text name="viajero.fechanacimiento" />:</strong>
 								<s:date name="viajero.fechaNacimiento" format="dd/MM/YYYY" />
 							</p>
 						</div>
 						<div class="col-md-5">
 							<p>
-								<strong>Fecha de ingreso al sistema:</strong>
+								<strong><s:text name="viajero.fechaingreso" />:</strong>
 								<s:date name="viajero.fechaIngresoSistema" format="dd/MM/YYYY" />
 							</p>
 							<p>
-								<strong>Calificacion:</strong> 4.2 de 5 (FALTAAAA)
+								<strong><s:text name="viajero.calificacion" />:</strong> 4.2 de 5 (FALTAAAA)
 							</p>
 							<p>
-								<strong>Estado:</strong>
-								<s:if test="viajero.activo">Activo</s:if>
-								<s:else>Inactivo</s:else>
+								<strong><s:text name="viajero.estado" />:</strong>
+								<s:if test="viajero.activo"><s:text name="global.activo" /></s:if>
+								<s:else><s:text name="global.inactivo" /></s:else>
 							</p>
 							<p>
-								<strong>Preferencias del viajero:</strong>
+								<strong><s:text name="viajero.preferencias" />:</strong>
 								<s:property value="viajero.preferenciasViaje" />
 							</p>
 						</div>
@@ -70,15 +70,15 @@
 								<s:url id="cancelacionViajeroURL" action="desactivarViajero">
 									<s:param name="id" value="%{viajero.id}"></s:param>
 								</s:url>							
-								<s:a href="%{cancelacionViajeroURL}" cssClass="btn btn-primary" role="button">Cancelar suscripción</s:a>
+								<s:a href="%{cancelacionViajeroURL}" cssClass="btn btn-primary" role="button"><s:text name="viajero.cancelarbtn" /></s:a>
 							</s:if> 
 							<s:else>
 								<s:url id="activacionViajeroURL" action="activarViajero">
 									<s:param name="id" value="%{viajero.id}"></s:param>
 								</s:url>							
-								<s:a href="%{activacionViajeroURL}" cssClass="btn btn-primary" role="button">Activar suscripción</s:a>
+								<s:a href="%{activacionViajeroURL}" cssClass="btn btn-primary" role="button"><s:text name="viajero.activarbtn" /></s:a>
 							</s:else>
-							<a href="" class="btn btn-primary disabled" role="button">Ver Denuncias</a>
+							<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.denunciasbtn" /></a>
 						</div>
 					</div>
 				</div>

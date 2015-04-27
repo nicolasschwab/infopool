@@ -18,12 +18,12 @@
         	<div class="col-md-4 text-center centrar margentb2">
                 <% String user = (String) session.getAttribute("perfil"); 
                 if (user == null){ %>
-                <h3>Inicie Sesi&oacute;n</h3>                
+                <h3><s:text name="login.ingresarlbl" /></h3>                
                 <s:form cssClass="form-signin" theme="simple" role="form" action="validarLogin" validate="true">    		                                  
                     <div class="form-group">
                         <div class="input-group">
                             <div class="input-group-addon"><i class="fa fa-user"></i></div>
-                            <s:textfield cssClass="form-control" label="Correo electr&oacute;nico" name="usuario"/>
+                            <s:textfield cssClass="form-control" name="usuario"/>
                         </div>  
 						<s:if test="getFieldErrors() != null">
 	                        <s:if test="getFieldErrors().get('usuario') != null">
@@ -36,7 +36,7 @@
                     <div class="form-group">
                         <div class="input-group">                        
                             <div class="input-group-addon"><i class="fa fa-lock"></i></div>
-                            <s:password cssClass="form-control" label="Contrase&ntilde;a" name="clave"/>                            
+                            <s:password cssClass="form-control" name="clave"/>                            
                         </div>
                         <s:if test="getFieldErrors() != null">
 	                        <s:if test="getFieldErrors().get('clave') != null">
@@ -54,7 +54,7 @@
 	                    </s:if>
 	                </s:if>
                     <div class="form-group">
-    		          <s:submit cssClass="btn btn-primary" value="Ingresar"/>
+    		          <s:submit cssClass="btn btn-primary" value="%{getText('login.ingresar')}"/>
                     </div>
     		    </s:form>
     		    <% }%>
