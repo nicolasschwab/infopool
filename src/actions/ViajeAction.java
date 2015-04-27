@@ -363,35 +363,34 @@ public class ViajeAction extends ActionSupport {
 			for (int i = 0; i < categorias.length; i++) {
 				diasSemana.add(DiasSemana.valueOf(categorias[i]));
 			}
-		}	
-		
+		}			
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user != null) {
 			if (user.equals("viajero")) {
 				if (((this.getTipoViaje().equals("vp")) && (this.getFechaIniciop().length() > 0)) || ((this.getTipoViaje().equals("vd")) && (this.getFechaIniciod().length() > 0))){
 					if ( this.getTipoViaje().equals("vp") || ((this.getTipoViaje().equals("vd")) && (this.getDiasSemana().size() > 0))){
-						if ((this.getHoraPartida().length() > 0) && (this.getHoraRegreso().length() > 0)){
+						if ((this.getHoraPartida().length() > 0) || ((this.getHoraPartida().length() > 0) && (this.getHoraRegreso().length() > 0))){
 							if (this.getAsientos() > 0){
-								if ((this.getDireccionDestino().length() > 0) && (this.getDireccionOrigen().length() > 0)){				
-									
+								if ((this.getDireccionDestino().length() > 0) && (this.getDireccionOrigen().length() > 0)){	 	
 									ViajeDAO viaje = FactoryDAO.getViajeDAO();
-									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");				
+									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 									Date fechai = null;
+									Date fechaf = null;
 									if (this.getTipoViaje().equals("vp")){
 										if (this.getFechaIniciop().length() > 0){
 											fechai = sdf.parse(this.getFechaIniciop());
 										}
+										this.diasSemana = null;										
 									}
 									else{
 										if (this.getFechaIniciod().length() > 0){
 											fechai = sdf.parse(this.getFechaIniciod());
+										}										
+										if (this.getFechaFin().length() > 0){
+											fechaf = sdf.parse(this.getFechaFin());
 										}
-									}
-									Date fechaf = null;
-									if (this.getFechaFin().length() > 0){
-										fechaf = sdf.parse(this.getFechaFin());
-									}
+									}									
 									SimpleDateFormat sdh = new SimpleDateFormat("hh:mm");
 									Date horap = sdh.parse(this.getHoraPartida());
 									Date horar = null;
@@ -399,9 +398,7 @@ public class ViajeAction extends ActionSupport {
 										horar = sdh.parse(this.getHoraRegreso());
 									}		
 									Viajero conductor = (Viajero) session.get("usrLogin");
-									Viaje v = new Viaje(fechai, fechaf, diasSemana, horap, horar, 
-											this.getAsientos(), this.getDireccionOrigen(),
-											this.getDireccionDestino(), null, conductor);				
+									Viaje v = new Viaje(fechai, fechaf, diasSemana, horap, horar, this.getAsientos(), this.getDireccionOrigen(), this.getDireccionDestino(), null, conductor);				
 									viaje.registrar(v);				
 									return SUCCESS;
 								}
@@ -416,7 +413,7 @@ public class ViajeAction extends ActionSupport {
 							}
 						}
 						else{
-							addFieldError("viajeError", "Debe seleccionar la hora de partida y de regreso en el que realizará el viaje");
+							addFieldError("viajeError", "Debe seleccionar la hora de partida en la que realizará el viaje");
 							return INPUT;
 						}
 					}
@@ -446,58 +443,68 @@ public class ViajeAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String editarViaje() throws ParseException {
+	public String editarViaje() throws ParseException {					
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String user = (String) session.get("perfil");
+		
+		ViajeDAO viajeDao = FactoryDAO.getViajeDAO();
+		viaje = viajeDao.encontrar(this.id);
+		
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		String[] categorias = request.getParameterValues("viajediario");
-		diasSemana = new ArrayList<DiasSemana>();
+		diasSemana = new ArrayList<DiasSemana>();	
 		if (categorias != null && categorias.length > 0) {
 			for (int i = 0; i < categorias.length; i++) {
 				diasSemana.add(DiasSemana.valueOf(categorias[i]));
 			}
-		}			
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
+		}
+		
+		if (this.getTipoViaje() == null){
+			this.tipoViaje = "ev";
+			this.fechaIniciop = "";
+			this.fechaIniciod = "";
+		}
 		if (user != null) {
-			if (user.equals("viajero")) {
-				if (((this.getTipoViaje().equals("vp")) && (this.getFechaIniciop().length() > 0)) || ((this.getTipoViaje().equals("vd")) && (this.getFechaIniciod().length() > 0))){
-					if ( this.getTipoViaje().equals("vp") || ((this.getTipoViaje().equals("vd")) && (this.getDiasSemana().size() > 0))){
-						if ((this.getHoraPartida().length() > 0) && (this.getHoraRegreso().length() > 0)){
+			if (user.equals("viajero")) {				
+				if ((this.evento_id != 0) || ((this.getTipoViaje().equals("vp")) && (this.getFechaIniciop().length() > 0)) || ((this.getTipoViaje().equals("vd")) && (this.getFechaIniciod().length() > 0))){
+					if ( this.getTipoViaje().equals("vp") || ((this.getTipoViaje().equals("vd")) && (this.getDiasSemana().size() > 0)) || (this.evento_id != 0)){
+						if ((this.getHoraPartida().length() > 0) || ((this.getHoraPartida().length() > 0) && (this.getHoraRegreso().length() > 0))){
 							if (this.getAsientos() > 0){
-								if ((this.getDireccionDestino().length() > 0) && (this.getDireccionOrigen().length() > 0)){
-									ViajeDAO viaje = FactoryDAO.getViajeDAO();
-									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");				
-									Date fechai = null;
-									if (this.getTipoViaje().equals("vp")){
-										if (this.getFechaIniciop().length() > 0){
-											fechai = sdf.parse(this.getFechaIniciop());
+								if (((this.evento_id != 0) && (this.getDireccionOrigen().length() > 0)) || ((this.getDireccionDestino().length() > 0) && (this.getDireccionOrigen().length() > 0))){
+									if (this.evento_id == 0){
+										SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");				
+										Date fechai = null;
+										Date fechaf = null;
+										if (this.getTipoViaje().equals("vp")){
+											if (this.getFechaIniciop().length() > 0){
+												fechai = sdf.parse(this.getFechaIniciop());
+											}
+											this.diasSemana = null;	
 										}
-									}
-									else{
-										if (this.getFechaIniciod().length() > 0){
-											fechai = sdf.parse(this.getFechaIniciod());
+										else{
+											if (this.getFechaIniciod().length() > 0){
+												fechai = sdf.parse(this.getFechaIniciod());
+											}
+											if (this.getFechaFin().length() > 0){
+												fechaf = sdf.parse(this.getFechaFin());
+											}
 										}
-									}
-									Date fechaf = null;
-									if (this.getFechaFin().length() > 0){
-										fechaf = sdf.parse(this.getFechaFin());
-									}
+										viaje.setFechaInicio(fechai);
+										viaje.setFechaFin(fechaf);
+										viaje.setDiasSemana(diasSemana);
+										viaje.setDireccionDestino(this.getDireccionDestino());
+									}									
 									SimpleDateFormat sdh = new SimpleDateFormat("hh:mm");
 									Date horap = sdh.parse(this.getHoraPartida());
 									Date horar = null;
 									if (this.getHoraRegreso().length() > 0){
 										horar = sdh.parse(this.getHoraRegreso());
 									}
-							
-									Viaje v = viaje.encontrar(this.id);
-									v.setAsientos(this.getAsientos());
-									v.setFechaInicio(fechai);
-									v.setFechaFin(fechaf);
-									v.setDiasSemana(diasSemana);
-									v.setHoraPartida(horap);
-									v.setHoraRegreso(horar);
-									v.setDireccionOrigen(this.getDireccionOrigen());
-									v.setDireccionDestino(this.getDireccionDestino());
-									viaje.modificar(v);				
+									viaje.setAsientos(this.getAsientos());									
+									viaje.setHoraPartida(horap);
+									viaje.setHoraRegreso(horar);
+									viaje.setDireccionOrigen(this.getDireccionOrigen());									
+									viajeDao.modificar(viaje);				
 									return SUCCESS;
 								}
 								else{
@@ -511,7 +518,7 @@ public class ViajeAction extends ActionSupport {
 							}
 						}
 						else{
-							addFieldError("viajeError", "Debe seleccionar la hora de partida y de regreso en el que realizará el viaje");
+							addFieldError("viajeError", "Debe seleccionar la hora de partida en la que realizará el viaje");
 							return INPUT;
 						}
 					}
@@ -520,7 +527,7 @@ public class ViajeAction extends ActionSupport {
 						return INPUT;
 					}
 				}
-				else{
+				else{					
 					addFieldError("viajeError", "Debe completar la fecha de inicio");
 					return INPUT;
 				}

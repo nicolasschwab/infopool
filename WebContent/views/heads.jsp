@@ -29,22 +29,29 @@
 
 <script type="text/javascript">
     $(function() {        
-        $('.dropdown-toggle').dropdown();
+        
+    	$('.dropdown-toggle').dropdown();
+        
         $('.datepicker').datetimepicker({            
             pickTime: false
         });
+        
         $('.horaviaje').datetimepicker({
             pickDate: false
         });
+        
         $(document).ready(function() {
             $('#datatable').dataTable();
-        } );
-        $('#datetimepicker2').datetimepicker({            
         });
+        
+        $('#datetimepicker2').datetimepicker({});
         
         $(document).ready(function() {
             $('#myTab').tab();
-        } );
+        });
+        
+        //$('#myModal').modal();
+        
     });    
 </script>
 

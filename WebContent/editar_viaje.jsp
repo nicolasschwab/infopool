@@ -18,10 +18,14 @@
 	<div class="main_bg">
 		<div class="container">
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2">Edición del Viaje</h3>
+				<h3 class="tituloSeccion margentb2">Edición del Viaje
+				<s:if test="%{viaje.evento!=null}">					
+				: Evento <s:property value="viaje.evento.nombre" />
+				</s:if>
+				</h3>
+				
 				<s:fielderror />				
-				<s:form role="form" theme="simple" cssClass="form-signin" action="editarViaje">
-					
+				<s:form role="form" theme="simple" cssClass="form-signin" action="editarViaje">					
 					<s:if test="%{viaje.evento==null}">
 						<s:if test="%{viaje.fechaFin!=null}">						
 							<s:set var="dispVP" value="%{'display:none'}" />
@@ -129,8 +133,8 @@
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-4">
-								<label>Asientos disponibles</label>								
-								<s:textfield cssClass="form-control" name="asientos" label="ingrese la cantidad de asientos disponibles" value="%{viaje.asientos}"/>													
+								<label>Asientos disponibles</label>															
+								<s:textfield cssClass="form-control" name="asientos" label="ingrese la cantidad de asientos disponibles" value="%{viaje.asientos}"/>														
 							</div>							
 						</div>
 					</div>
@@ -159,6 +163,9 @@
 					</div>
 					
 					<s:hidden name="id" value="%{viaje.id}"></s:hidden>
+					<s:if test="%{viaje.evento!=null}">
+						<s:hidden name="evento_id" value="%{viaje.evento.id}"></s:hidden>
+					</s:if>
 					<div class="form-group">
 						<s:submit cssClass="btn btn-primary" value="Editar"/>
 					</div>

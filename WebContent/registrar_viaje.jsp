@@ -40,6 +40,7 @@
 								</div>								
 							</div>							
 						</div>
+						<br>
 					</div>					
 					<div id="vdPanel" class="form-group" style="display:none">						
 						<div class="row">
@@ -133,8 +134,7 @@
 						<br><br>
 						<div id="map-canvas" style="height: 500px"></div>
 					</div>
-
-					<br>
+					
 					<div class="form-group">
 						<s:submit cssClass="btn btn-primary" value="Registrar"/>
 					</div>
