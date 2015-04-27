@@ -6,6 +6,7 @@
 <title>InfoPool</title>
 <%@ include file="views/heads.jsp"%>
 <%@ taglib prefix="s" uri="/struts-tags"%>
+
 </head>
 <body>
 
@@ -17,9 +18,7 @@
 	<div class="main_bg">		
 		<div class="container">
 			<div class="main row">
-				<div>
-					<s:a href="javascript:history.back();" cssClass="btn btn-primary">Regresar</s:a>
-				</div>
+				
 				<h3 class="tituloSeccion">Calificaciones para el viaje</h3>
 				<table class="table" id="datatable">
 					<thead>
@@ -27,8 +26,8 @@
 							<th style="width:20%">Imagen</th>
 							<th style="width:15%">Nombre</th>
 							<th style="width:20%">Mail</th>
-							<th style="width:25%">Calificacion Actual</th>							
-							<th >Acciones</th>
+							<th style="width:15%">Calificacion Actual</th>							
+							<th style="width:15%">Acciones</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -46,10 +45,21 @@
 									<s:property value="mail" />									
 								</td>
 								<td>
-									<s:property value="calificacionActual" />
+									<s:property value="%{calificacionActual()}" />
 								</td>
 								<td>
-									<s:select list="#{'1':'1', '2':'2', '3':'3', '4':'4', '5':'5' }" name="valores" />
+									<form action="">
+										<div class="form-group">
+											<select class="form-control">
+												<option>1</option>
+												<option>2</option>
+												<option>3</option>
+												<option>4</option>
+												<option>5</option>
+											</select>
+											<input  class="btn btn-primary" type="submit" value="calificar">
+										</div>
+									</form>
 								</td> 
 							</tr>
 						</s:iterator>
