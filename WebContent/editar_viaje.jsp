@@ -18,9 +18,9 @@
 	<div class="main_bg">
 		<div class="container">
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2">Edición del Viaje
+				<h3 class="tituloSeccion margentb2"><s:text name="viaje.edicionlbl" />
 				<s:if test="%{viaje.evento!=null}">					
-				: Evento <s:property value="viaje.evento.nombre" />
+				: <s:text name="viaje.eventolbl" /> <s:property value="viaje.evento.nombre" />
 				</s:if>
 				</h3>
 				
@@ -41,7 +41,7 @@
 						<div class="form-group">
 							<div class="row">
 								<div class="col-md-12">
-									<label>Seleccione el tipo de viaje que va a realizar</label>
+									<label><s:text name="viaje.tipoviaje" /></label>
 									<br>
 									<s:select cssClass="form-control" id="tipoViaje" name="tipoViaje" list="listV" onchange="javascript:cambiarTipoViaje()"/>								
 								</div>							
@@ -50,7 +50,7 @@
 						<div id="vpPanel" class="form-group" style="<s:property value='dispVP'/>">
 							<div class="row">							
 								<div class="col-md-6">
-									<label>Fecha del viaje</label>
+									<label><s:text name="viaje.fechavp" /></label>
 									<div class='input-group date col-md-10 datepicker'>
 										<s:date name="viaje.fechaInicio" id="fechaIni" format="yyyy-MM-dd"/>
 										<s:textfield cssClass="form-control" name="fechaIniciop" data-date-format="YYYY-MM-DD" value="%{fechaIni}"/>
@@ -62,7 +62,7 @@
 						<div id="vdPanel" class="form-group" style="<s:property value='dispVD'/>">						
 							<div class="row">
 								<div class="col-md-12">
-									<label>Seleccione los días en los cuales va a viajar</label><br>
+									<label><s:text name="viaje.diaslbl" /></label><br>
 									<label class="checkbox-inline">
 										<s:checkbox name="viajediario" fieldValue="LUNES" value="%{viaje.diaSeleccionado('LUNES')}"/> Lunes
 									</label> 
@@ -90,14 +90,14 @@
 							<br>						
 							<div class="row">
 								<div class="col-md-6">
-									<label>Fecha inicio del viaje</label>
+									<label><s:text name="viaje.fechainicio" /></label>
 									<div class='input-group date col-md-10 datepicker'>									
 										<s:textfield cssClass="form-control"  name="fechaIniciod" data-date-format="YYYY-MM-DD" value="%{fechaIni}"/>
 										<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 									</div>								
 								</div>
 								<div class="col-md-6">
-									<label>Fecha fin del viaje</label>
+									<label><s:text name="viaje.fechafin" /></label>
 									<div class='input-group date col-md-10 datepicker'>									
 										<s:date name="viaje.fechaFin" id="fechaFin" format="yyyy-MM-dd"/>
 										<s:textfield cssClass="form-control"  name="fechaFin" data-date-format="YYYY-MM-DD" value="%{fechaFin}"/>
@@ -112,18 +112,18 @@
 					<div class="form-group">
 						<div class="row">							
 							<div class="col-md-6">
-								<label>Hora de Partida</label>
+								<label><s:text name="viaje.horapartida" /></label>
 								<div class='input-group date horaviaje col-md-10'>
 									<s:date name="viaje.horaPartida" id="horaPar" format="HH:mm"/>
-									<s:textfield cssClass="form-control" name="horaPartida" label="Hora de partida" data-date-format="HH:mm" value="%{horaPar}"/>
+									<s:textfield cssClass="form-control" name="horaPartida" data-date-format="HH:mm" value="%{horaPar}"/>
 									<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 								</div>								
 							</div>							
 							<div class="col-md-6">
-								<label>Hora de Regreso</label>
+								<label><s:text name="viaje.horaregreso" /></label>
 								<div class='input-group date horaviaje col-md-10'>
 									<s:date name="viaje.horaRegreso" id="horaReg" format="HH:mm"/>
-									<s:textfield cssClass="form-control" name="horaRegreso" label="Hora de regreso" data-date-format="HH:mm" value="%{horaReg}"/>
+									<s:textfield cssClass="form-control" name="horaRegreso" data-date-format="HH:mm" value="%{horaReg}"/>
 									<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 								</div>								
 							</div>
@@ -133,15 +133,15 @@
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-4">
-								<label>Asientos disponibles</label>															
-								<s:textfield cssClass="form-control" name="asientos" label="ingrese la cantidad de asientos disponibles" value="%{viaje.asientos}"/>														
+								<label><s:text name="viaje.asientos" /></label>															
+								<s:textfield cssClass="form-control" name="asientos" value="%{viaje.asientos}"/>														
 							</div>							
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label>Direcci&oacute;n de origen</label>
-						<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" label="Ingrese la direcci&oacute;n de origen" value="%{viaje.direccionOrigen}"/>						
+						<label><s:text name="viaje.dirorigen" /></label>
+						<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" value="%{viaje.direccionOrigen}"/>						
 					</div>
 					
 					<s:if test="%{viaje.evento!=null}">						
@@ -151,13 +151,13 @@
 						<s:set var="esEvento" value="%{false}" />
 					</s:else>					
 					<div class="form-group">
-						<label>Direcci&oacute;n destino</label>
-						<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" label="Ingrese la direcci&oacute;n de origen" value="%{viaje.direccionDestino}" readonly="esEvento"/>						
+						<label><s:text name="viaje.dirdestino" /></label>
+						<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" value="%{viaje.direccionDestino}" readonly="esEvento"/>						
 					</div>								
 
 					<div class="form-group">
-						<label>Recorrido GoogleMap</label>
-						<button type="button" class="btn btn-default" onclick="javascript:calcRoute();">Trazar Recorrido</button>
+						<label><s:text name="viaje.recorridogm" /></label>
+						<button type="button" class="btn btn-default" onclick="javascript:calcRoute();"><s:text name="viaje.trazagm" /></button>
 						<br><br>
 						<div id="map-canvas" style="height: 500px"></div>
 					</div>
@@ -167,7 +167,7 @@
 						<s:hidden name="evento_id" value="%{viaje.evento.id}"></s:hidden>
 					</s:if>
 					<div class="form-group">
-						<s:submit cssClass="btn btn-primary" value="Editar"/>
+						<s:submit cssClass="btn btn-primary" value="%{getText('global.editar')}"/>
 					</div>
 
 				</s:form>

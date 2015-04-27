@@ -21,18 +21,18 @@
 		<div class="container">
 			<div class="main row">
 				<div>
-					<a href="registroViaje" class="btn btn-primary"><span class="fa fa-road" aria-hidden="true"></span> Registrar Viaje</a>
-					<a href="buscarViaje" class="btn btn-default"><span class="fa fa-search" aria-hidden="true"></span> BuscarViajes</a>					
+					<a href="registroViaje" class="btn btn-primary"><span class="fa fa-road" aria-hidden="true"></span> <s:text name="viaje.registrarbtn" /></a>
+					<a href="buscarViaje" class="btn btn-default"><span class="fa fa-search" aria-hidden="true"></span> <s:text name="viaje.buscarbtn" /></a>					
 				</div>
-				<h3 class="tituloSeccion margentb2">Mis Viajes Registrados</h3>
+				<h3 class="tituloSeccion margentb2"><s:text name="viaje.misviajeslbl" /></h3>
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
-							<th>Desde</th>
-							<th>Hasta</th>
-							<th>Fecha Partida</th>
-							<th>Rol</th>
-							<th>Acciones</th>
+							<th><s:text name="viaje.dirorigen" /></th>
+							<th><s:text name="viaje.dirdestino" /></th>
+							<th><s:text name="viaje.fechapartida" /></th>
+							<th><s:text name="viaje.rol" /></th>
+							<th><s:text name="global.acciones" /></th>
 						</tr>
 					</thead>
 					<tbody>					
@@ -41,11 +41,11 @@
 		                  <td><s:property value="direccionOrigen" /></td>
 		                  <td><s:property value="direccionDestino" /></td>
 		                  <td><s:date name="fechaInicio" format="dd/MM/YYYY"/> <s:date name="horaPartida" format="HH:mm"/></td>                  
-		                  <td>Conductor</td>
+		                  <td><s:text name="viaje.conductor" /></td>
 		                  <td><s:url id="detalleURL" action="detalleViaje">
 		                  		<s:param name="id" value="%{id}"></s:param>
 		                  	  </s:url>
-		                  	  <s:a href="%{detalleURL}"   cssClass="btn btn-default btn-xs">ver detalle</s:a>
+		                  	  <s:a href="%{detalleURL}"   cssClass="btn btn-default btn-xs"><s:text name="global.verdetalle" /></s:a>
 		                  </td>
 		                </tr> 
 		              </s:iterator>
@@ -54,11 +54,11 @@
 		                  <td><s:property value="direccionOrigen" /></td>
 		                  <td><s:property value="direccionDestino" /></td>
 		                  <td><s:date name="fechaInicio" format="dd/MM/YYYY"/> <s:date name="horaPartida" format="HH:mm"/></td>                  
-		                  <td>Pasajero</td>
+		                  <td><s:text name="viaje.pasajero" /></td>
 		                  <td><s:url id="detalleURL" action="detalleViaje">
 		                  		<s:param name="id" value="%{id}"></s:param>
 		                  	  </s:url>
-		                  	  <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs">ver detalle</s:a>
+		                  	  <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs"><s:text name="viaje.verdetalle" /></s:a>
 		                  </td>
 		                </tr> 
 		              </s:iterator>					

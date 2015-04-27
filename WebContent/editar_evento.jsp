@@ -17,11 +17,11 @@
 	<div class="main_bg">
 		<div class="container">
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2">Edición del Evento</h3>
+				<h3 class="tituloSeccion margentb2"><s:text name="evento.edicionlbl" /></h3>
 				<s:fielderror />
 				<s:form cssClass="form-signin" role="form" theme="simple" action="editarEvento">
 					<div class="form-group">
-						<label>Fecha</label>						
+						<label><s:text name="evento.fecha" /></label>						
 						<div class='input-group date col-md-3' id='datetimepicker2'>
 							<s:if test="%{evnt.fechaHora!=null}">
 								<s:date name="evnt.fechaHora" id="fechaHora" format="yyyy-MM-dd HH:mm"/>
@@ -31,7 +31,7 @@
 						</div>
 					</div>
 					<div class="form-group">
-						<label>Nombre</label>
+						<label><s:text name="evento.nombre" /></label>
 							<s:if test="%{evnt.nombre.length()>0}">
 								<s:textfield cssClass="form-control" name="nombre" label="Nombre del evento" value="%{evnt.nombre}"/>
 							</s:if>
@@ -40,7 +40,7 @@
 							</s:else>
 					</div>
 					<div class="form-group">
-						<label>Web del Evento</label>
+						<label><s:text name="evento.web" /></label>
 						<s:if test="%{evnt.web.length()>0}">
 							<s:textfield cssClass="form-control" name="web" label="Ingrese la Web" value="%{evnt.web}"/>
 						</s:if>
@@ -49,7 +49,7 @@
 						</s:else>							
 					</div>
 					<div class="form-group">
-						<label>Ubicaci&oacute;n</label>
+						<label><s:text name="evento.ubicacion" /></label>
 						<s:if test="%{evnt.ubicacion.length()>0}">
 							<s:textfield cssClass="form-control" id="dirOrigen" name="ubicacion" label="Ingrese la direcci&oacute;n" value="%{evnt.ubicacion}" />
 						</s:if>
@@ -58,8 +58,8 @@
 						</s:else>
 					</div>
 					<div class="form-group">
-						<label>Ubicaci&oacute;n GoogleMap</label>
-						<button type="button" class="btn btn-default" onclick="javascript:calcPoint();">Localizar ubicaci&oacute;n</button>
+						<label><s:text name="evento.ubicaciongm" /></label>
+						<button type="button" class="btn btn-default" onclick="javascript:calcPoint();"><s:text name="evento.localizargm" /></button>
 						<br>
 						<br>
 						<div id="map-canvas" style="width: 100%; height: 500px"></div>
@@ -71,7 +71,7 @@
 						<s:else>
 							<s:hidden name="id"></s:hidden>
 						</s:else>
-						<s:submit cssClass="btn btn-primary" value="Editar" />
+						<s:submit cssClass="btn btn-primary" value="%{getText('global.editar')}" />
 					</div>
 				</s:form>
 			</div>

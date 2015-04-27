@@ -17,12 +17,12 @@
 		<div class="container">
 			<div class="main row">
 				<div class="col-md-12">
-					<h3 class="tituloSeccion">Detalle del Evento</h3>
+					<h3 class="tituloSeccion"><s:text name="evento.detallelbl" /></h3>
 					<div class="col-md-9">						
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<strong>Nombre:</strong>
+									<strong><s:text name="evento.nombre" />:</strong>
 									<s:property value="evnt.nombre" />
 								</p>
 							</div>
@@ -30,7 +30,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<strong>D&iacute;a y hora:</strong>
+									<strong><s:text name="evento.fecha" /></strong>
 									<s:date name="evnt.fechaHora" format="dd/MM/yyyy" />
 									a las
 									<s:date name="evnt.fechaHora" format="HH:mm" />
@@ -41,7 +41,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<strong>Ubicación:</strong>
+									<strong><s:text name="evento.ubicacion" />:</strong>
 									<s:property value="evnt.ubicacion" />
 								</p>
 							</div>
@@ -49,7 +49,7 @@
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<strong>Web del evento:</strong>
+									<strong><s:text name="evento.web" />:</strong>
 									<s:a href="%{evnt.web}" target="_blank"><s:property value="evnt.web" /></s:a>
 								</p>
 							</div>
@@ -60,16 +60,16 @@
 						<s:url id="edicionEventoURL" action="edicionEvento">
 							<s:param name="id" value="%{id}"></s:param>
 						</s:url>
-						<s:a href="%{edicionEventoURL}" cssClass="btn btn-primary btn-block" role="button">Modificar Evento</s:a>						
+						<s:a href="%{edicionEventoURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="evento.edicionbtn" /></s:a>						
 						<s:url id="cancelacionEventoURL" action="cancelarEvento" encode="true">
 							<s:param name="id" value="%{id}"></s:param>
 						</s:url>																
-						<s:a href="%{cancelacionEventoURL}" cssClass="btn btn-primary btn-block" role="button">Cancelar Evento</s:a>
+						<s:a href="%{cancelacionEventoURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="evento.cancelarbtn" /></s:a>
 					</div>
 				</div>
 				
 				<div class="col-md-12">
-					<h3 class="tituloSeccion">Ubicación en Google Maps</h3>
+					<h3 class="tituloSeccion"><s:text name="evento.ubicaciongm" /></h3>
 					<div class="row">
 						<div class="col-md-12">
 							<div id="map-canvas" style="height: 500px"></div>

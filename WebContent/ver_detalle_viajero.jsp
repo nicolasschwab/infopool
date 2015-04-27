@@ -26,24 +26,24 @@
 							</s:url>" class="img-thumbnail">		  			
 		  		</div>
 		  		<div class="col-md-5">
-		  			<p><strong>Nombre:</strong> <s:property value="usrlogueado.nombre" /> <s:property value="usrlogueado.apellido" /></p>
-		  			<p><strong>Mail:</strong> <s:property value="usrlogueado.mail" /></p>
-		  			<p><strong>Telefono:</strong> <s:property value="usrlogueado.telefono" /></p>
-		  			<p><strong>Fecha Nacimiento:</strong> <s:date name="usrlogueado.fechaNacimiento" format="dd/MM/YYYY" /></p>
+		  			<p><strong><s:text name="viajero.nombre" />:</strong> <s:property value="usrlogueado.nombre" /> <s:property value="usrlogueado.apellido" /></p>
+		  			<p><strong><s:text name="viajero.mail" />:</strong> <s:property value="usrlogueado.mail" /></p>
+		  			<p><strong><s:text name="viajero.telefono" />:</strong> <s:property value="usrlogueado.telefono" /></p>
+		  			<p><strong><s:text name="viajero.fechanacimiento" />:</strong> <s:date name="usrlogueado.fechaNacimiento" format="dd/MM/YYYY" /></p>
 		  		</div>
 		  		<div class="col-md-5">
-		  			<p><strong>Fecha de ingreso al sistema:</strong> <s:date name="usrlogueado.fechaIngresoSistema" format="dd/MM/YYYY" /></p>
-		  			<p><strong>Calificacion:</strong> 4.2 de 5 (FALTAAAA)</p>
-		  			<p><strong>Estado:</strong> <s:if test="usrlogueado.activo">Activo</s:if><s:else>Inactivo</s:else></p>
-		  			<p><strong>Preferencias del viajero:</strong> <s:property value="usrlogueado.preferenciasViaje" /></p>
+		  			<p><strong><s:text name="viajero.fechaingreso" />:</strong> <s:date name="usrlogueado.fechaIngresoSistema" format="dd/MM/YYYY" /></p>
+		  			<p><strong><s:text name="viajero.calificacion" />:</strong> 4.2 de 5 (FALTAAAA)</p>
+		  			<p><strong><s:text name="viajero.estado" />:</strong> <s:if test="usrlogueado.activo"><s:text name="global.activo" /></s:if><s:else><s:text name="global.inactivo" /></s:else></p>
+		  			<p><strong><s:text name="viajero.preferencias" />:</strong> <s:property value="usrlogueado.preferenciasViaje" /></p>
 		  		</div>
 		  	</div>
 		  	<br>
 		  	<div class="row">
 		  		<div class="col-md-5 centrar">
-			  		<a href="" class="btn btn-primary disabled" role="button">Actualizar datos</a>
-				  	<a href="" class="btn btn-primary disabled" role="button">Cancelar suscripción</a>				  	
-				  	<a href="" class="btn btn-primary disabled" role="button">Ver Denuncias</a>				  	
+			  		<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.edicionbtn" /></a>
+				  	<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.cancelarbtn" /></a>				  	
+				  	<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.denunciasbtn" /></a>				  	
 		  		</div>
 		  	</div>
 		  </div>
