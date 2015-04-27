@@ -154,8 +154,13 @@
 								<s:else>						
 									<a href="" class="btn btn-primary btn-block">Eliminar Solicitud</a>									
 								</s:else>						
-							</s:else>							
-							<a href="" class="btn btn-primary btn-block disabled" role="button">Calificar</a>
+							</s:else>
+							<s:url id="registroCalificar" action="calificaciones">
+								<s:param name="idViaje" value="%{id}"></s:param>
+							</s:url>						
+							<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button">Calificar</s:a>
+							
+							
 							<s:url id="registroDenuncia" action="nuevaDenuncia">
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>
