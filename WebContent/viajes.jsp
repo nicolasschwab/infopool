@@ -58,7 +58,7 @@
 		                  <td><s:url id="detalleURL" action="detalleViaje">
 		                  		<s:param name="id" value="%{id}"></s:param>
 		                  	  </s:url>
-		                  	  <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs"><s:text name="viaje.verdetalle" /></s:a>
+		                  	  <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs"><s:text name="global.verdetalle" /></s:a>
 		                  </td>
 		                </tr> 
 		              </s:iterator>					

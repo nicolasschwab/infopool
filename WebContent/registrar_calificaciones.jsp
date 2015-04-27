@@ -31,13 +31,13 @@
 							<th >Acciones</th>
 						</tr>
 					</thead>
-					<tbody>
+					<tbody>						
 						<s:iterator value="pasajeros">
-							<tr>
+							<tr>								
 								<td>
 									<img src="<s:url action="ImageAction">
 											  <s:param name="id" value="%{id}"></s:param>
-											  </s:url>"  height="100">
+											  </s:url>"  height="100" />
 								</td>
 								<td>
 									<s:property value="nombre" /> <s:property value="apellido" />									
@@ -48,8 +48,11 @@
 								<td>
 									<s:property value="calificacionActual" />
 								</td>
-								<td>
-									<s:select list="#{'1':'1', '2':'2', '3':'3', '4':'4', '5':'5' }" name="valores" />
+								<td>	
+									<select>
+										<option>1</option>
+										<option>2</option>
+									</select>								
 								</td> 
 							</tr>
 						</s:iterator>
