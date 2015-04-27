@@ -188,18 +188,12 @@
 								<s:else>						
 									<a href="" class="btn btn-primary btn-block"><s:text name="viaje.eliminarsolicitudbtn" /></a>									
 								</s:else>						
-<<<<<<< HEAD
 							</s:else>
 							<s:url id="registroCalificar" action="calificaciones">
 								<s:param name="idViaje" value="%{id}"></s:param>
 							</s:url>						
-							<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button">Calificar</s:a>
-							
-							
-=======
-							</s:else>							
-							<a href="" class="btn btn-primary btn-block disabled" role="button"><s:text name="viaje.calificarbtn" /></a>
->>>>>>> branch 'master' of https://github.com/nicolasschwab/infopool.git
+							<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button"><s:text name="viaje.calificarbtn" /></s:a>
+
 							<s:url id="registroDenuncia" action="nuevaDenuncia">
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>
