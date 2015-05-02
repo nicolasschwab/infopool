@@ -18,16 +18,16 @@
 		<div class="container">
 			<div class="main row">
 				<div>
-					<s:a href="javascript:history.back();" cssClass="btn btn-primary">Regresar</s:a>
+					<s:a href="javascript:history.back();" cssClass="btn btn-primary"><s:text name="global.regresar" /></s:a>
 				</div>
-				<h3 class="tituloSeccion">Solicitudes para el viaje</h3>
+				<h3 class="tituloSeccion"><s:text name="solicitud.titulo" /></h3>
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
-							<th>Nombre Viajero</th>
-							<th>Fecha Solicitud</th>
-							<th>Estado</th>
-							<th>Acciones</th>
+							<th><s:text name="solicitud.nombreViajero" /></th>
+							<th><s:text name="solicitud.fecha" /></th>
+							<th><s:text name="solicitud.estado" /></th>
+							<th><s:text name="global.acciones" /></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -43,14 +43,14 @@
 										<s:param name="id" value="%{id}"></s:param>
 									</s:url>
 									<s:if test="%{estado.name()=='PENDIENTE'}">
-										<s:a href="%{aceptarSolicitud}" cssClass="btn btn-default btn-xs btn-success">Aceptar</s:a>
-										<s:a href="%{rechazarSolicitud}" cssClass="btn btn-default btn-xs btn-danger">Rechazar</s:a>
+										<s:a href="%{aceptarSolicitud}" cssClass="btn btn-default btn-xs btn-success"><s:text name="solicitud.aceptar" /></s:a>
+										<s:a href="%{rechazarSolicitud}" cssClass="btn btn-default btn-xs btn-danger"><s:text name="solicitud.rechazar" /></s:a>
 									</s:if>
 									<s:elseif test="%{estado.name()=='ACEPTADO'}">
-										<s:a href="%{rechazarSolicitud}" cssClass="btn btn-default btn-xs btn-danger">Rechazar</s:a>
+										<s:a href="%{rechazarSolicitud}" cssClass="btn btn-default btn-xs btn-danger"><s:text name="solicitud.rechazar" /></s:a>
 									</s:elseif>
 									<s:elseif test="%{estado.name()=='RECHAZADO'}">
-										<s:a href="%{aceptarSolicitud}"	cssClass="btn btn-default btn-xs btn-success">Aceptar</s:a>
+										<s:a href="%{aceptarSolicitud}"	cssClass="btn btn-default btn-xs btn-success"><s:text name="solicitud.aceptar" /></s:a>
 									</s:elseif></td>
 							</tr>
 						</s:iterator>

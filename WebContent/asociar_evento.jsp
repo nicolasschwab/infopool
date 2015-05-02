@@ -18,13 +18,13 @@
 	<div class="main_bg">
 		<div class="container">		
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2">Asociar Evento al Viaje</h3>
+				<h3 class="tituloSeccion margentb2"><s:text name="evento.asociarEvento" /></h3>
 				<s:fielderror />
 				<s:form role="form" theme="simple" cssClass="form-signin" action="asociarEvento">
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12">
-								<label>Seleccione el evento</label>
+								<label><s:text name="evento.seleccionar" /></label>
 								<br>
 								<s:select list="eventoLista"  listKey="id" listValue="nombre" name="evento_id" value="eventoLista.{id}" cssClass="form-control" />			
 							</div>

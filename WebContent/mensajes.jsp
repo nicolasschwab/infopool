@@ -20,17 +20,17 @@
 <div class="main_bg"><!-- start main -->    
     <div class="container">
         <div class="main row">            
-            <h3 class="tituloSeccion">Mis Mensajes</h3>
+            <h3 class="tituloSeccion">mensaje.misMensajes</h3>
             <br>
             <br>
             <table class="table" id="datatable">
               <thead>
                 <tr>                  
-                  <th>Emisor</th>                  
-                  <th>Asunto</th>
-                  <th>Fecha</th>
-                  <th>Estado Mensaje</th>
-                  <th>Accion</th>
+                  <th><s:text name="mensaje.emisor"></s:text></th>                  
+                  <th><s:text name="mensaje.asunto"></s:text></th>
+                  <th><s:text name="mensaje.fecha"></s:text></th>
+                  <th><s:text name="mensaje.estado"></s:text></th>
+                  <th><s:text name="global.acciones"></s:text></th>
                 </tr>
               </thead>
               <tbody>
@@ -43,7 +43,7 @@
 								<td><s:url id="verDetalle" action="detalle">
 									<s:param name="id" value="%{id}"></s:param>
 								</s:url>
-								<s:a href="%{verDetalle}" cssClass="btn btn-default btn-xs">ver detalle</s:a> </td>
+								<s:a href="%{verDetalle}" cssClass="btn btn-default btn-xs"><s:text name="%{getText('global.verdetalle')}"></s:text></s:a> </td>
 							</tr>
 						</s:iterator>                          
               </tbody>      

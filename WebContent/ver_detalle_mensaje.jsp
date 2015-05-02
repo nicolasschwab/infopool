@@ -22,23 +22,23 @@
 		  	<div class="col-md-12">
 		  		<div class="col-md-4">		   						  	
 				  	<div class="col-md-12">
-				  		<h3 class="tituloSeccion"> Datos <s:property value="%{queNoSos}" /> </h3>
+				  		<h3 class="tituloSeccion"><s:text name="mensaje.datos"></s:text> <s:property value="%{queNoSos}" /> </h3>
 				  		<img src="<s:url action="ImageAction">
 								<s:param name="id" value="%{emisor.id}"></s:param>
 							</s:url>" alt="foto conductor" class="img-thumbnail">
-				  		<p><strong>Nombre:</strong><s:property  value="%{emisor.nombre}"/></p>
-			  			<p><strong>Viajero desde:</strong><s:date name="%{emisor.fechaIngresoSistema}" format="dd/MM/yyyy" /></p>
-			  			<p><strong>Calificacion:</strong> 1.2 de 5</p>
-			  			<p><strong>Estado:</strong> <s:property value="%{estado}" /></p>
+				  		<p><strong><s:text name="viajero.nombre"></s:text>:</strong><s:property  value="%{emisor.nombre}"/></p>
+			  			<p><strong><s:text name="viajero.fechaingreso"></s:text>:</strong><s:date name="%{emisor.fechaIngresoSistema}" format="dd/MM/yyyy" /></p>
+			  			<p><strong><s:text name="viajero.calificacion"></s:text>:</strong> 1.2 de 5</p>
+			  			<p><strong><s:text name="mensaje.estado"></s:text>:</strong> <s:property value="%{estado}" /></p>
 				  	</div>				  	
 			  	</div>
 			  	<div class="col-md-8">			  		
-			  		<h3 class="tituloSeccion">Asunto</h3>	   				
+			  		<h3 class="tituloSeccion"><s:text name="mensaje.asunto"></s:text></h3>	   				
 	   				<p><s:property   value="%{asunto}"   />  </p>
-	   				<h3 class="tituloSeccion">Mensaje</h3>		   			
+	   				<h3 class="tituloSeccion"><s:text name="mensaje.mensaje"></s:text></h3>		   			
 	   				<p><s:property   value="%{detalle}"   /></p>
 	   				<s:if test="%{queNoSos=='Emisor'}">		   		
-	   					<h3 class="tituloSeccion">Respuesta</h3>	   				
+	   					<h3 class="tituloSeccion"><s:text name="mensaje.respuesta"></s:text></h3>	   				
 		   				<s:form role="form" theme="simple" cssClass="form-signin" action="responder">
 		   					<div class="form-group">
 					  			<s:textarea cssClass="form-control" name="respDetalle"  cols="80" rows="7"></s:textarea>
@@ -47,7 +47,7 @@
 					  		<s:hidden name="receptorID" value="%{receptorID}"></s:hidden>
 					  		<s:hidden name="id" value="%{id}"></s:hidden>
 					  		<div class="form-group">
-				            	<s:submit cssClass="btn btn-primary" value="Responder"/>
+				            	<s:submit cssClass="btn btn-primary" value="%{getText('mensaje.responder')}"/>
 				            </div>
 					  	</s:form>
 				  	</s:if>

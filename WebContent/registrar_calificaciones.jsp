@@ -19,15 +19,15 @@
 		<div class="container">
 			<div class="main row">
 				
-				<h3 class="tituloSeccion">Calificaciones para el viaje</h3>
+				<h3 class="tituloSeccion"><s:text name="calificaciones.titulo"></s:text></h3>
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
-							<th style="width:20%">Imagen</th>
-							<th style="width:15%">Nombre</th>
-							<th style="width:20%">Mail</th>
-							<th style="width:15%">Calificacion Actual</th>							
-							<th style="width:15%">Acciones</th>
+							<th style="width:20%"><s:text name="calificaciones.imagen"></s:text></th>
+							<th style="width:15%"><s:text name="viajero.nombre"></s:text></th>
+							<th style="width:20%"><s:text name="viajero.mail"></s:text></th>
+							<th style="width:15%"><s:text name="calificaciones.actual"></s:text></th>							
+							<th style="width:15%"><s:text name="global.acciones"></s:text></th>
 						</tr>
 					</thead>
 					<tbody>						
