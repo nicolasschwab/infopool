@@ -17,9 +17,8 @@
 
 	<div class="main_bg">		
 		<div class="container">
-			<div class="main row">
-				
-				<h3 class="tituloSeccion">Calificaciones para el viaje</h3>
+			<div class="main row">				
+				<h3 class="tituloSeccion margentb2">Calificaciones para el viaje</h3>
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
@@ -36,7 +35,7 @@
 								<td>
 									<img src="<s:url action="ImageAction">
 											  <s:param name="id" value="%{id}"></s:param>
-											  </s:url>"  height="100" />
+											  </s:url>"  height="80" />
 								</td>
 								<td>
 									<s:property value="nombre" /> <s:property value="apellido" />									
@@ -48,19 +47,20 @@
 									<s:property value="%{calificacionActual()}" />
 								</td>
 								<td>
-									<form action="">
+									<form action="calificarViaje">
 										<div class="form-group">
-											<select class="form-control">
-												<option>1</option>
-												<option>2</option>
-												<option>3</option>
-												<option>4</option>
-												<option>5</option>
+											<div class="col-md-6">											
+											<select class="form-control" name="calificacionnro">
+												<option>1</option><option>2</option><option>3</option><option>4</option><option>5</option>
 											</select>
-											<input  class="btn btn-primary" type="submit" value="calificar">
+											<input type="hidden" name="idPasajero" value="<s:property value='id' />" />
+											<input type="hidden" name="idViaje" value="<s:property value='viaje.id' />" />
+											</div>
+											<div class="col-md-3">
+											<input class="btn btn-primary" type="submit" value="calificar">
+											</div>											
 										</div>
 									</form>
-
 								</td> 
 							</tr>
 						</s:iterator>
