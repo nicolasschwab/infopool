@@ -18,22 +18,22 @@
 	<div class="main_bg">
 		<div class="container">		
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2">Registro de Mensaje</h3>
+				<h3 class="tituloSeccion margentb2">mensaje.titulo</h3>
 				<s:fielderror />
 				<s:form role="form" theme="simple" cssClass="form-signin" action="enviarMensajeForo">
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12">
-								<label>Receptor</label>
+								<label>mensaje.receptor</label>
 								<br>
-								<h4><label class="form-control" >Mensaje al foro del viaje  </label></h4> 			
+								<h4><label class="form-control" >mensaje.mensajeForo</label></h4> 			
 							</div>
 						</div>												
 					</div>				
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12">
-								<label>Ingrese el mensaje</label>
+								<label>mensaje.ingreseMensaje</label>
 								<br>
 								<s:textarea cssClass="form-control"  name="detalle" rows="10" />		
 							</div>
@@ -41,7 +41,7 @@
 					</div>
 					<br>
 					<div class="form-group">
-						<s:submit cssClass="btn btn-primary" value="Registrar"/>
+						<s:submit cssClass="btn btn-primary" value="global.registrar"/>
 					</div>
 					<s:hidden name="viajeId" value="%{viajeId}"></s:hidden>					
 				</s:form>

@@ -22,9 +22,9 @@
 					<div class="tab-buscadores">
 						<div role="tabpanel">
 							<ul id="myTab" class="nav nav-tabs" data-tabs="tabs">
-								<li class="active"><a href="#bsqdireccion" data-toggle="tab">Buscar por Dirección</a></li>
-								<li><a href="#bsqevento" data-toggle="tab">Buscar por Evento</a></li>
-								<li><a href="#bsqfecha" data-toggle="tab">Buscar por Fecha</a></li>
+								<li class="active"><a href="#bsqdireccion" data-toggle="tab"><s:text name="busqueda.bsqdireccion" /></a></li>
+								<li><a href="#bsqevento" data-toggle="tab"><s:text name="busqueda.bsqevento" /></a></li>
+								<li><a href="#bsqfecha" data-toggle="tab"><s:text name="busqueda.bsqfecha" /></a></li>
 							</ul>
 						</div>
 						<br>					
@@ -116,7 +116,7 @@
 											</td>
 											<td><s:url id="detalleURL" action="detalleViaje">
 													<s:param name="id" value="%{id}"></s:param>
-												</s:url> <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs">ver detalle</s:a>
+												</s:url> <s:a href="%{detalleURL}" cssClass="btn btn-default btn-xs"><s:text name="global.verdetalle" /></s:a>
 											</td>
 										</tr>
 									</s:iterator>
@@ -124,7 +124,7 @@
 							</table>
 						</s:if>
 						<s:else>
-							<p>No se encontraron resultados</p>
+							<p><s:text name="busqueda.viajelistadonulo" /></p>
 						</s:else>	
 					</s:if>					
 				</div>			
