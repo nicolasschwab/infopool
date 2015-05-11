@@ -18,7 +18,7 @@
 	<div class="main_bg">
 		<div class="container">		
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2"><s:text name="mensaje.titulo"></s:text></h3>
+				<h3 class="tituloSeccion"><s:text name="mensaje.titulo"></s:text></h3>
 				<s:fielderror />
 				<s:form role="form" theme="simple" cssClass="form-signin" action="enviarMensaje">
 					<div class="form-group">
@@ -36,7 +36,7 @@
 							<div class="col-md-12">
 								<label><s:text name="mensaje.ingreseAsunto"></s:text></label>
 								<br>
-									<s:textarea cssClass="form-control"  name="asunto" rows="10" />								
+									<s:textfield cssClass="form-control"  name="asunto" />								
 							</div>
 						</div>												
 					</div>					
@@ -48,8 +48,7 @@
 								<s:textarea cssClass="form-control" label="prefUsuario" name="detalle" rows="10" />		
 							</div>
 						</div>												
-					</div>
-					<br>
+					</div>					
 					<div class="form-group">
 						<s:submit cssClass="btn btn-primary"  value="%{getText('global.registrar')}" />
 					</div>

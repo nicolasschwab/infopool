@@ -7,7 +7,6 @@
     <span class="icon-bar"></span>
   </button>
 </div>
-<!-- Collect the nav links, forms, and other content for toggling -->
 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
   <ul class="nav navbar-nav">
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 1) {%> class="active" <%}%>><a href="index.jsp"><span class="fa fa-home" aria-hidden="true"> </span> <s:text name="menu.inicio" /></a></li>
@@ -15,4 +14,4 @@
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 3) {%> class="active" <%}%>><a href="viajeros"><span class="fa fa-users" aria-hidden="true"> </span> <s:text name="menuadmin.viajeros" /></a></li>
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 4) {%> class="active" <%}%>><a href="denuncias"><span class="fa fa-thumbs-down" aria-hidden="true"> </span> <s:text name="menuadmin.denuncias" /></a></li>
   </ul>
-</div><!-- /.navbar-collapse -->            
+</div>       

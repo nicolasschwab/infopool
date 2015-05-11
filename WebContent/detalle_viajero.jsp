@@ -42,7 +42,7 @@
 							<p>
 								<strong><s:text name="viajero.fechanacimiento" />:</strong>
 								<s:date name="viajero.fechaNacimiento" format="dd/MM/YYYY" />
-							</p>
+							</p>							
 						</div>
 						<div class="col-md-5">
 							<p>
@@ -50,7 +50,7 @@
 								<s:date name="viajero.fechaIngresoSistema" format="dd/MM/YYYY" />
 							</p>
 							<p>
-								<strong><s:text name="viajero.calificacion" />:</strong> 4.2 de 5 (FALTAAAA)
+								<strong><s:text name="viajero.calificacion" />:</strong> <s:property value="viajero.calificacionActual()"/>/5 (<s:property value="viajero.misCalificacionesRecibidas.size()" /> <s:text name="viajero.calificaciones" />)
 							</p>
 							<p>
 								<strong><s:text name="viajero.estado" />:</strong>
@@ -60,6 +60,11 @@
 							<p>
 								<strong><s:text name="viajero.preferencias" />:</strong>
 								<s:property value="viajero.preferenciasViaje" />
+							</p>
+							<p>
+								<strong><s:text name="viajero.viajesrealizados"/>: </strong>
+								<s:property value="viajero.misViajesPasajero.size()" />  <s:text name="viajero.viajespasajero" /> -  
+								<s:property value="viajero.misViajesConductor.size()" /> <s:text name="viajero.viajesconductor" />
 							</p>
 						</div>
 					</div>

@@ -17,22 +17,16 @@
 
 	<div class="main_bg">		
 		<div class="container">
-<<<<<<< HEAD
 			<div class="main row">				
-				<h3 class="tituloSeccion margentb2">Calificaciones para el viaje</h3>
-=======
-			<div class="main row">
-				
 				<h3 class="tituloSeccion"><s:text name="calificaciones.titulo"></s:text></h3>
->>>>>>> branch 'master' of https://github.com/nicolasschwab/infopool.git
 				<table class="table" id="datatable">
 					<thead>
 						<tr>
-							<th style="width:20%"><s:text name="calificaciones.imagen"></s:text></th>
-							<th style="width:15%"><s:text name="viajero.nombre"></s:text></th>
-							<th style="width:20%"><s:text name="viajero.mail"></s:text></th>
-							<th style="width:15%"><s:text name="calificaciones.actual"></s:text></th>							
-							<th style="width:15%"><s:text name="global.acciones"></s:text></th>
+							<th style="width:10%"><s:text name="calificaciones.imagen"></s:text></th>
+							<th style="width:25%"><s:text name="viajero.nombre"></s:text></th>
+							<th style="width:25%"><s:text name="viajero.mail"></s:text></th>
+							<th style="width:20%"><s:text name="calificaciones.actual"></s:text></th>														
+							<th style="width:20%"><s:text name="global.acciones"></s:text></th>
 						</tr>
 					</thead>
 					<tbody>						

@@ -96,7 +96,7 @@
 										<th><s:text name="viaje.dirorigen" /></th>
 										<th><s:text name="viaje.dirdestino" /></th>
 										<th><s:text name="viaje.fechapartida" /></th>
-										<th><s:text name="viaje.evento" /></th>
+										<th><s:text name="viaje.eventolbl" /></th>
 										<th><s:text name="global.acciones" /></th>
 									</tr>
 								</thead>

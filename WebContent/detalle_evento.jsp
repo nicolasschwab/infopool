@@ -50,7 +50,7 @@
 							<div class="col-md-12">
 								<p>
 									<strong><s:text name="evento.web" />:</strong>
-									<s:a href="%{evnt.web}" target="_blank"><s:property value="evnt.web" /></s:a>
+									<a href="http://<s:url value='%{evnt.web}' />" target="_blank"><s:property value="evnt.web" /></a>
 								</p>
 							</div>
 						</div>
@@ -60,11 +60,13 @@
 						<s:url id="edicionEventoURL" action="edicionEvento">
 							<s:param name="id" value="%{id}"></s:param>
 						</s:url>
-						<s:a href="%{edicionEventoURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="evento.edicionbtn" /></s:a>						
-						<s:url id="cancelacionEventoURL" action="cancelarEvento" encode="true">
-							<s:param name="id" value="%{id}"></s:param>
-						</s:url>																
-						<s:a href="%{cancelacionEventoURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="evento.cancelarbtn" /></s:a>
+						<s:a href="%{edicionEventoURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="evento.edicionbtn" /></s:a>
+						<s:if test="%{activo}">						
+							<s:url id="cancelacionEventoURL" action="cancelarEvento" encode="true">
+								<s:param name="id" value="%{id}"></s:param>
+							</s:url>																						
+							<s:a href="%{cancelacionEventoURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="evento.cancelarbtn" /></s:a>
+						</s:if>
 					</div>
 				</div>
 				

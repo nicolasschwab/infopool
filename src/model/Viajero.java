@@ -186,26 +186,20 @@ public class Viajero extends Usuario implements Serializable{
 		try {
 			ImageIO.write(bImageFromConvert, "jpg", out);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return out;
 	}
 	
-	public float calificacionActual(){
-		System.out.println(this.misCalificacionesRecibidas.size()+"hhfg");
+	public float calificacionActual(){		
 		int total=0;
-		System.out.println(this.misCalificacionesRecibidas.size());
 		for(Calificacion unaCalificacion : this.misCalificacionesRecibidas){
-				System.out.println(":D "+total);
 				total+=unaCalificacion.getCalificacion();
-				
 		}
-		
 		if(total==0){
 			return (float) 0;
 		}else{
-			return (float) (total/this.misCalificacionesRecibidas.size());
+			return (float) Math.round((((float) total) / ((float) this.misCalificacionesRecibidas.size())) * 100) / 100;
 		}
 	}
 		

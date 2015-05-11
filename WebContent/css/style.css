@@ -31,6 +31,16 @@ body {
 	text-decoration: underline;
 }
 
+.img-perfil {
+  display: inline-block;
+  max-width: 50%;
+  height: 50%;
+  padding: 4px;
+  line-height: 1.42857143;
+  background-color: #fff;
+  border: 1px solid #ddd;  
+}
+
 /* start header */
 .header_bg{
 	border-top:8px solid #3c94ba;

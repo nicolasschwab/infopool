@@ -33,9 +33,7 @@ public class SolicitudViajeAction extends ActionSupport{
 	private Viaje viaje;	
 	private Viajero viajero;
 	private SolicitudViaje solicitud= new SolicitudViaje();
-	private Viaje unViaje = new Viaje();
-	
-	
+	private Viaje unViaje = new Viaje();	
 
 	private SolicitudViaje solicitudviaje = new SolicitudViaje();
 	private List<SolicitudViaje> solicitudesviaje = new ArrayList<SolicitudViaje>();
@@ -44,9 +42,6 @@ public class SolicitudViajeAction extends ActionSupport{
 	private ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 	private ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
 	
-	
-
-
 	public SolicitudViaje getSolicitud() {
 		return solicitud;
 	}
@@ -195,8 +190,7 @@ public class SolicitudViajeAction extends ActionSupport{
 	}
 
 
-	public String rechazarSolicitudViaje(){
-		
+	public String rechazarSolicitudViaje(){		
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		SolicitudViajeDAOjpa solicitudViaje= new SolicitudViajeDAOjpa();
 		solicitud = solicitudViaje.encontrar(Integer.parseInt(request.getParameter("id")));
@@ -206,8 +200,34 @@ public class SolicitudViajeAction extends ActionSupport{
 		Viajero pasajero= solicitud.getViajero();
 		pasajero.getMisViajesPasajero().remove(unViaje);
 		ViajeroDAOjpa viajero = new ViajeroDAOjpa();
-		viajero.modificar(pasajero);
+		viajero.modificar(pasajero);		
 		return SUCCESS;
+	}
+	
+	public String cancelarSolicitudViaje(){		
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String user = (String) session.get("perfil");
+		if (user != null) {	
+			if (user.equals("viajero")) {
+				viajero = viajeroDAO.encontrar(((Usuario)session.get("usrLogin")).getId());
+				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));				
+				List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
+				if(!solicito.isEmpty()){									
+					// FALTA ELIMINAR LA SOLICITUD Y AL VIAJERO
+					return SUCCESS;				
+				}else{
+					addFieldError("loginError", "Usted ya solicito participar en este viaje");
+					return SUCCESS;
+				}
+			}
+			else{
+				return "sinpermisos";
+			}
+		}
+		else{
+			return "login";
+		}	
 	}
 
 }

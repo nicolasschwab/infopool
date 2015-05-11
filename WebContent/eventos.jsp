@@ -39,7 +39,7 @@
 									<td><s:property value="ubicacion" /></td>
 									<td><s:date name="fechaHora" format="dd/MM/yyyy HH:mm" /></td>
 									<td>
-										<s:if test="%{activo!=null}"><s:text name="global.activo" /></s:if>
+										<s:if test="%{activo}"><s:text name="global.activo" /></s:if>
 										<s:else><s:text name="global.cancelado" /></s:else>			
 									</td>					
 									<td>

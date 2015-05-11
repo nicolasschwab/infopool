@@ -68,4 +68,6 @@ public abstract class Usuario {
 	public abstract String getPerfil();
 	
 	public abstract boolean getActivo();
+	
+	public abstract float calificacionActual(); 
 }

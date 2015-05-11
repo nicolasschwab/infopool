@@ -100,6 +100,7 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			resultado = (Viaje) em.find(this.persistentClass, id);			
 			for (Viajero pasajero : resultado.getPasajeros()){
 				pasajero.getPerfil();
+				pasajero.calificacionActual();
 			}
 			for (SolicitudViaje solicitud : resultado.getSolicitudes()) {
 				solicitud.getEstado();
@@ -110,6 +111,7 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			for (ForoMensajes mensaje : resultado.getMensajes()) {
 				mensaje.getFechaPublicacion();
 			}
+			resultado.getConductor().calificacionActual();
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{

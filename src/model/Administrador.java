@@ -20,5 +20,9 @@ public class Administrador extends Usuario {
 		return true;
 	}
 	
+	public float calificacionActual(){
+		return 0;
+	}
+	
 	
 }

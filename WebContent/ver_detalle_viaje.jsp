@@ -108,7 +108,7 @@
 					<h3 class="tituloSeccion"><s:text name="viaje.recorridogm" /></h3>
 					<div class="row">
 						<div class="col-md-12">
-							<div id="map-canvas" style="height: 500px"></div>
+							<div id="map-canvas" style="height: 600px"></div>
 						</div>
 					</div>
 				</div>
@@ -116,15 +116,15 @@
 				<div class="col-md-4">					
 					<div class="row">
 						<h3 class="tituloSeccion"><s:text name="viaje.conductor" /></h3>
-						<div class="col-md-10">					
+						<div class="col-md-8 centrar">
+							<img src="<s:url action="ImageAction">
+								<s:param name="id" value="%{viaje.conductor.id}"></s:param>
+							</s:url>" alt="foto conductor" class="img-perfil">
 							<p>
 								<s:property value="viaje.conductor.nombre" />
 								<s:property value="viaje.conductor.apellido" />
 								<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target=".myModal"><s:text name="viaje.perfilconductor" /></button>
 							</p>
-							<img src="<s:url action="ImageAction">
-								<s:param name="id" value="%{viaje.conductor.id}"></s:param>
-							</s:url>" alt="foto conductor" class="img-thumbnail">
 							
 							<div class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 							  <div class="modal-dialog modal-lg">
@@ -134,14 +134,14 @@
 							          <h4 class="modal-title" id="myLargeModalLabel"><s:text name="viaje.datosconductorlbl" /></h4>
 							        </div>
 							        <div class="modal-body">
-							       		<p><strong><s:text name="viajero.nombre" />:</strong> <s:property value="usrlogueado.nombre" /> <s:property value="usrlogueado.apellido" /></p>
-							  			<p><strong><s:text name="viajero.mail" />:</strong> <s:property value="usrlogueado.mail" /></p>
-							  			<p><strong><s:text name="viajero.telefono" />:</strong> <s:property value="usrlogueado.telefono" /></p>
-							  			<p><strong><s:text name="viajero.fechanacimiento" />:</strong> <s:date name="usrlogueado.fechaNacimiento" format="dd/MM/YYYY" /></p>
-							  			<p><strong><s:text name="viajero.fechaingreso" />:</strong> <s:date name="usrlogueado.fechaIngresoSistema" format="dd/MM/YYYY" /></p>
-							  			<p><strong><s:text name="viajero.calificacion" />:</strong> 4.2 de 5 (FALTAAAA)</p>
-							  			<p><strong><s:text name="viajero.estado" />:</strong> <s:if test="usrlogueado.activo"><s:text name="global.activo" /></s:if><s:else><s:text name="global.inactivo" /></s:else></p>
-							  			<p><strong><s:text name="viajero.preferencias" />:</strong> <s:property value="usrlogueado.preferenciasViaje" /></p>														          
+							       		<p><strong><s:text name="viajero.nombre" />:</strong> <s:property value="viaje.conductor.nombre" /> <s:property value="viaje.conductor.apellido" /></p>
+							  			<p><strong><s:text name="viajero.mail" />:</strong> <s:property value="viaje.conductor.mail" /></p>
+							  			<p><strong><s:text name="viajero.telefono" />:</strong> <s:property value="viaje.conductor.telefono" /></p>
+							  			<p><strong><s:text name="viajero.fechanacimiento" />:</strong> <s:date name="viaje.conductor.fechaNacimiento" format="dd/MM/YYYY" /></p>
+							  			<p><strong><s:text name="viajero.fechaingreso" />:</strong> <s:date name="viaje.conductor.fechaIngresoSistema" format="dd/MM/YYYY" /></p>
+							  			<p><strong><s:text name="viajero.calificacion" />:</strong> <s:property value="viaje.conductor.calificacionActual()" />/5</p>
+							  			<p><strong><s:text name="viajero.estado" />:</strong> <s:if test="viaje.conductor.activo"><s:text name="global.activo" /></s:if><s:else><s:text name="global.inactivo" /></s:else></p>
+							  			<p><strong><s:text name="viajero.preferencias" />:</strong> <s:property value="viaje.conductor.preferenciasViaje" /></p>														          
 							        </div>      
 							    </div>
 							  </div>
@@ -149,7 +149,7 @@
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-md-10">	
+						<div class="col-md-8 centrar">	
 						<br>				
 							<s:if test="%{viaje.conductor.id==usrlogueado.id}">
 								<s:url id="edicionViajeURL" action="edicionViaje">
@@ -171,12 +171,11 @@
 									<s:a href="%{cancelacionViajeURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.cancelarbtn" /></s:a>
 								</s:if>								
 								
-								<s:if test="%{viaje.pasajeros.size() < viaje.asientos}">
-									<s:url id="solicitudesURL" action="solicitudesViaje" encode="true">
-										<s:param name="id" value="%{id}"></s:param>
-									</s:url>
-									<s:a href="%{solicitudesURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.solicitudesbtn" /></s:a>
-								</s:if>								
+								<s:url id="solicitudesURL" action="solicitudesViaje" encode="true">
+									<s:param name="id" value="%{id}"></s:param>
+								</s:url>
+								<s:a href="%{solicitudesURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.solicitudesbtn" /></s:a>
+																
 							</s:if>
 							<s:else>								
 								<s:if test="%{esPasajero!=true}">
@@ -186,14 +185,17 @@
 									<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.registrarsolicitudbtn" /></s:a>
 								</s:if>					
 								<s:else>						
-									<a href="" class="btn btn-primary btn-block"><s:text name="viaje.eliminarsolicitudbtn" /></a>									
+									<s:url id="cancelacionSolicitudViaje" action="cancelacionSolicitudViaje">
+										<s:param name="id" value="%{id}"></s:param>
+									</s:url>
+									<a href="%{cancelacionSolicitudViaje}" class="btn btn-primary btn-block"><s:text name="viaje.eliminarsolicitudbtn" /></a>
+									<s:url id="registroCalificar" action="calificaciones">
+										<s:param name="idViaje" value="%{id}"></s:param>
+									</s:url>						
+									<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button"><s:text name="viaje.calificarbtn" /></s:a>									
 								</s:else>						
 							</s:else>
-							<s:url id="registroCalificar" action="calificaciones">
-								<s:param name="idViaje" value="%{id}"></s:param>
-							</s:url>						
-							<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button"><s:text name="viaje.calificarbtn" /></s:a>
-
+							
 							<s:url id="registroDenuncia" action="nuevaDenuncia">
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>
@@ -203,8 +205,12 @@
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>					
 							<s:a href="%{mensaje}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.registrarmensajebtn" /></s:a>
-							<br><br>							
-							
+							<br><br>											
+						</div>
+					</div>
+					<s:if test="%{esPasajero==true}">
+					<div class="row">
+						<div class="col-md-12">
 							<div class="row chat-window" id="chat_window_1">
 								<div class="col-md-12">
 									<div class="panel panel-default">
@@ -240,9 +246,9 @@
 									</div>
 								</div>
 							</div>
-																				
 						</div>
 					</div>
+					</s:if>
 				</div>
 			</div>
 		</div>

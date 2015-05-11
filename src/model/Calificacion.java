@@ -23,9 +23,8 @@ public class Calificacion implements Serializable{
 	public Calificacion() {		
 	}
 	
-	public Calificacion(int id, Viajero calificador, Viajero calificado, int calificacion, Viaje viaje) {
+	public Calificacion(Viajero calificador, Viajero calificado, int calificacion, Viaje viaje) {
 		super();
-		this.id = id;
 		this.calificador = calificador;
 		this.calificado = calificado;
 		this.calificacion = calificacion;

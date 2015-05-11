@@ -59,7 +59,7 @@ public class ViajeAction extends ActionSupport {
 	private String dirOrigen;
 	private String dirDestino;
 	private Viaje viaje = new Viaje();	
-	private Usuario usrlogueado;
+	private Viajero usrlogueado;
 	private List<ForoMensajes> foroMensajes;
 	
 	
@@ -312,11 +312,11 @@ public class ViajeAction extends ActionSupport {
 		this.diasSemana = diasSemana;
 	}
 
-	public Usuario getUsrlogueado() {
+	public Viajero getUsrlogueado() {
 		return usrlogueado;
 	}
 
-	public void setUsrlogueado(Usuario usrlogueado) {
+	public void setUsrlogueado(Viajero usrlogueado) {
 		this.usrlogueado = usrlogueado;
 	}
 	
@@ -436,7 +436,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String edicionViaje(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Usuario) session.get("usrLogin");
+		usrlogueado = (Viajero) session.get("usrLogin");
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
 		esPasajero = viaje.esPasajero(usrlogueado);
@@ -542,7 +542,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String asociacionEvento(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Usuario) session.get("usrLogin");
+		usrlogueado = (Viajero) session.get("usrLogin");
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
 		eventoLista = FactoryDAO.getEventoDAO().listar();
@@ -551,7 +551,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String asociarEvento(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Usuario) session.get("usrLogin");
+		usrlogueado = (Viajero) session.get("usrLogin");
 		viaje = viajeDAO.encontrar(this.id);
 		EventoDAOjpa eventodao = new EventoDAOjpa();
 		Evento evento = (Evento) eventodao.encontrar(this.evento_id);		
@@ -567,7 +567,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String cancelarViaje(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Usuario) session.get("usrLogin");
+		usrlogueado = (Viajero) session.get("usrLogin");
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 		viaje.setActivo(false);
@@ -624,7 +624,7 @@ public class ViajeAction extends ActionSupport {
 
 	public String detalleViaje() {
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Usuario) session.get("usrLogin");
+		usrlogueado = (Viajero) session.get("usrLogin");
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		if(request.getParameter("id")!=null){
 			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
@@ -632,8 +632,11 @@ public class ViajeAction extends ActionSupport {
 		else{
 			viaje = viajeDAO.encontrar(Integer.parseInt(session.get("id").toString()));
 			
-		}
+		}		
 		esPasajero = viaje.esPasajero(usrlogueado);
+		if (!esPasajero){
+			esPasajero = viaje.esConductor(usrlogueado);
+		}		
 		foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
 		return SUCCESS;
 	}

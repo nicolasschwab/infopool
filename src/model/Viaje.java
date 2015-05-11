@@ -180,6 +180,14 @@ public class Viaje implements Serializable{
 		return esP;
 	}
 	
+	public boolean esConductor(Usuario usr){
+		boolean esC = false;
+		if (this.conductor.getUsuario().equals(usr.getUsuario())){
+			esC = true;
+		}
+		return esC;
+	}
+	
 	public boolean diaSeleccionado(String dia){
 		for (DiasSemana diaSem : diasSemana) {
 			if (diaSem.name().equals(dia)){

@@ -1,5 +1,5 @@
 package model;
 
 public enum EstadoSolicitud {
-	PENDIENTE,ACEPTADO,RECHAZADO;
+	PENDIENTE,ACEPTADO,RECHAZADO,CANCELADO;
 }

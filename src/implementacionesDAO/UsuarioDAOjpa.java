@@ -44,6 +44,7 @@ public class UsuarioDAOjpa extends GenericDAOjpa<Usuario> implements UsuarioDAO 
 			List<Usuario> resultado = (List<Usuario>) consulta.getResultList();
 			if (resultado.size() > 0){
 				usr = (Usuario) resultado.get(0);
+				usr.calificacionActual();				
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();			

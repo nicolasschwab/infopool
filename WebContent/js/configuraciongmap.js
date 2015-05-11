@@ -175,8 +175,6 @@ function calcularUbicacion(dirOrigen) {
 	      directionsDisplay.setDirections(response);
 	    }
 	  });
-	  
-	  map.setZoom(12);
 	}
 	else{
 		alert("No se encuentra registrada la ubicación del evento!");

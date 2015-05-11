@@ -1,5 +1,6 @@
 <% request.getSession(true); %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" import="model.Viajero"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -33,7 +34,7 @@
 		  		</div>
 		  		<div class="col-md-5">
 		  			<p><strong><s:text name="viajero.fechaingreso" />:</strong> <s:date name="usrlogueado.fechaIngresoSistema" format="dd/MM/YYYY" /></p>
-		  			<p><strong><s:text name="viajero.calificacion" />:</strong> 4.2 de 5 (FALTAAAA)</p>
+		  			<p><strong><s:text name="viajero.calificacion" />:</strong> <s:property value="usrlogueado.calificacionActual()" />/5</p>
 		  			<p><strong><s:text name="viajero.estado" />:</strong> <s:if test="usrlogueado.activo"><s:text name="global.activo" /></s:if><s:else><s:text name="global.inactivo" /></s:else></p>
 		  			<p><strong><s:text name="viajero.preferencias" />:</strong> <s:property value="usrlogueado.preferenciasViaje" /></p>
 		  		</div>

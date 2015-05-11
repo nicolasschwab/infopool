@@ -68,6 +68,10 @@
 			<result name="success" type="redirect">listarEventos</result>
 			<result name="input">/editar_evento.jsp</result>
 		</action>
+		
+		<action name="cancelarEvento" method="cancelarEvento" class="eventoAction">
+			<result name="success" type="redirect">listarEventos</result>
+		</action>
 
 		<!-- Actions Viajeros -->
 		<action name="viajeros" method="viajeros" class="viajeroAction">
@@ -185,6 +189,10 @@
 		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
 			<result name="success">/solicitudes.jsp</result>
 		</action>	
+				
+		<action name="cancelacionSolicitudViaje" method="cancelacionSolicitudViaje" class="solicitudViajeAction">
+			<result name="success">/solicitudes.jsp</result>
+		</action>	
 		
 		<!-- Actions Mensajes -->
 		<action name="listarMensajes" method="listarMensajes" class="mensajeAction">
@@ -226,12 +234,18 @@
 			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<!-- Action Calificaciones -->
-		
+		<!-- Action Calificaciones -->		
 		<action name="calificaciones" method="calificaciones" class="calificacionAction">
 			<result name="success" >/registrar_calificaciones.jsp</result>
 			<result name="login" >/login.jsp</result>
-			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>			
+		</action>
+		
+		<action name="calificarViaje" method="calificarViaje" class="calificacionAction">
+			<result name="success" type="redirect">
+				<param name="location">calificaciones</param>
+				<param name="idViaje">${idViaje}</param>
+			</result>
 		</action>
 		
 	</package>
