@@ -175,7 +175,11 @@
 									<s:param name="id" value="%{id}"></s:param>
 								</s:url>
 								<s:a href="%{solicitudesURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.solicitudesbtn" /></s:a>
-																
+								
+								<s:url id="registroCalificar" action="calificaciones">
+									<s:param name="idViaje" value="%{id}"></s:param>
+								</s:url>						
+								<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button"><s:text name="viaje.calificarbtn" /></s:a>				
 							</s:if>
 							<s:else>								
 								<s:if test="%{esPasajero!=true}">
@@ -195,11 +199,6 @@
 									<s:a href="%{registroCalificar}" cssClass="btn btn-primary btn-block " role="button"><s:text name="viaje.calificarbtn" /></s:a>									
 								</s:else>						
 							</s:else>
-							
-							<s:url id="registroDenuncia" action="nuevaDenuncia">
-								<s:param name="id" value="%{id}"></s:param>
-							</s:url>
-							<s:a href="%{registroDenuncia}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.registrardenunciabtn" /></s:a>	
 											
 							<s:url id="mensaje" action="nuevoMensaje">
 								<s:param name="id" value="%{id}"></s:param>

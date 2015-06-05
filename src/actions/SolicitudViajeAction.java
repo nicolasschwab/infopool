@@ -4,6 +4,9 @@ import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.SolicitudViajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
 import implementacionesDAO.ViajeroDAOjpa;
+import interfacesDAO.EventoDAO;
+import interfacesDAO.ViajeDAO;
+import interfacesDAO.ViajeroDAO;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,20 +35,23 @@ public class SolicitudViajeAction extends ActionSupport{
 	private EstadoSolicitud estado;
 	private Viaje viaje;	
 	private Viajero viajero;
-	private SolicitudViaje solicitud= new SolicitudViaje();
-	private Viaje unViaje = new Viaje();	
+	private SolicitudViaje solicitud;
+	private int idViaje;
 
-	private SolicitudViaje solicitudviaje = new SolicitudViaje();
+	private SolicitudViaje solicitudviaje;
 	private List<SolicitudViaje> solicitudesviaje = new ArrayList<SolicitudViaje>();
 	
-	private SolicitudViajeDAOjpa solicitudViajeDAO;
-	private ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-	private ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+	private SolicitudViajeDAOjpa solicitudViajeDAO;	
 	
+	public int getIdViaje() {
+		return idViaje;
+	}
+	public void setIdViaje(int idViaje) {
+		this.idViaje = idViaje;
+	}
 	public SolicitudViaje getSolicitud() {
 		return solicitud;
 	}
-
 
 	public void setSolicitud(SolicitudViaje solicitud) {
 		this.solicitud = solicitud;
@@ -84,7 +90,7 @@ public class SolicitudViajeAction extends ActionSupport{
 	public void setViaje(Viaje viaje) {
 		this.viaje = viaje;
 	}
-
+	
 	public Viajero getViajero() {
 		return viajero;
 	}
@@ -120,12 +126,15 @@ public class SolicitudViajeAction extends ActionSupport{
 	
 	public String solicitudesViaje(){
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id"))); 
-		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);		
 		return SUCCESS;
 	}
 	
-	public String registroSolicitudViaje(){
+	public String registroSolicitudViaje(){		
+		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user != null) {	
@@ -133,18 +142,19 @@ public class SolicitudViajeAction extends ActionSupport{
 				viajero = viajeroDAO.encontrar(((Usuario)session.get("usrLogin")).getId());
 				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-				SolicitudViajeDAOjpa unaSolicitud= new SolicitudViajeDAOjpa();
-				List<SolicitudViaje> solicito= unaSolicitud.yaSolicito(viaje, viajero);
+				idViaje=viaje.getId();				
+				List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
 				if(solicito.isEmpty()){
+					System.out.println("error al solicitar de nuevo la solicitud");
 					fechaSolicitud = new Date();				
 					estado = EstadoSolicitud.PENDIENTE;					
 					solicitudviaje = new SolicitudViaje(fechaSolicitud,estado,viaje,viajero);					
-					solicitudViajeDAO = (SolicitudViajeDAOjpa) FactoryDAO.getSolicitudViajeDAO();
-					solicitudViajeDAO.registrar(solicitudviaje);
+					//solicitudViajeDAO = (SolicitudViajeDAOjpa) FactoryDAO.getSolicitudViajeDAO();
+					solicitudViajeDAO.registrar(solicitudviaje);					
 					return SUCCESS;				
-				}else{
+				}else{					
 					addFieldError("loginError", "Usted ya solicito participar en este viaje");
-					return SUCCESS;
+					return INPUT;
 				}
 			}
 			else{
@@ -155,63 +165,60 @@ public class SolicitudViajeAction extends ActionSupport{
 			return "login";
 		}	
 	}
-
-	public ViajeroDAOjpa getViajeroDAO() {
-		return viajeroDAO;
-	}
-
-	public void setViajeroDAO(ViajeroDAOjpa viajeroDAO) {
-		this.viajeroDAO = viajeroDAO;
-	}
-	
-	public String aceptarSolicitudViaje(){
 		
+	public String aceptarSolicitudViaje(){		
+		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		SolicitudViajeDAOjpa solicitudViaje= new SolicitudViajeDAOjpa();
-		solicitud = solicitudViaje.encontrar(Integer.parseInt(request.getParameter("id")));
-		solicitud.setEstado(EstadoSolicitud.ACEPTADO);
-		solicitudViaje.modificar(solicitud);
-		unViaje=solicitud.getViaje();
-		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(unViaje);
-		Viajero pasajero= solicitud.getViajero();
-		pasajero.getMisViajesPasajero().add(unViaje);
-		ViajeroDAOjpa viajero = new ViajeroDAOjpa();
-		viajero.modificar(pasajero);		
-		return SUCCESS;
+		solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+		viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
+		idViaje = viaje.getId();	
+		if (viaje.getAsientos() > viaje.getPasajeros().size()){
+			solicitud.setEstado(EstadoSolicitud.ACEPTADO);
+			solicitudViajeDAO.modificar(solicitud);
+			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+			viajero = solicitud.getViajero();
+			viajero.getMisViajesPasajero().add(viaje);		
+			viajeroDAO.modificar(viajero);
+			return SUCCESS;
+		}
+		else{
+			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+			addFieldError("loginError", "Se completaron todos los asientos!");
+			return INPUT;
+		}
 	}
 	
-	public Viaje getUnViaje() {
-		return unViaje;
-	}
-
-
-	public void setUnViaje(Viaje unViaje) {
-		this.unViaje = unViaje;
-	}
-
-
-	public String rechazarSolicitudViaje(){		
+	public String rechazarSolicitudViaje(){
+		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		SolicitudViajeDAOjpa solicitudViaje= new SolicitudViajeDAOjpa();
-		solicitud = solicitudViaje.encontrar(Integer.parseInt(request.getParameter("id")));
+		solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 		solicitud.setEstado(EstadoSolicitud.RECHAZADO);
-		solicitudViaje.modificar(solicitud);
+		solicitudViajeDAO.modificar(solicitud);		
+		viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
+		Viajero viajeroSolicitud = solicitud.getViajero();		
+		if (viaje.esPasajero(viajeroSolicitud)){			
+			viajeroSolicitud.getMisViajesPasajero().remove(viaje);		
+			viajeroDAO.modificar(viajeroSolicitud);		
+		}		
 		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(solicitud.getViaje());
-		Viajero pasajero= solicitud.getViajero();
-		pasajero.getMisViajesPasajero().remove(unViaje);
-		ViajeroDAOjpa viajero = new ViajeroDAOjpa();
-		viajero.modificar(pasajero);		
+		idViaje = viaje.getId();		
 		return SUCCESS;
 	}
 	
 	public String cancelarSolicitudViaje(){		
+		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user != null) {	
 			if (user.equals("viajero")) {
-				viajero = viajeroDAO.encontrar(((Usuario)session.get("usrLogin")).getId());
 				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));				
+				
+				viajero = viajeroDAO.encontrar(((Usuario)session.get("usrLogin")).getId());				
+				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));	
+				
 				List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
 				if(!solicito.isEmpty()){									
 					// FALTA ELIMINAR LA SOLICITUD Y AL VIAJERO

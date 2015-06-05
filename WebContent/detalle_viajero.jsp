@@ -70,7 +70,7 @@
 					</div>
 					<br>
 					<div class="row">
-						<div class="col-md-4 centrar">
+						<div class="col-md-3 centrar">
 							<s:if test="%{viajero.activo}">
 								<s:url id="cancelacionViajeroURL" action="desactivarViajero">
 									<s:param name="id" value="%{viajero.id}"></s:param>
@@ -83,7 +83,6 @@
 								</s:url>							
 								<s:a href="%{activacionViajeroURL}" cssClass="btn btn-primary" role="button"><s:text name="viajero.activarbtn" /></s:a>
 							</s:else>
-							<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.denunciasbtn" /></a>
 						</div>
 					</div>
 				</div>

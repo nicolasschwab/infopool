@@ -24,7 +24,7 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 	}
 	
 	public <T> List<Viaje> buscarPorDireccion(T dirOrigen, T dirDestino){
-		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.direccionOrigen like :origen and e.direccionDestino like :destino";
+		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.direccionOrigen like :origen and e.direccionDestino like :destino and e.fechaInicio >= CURRENT_DATE and e.activo = 1";
 		List<Viaje> resultado=null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
@@ -41,7 +41,7 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 	}
 		
 	public <T> List<Viaje> buscarPorFecha(T id){
-		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.fechaInicio = :id ";
+		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where DATE(e.fechaInicio) = DATE(:id) and e.fechaInicio >= CURRENT_DATE  and e.activo = 1";
 		return listadoGenerico(qString,id);
 	}
 	
@@ -51,7 +51,7 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 	}
 	
 	public <T> List<Viaje> listarViajesPasajero(T id){
-		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e  where :id in elements(e.pasajeros)  ";
+		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e  where :id in elements(e.pasajeros) and e.activo = 1";
 		return listadoGenerico(qString,id);
 	}
 	

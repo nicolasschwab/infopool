@@ -18,23 +18,28 @@
 	<div class="main_bg">
 		<div class="container">		
 			<div class="col-md-12">
-				<h3 class="tituloSeccion margentb2"><s:text name="evento.asociarEvento" /></h3>
+				<h3 class="tituloSeccion margentb2"><s:text name="evento.asociarEvento" /></h3>				
 				<s:fielderror />
-				<s:form role="form" theme="simple" cssClass="form-signin" action="asociarEvento">
-					<div class="form-group">
-						<div class="row">
-							<div class="col-md-12">
-								<label><s:text name="evento.seleccionar" /></label>
-								<br>
-								<s:select list="eventoLista"  listKey="id" listValue="nombre" name="evento_id" value="eventoLista.{id}" cssClass="form-control" />			
-							</div>
-						</div>												
-					</div>					
-					<div class="form-group">
-						<s:submit cssClass="btn btn-primary" value="Asociar"/>
-					</div>
-					<s:hidden name="id" value="%{viaje.id}"></s:hidden>					
-				</s:form>
+				<s:if test="%{eventoLista.size()>0}">
+					<s:form role="form" theme="simple" cssClass="form-signin" action="asociarEvento">
+						<div class="form-group">
+							<div class="row">
+								<div class="col-md-12">
+									<label><s:text name="evento.seleccionar" /></label>
+									<br>
+									<s:select list="eventoLista"  listKey="id" listValue="nombre" name="evento_id" value="eventoLista.{id}" cssClass="form-control" />			
+								</div>
+							</div>												
+						</div>					
+						<div class="form-group">
+							<s:submit cssClass="btn btn-primary" value="Asociar"/>
+						</div>
+						<s:hidden name="id" value="%{viaje.id}"></s:hidden>					
+					</s:form>
+				</s:if>
+				<s:else>
+					<p>No existen Eventos Registrados!!</p>
+				</s:else>
 			</div>
 		</div>
 	</div>

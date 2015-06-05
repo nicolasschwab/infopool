@@ -1,6 +1,5 @@
-<?php
-    session_start();    
-?>
+<% request.getSession(true);%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -16,7 +15,7 @@
 	</jsp:include>
 
   
-<div class="main_bg"><!-- start main -->    
+<div class="main_bg">    
     <div class="container">
         <div class="main row">
 		  	<div class="col-md-12">
@@ -28,7 +27,7 @@
 							</s:url>" alt="foto conductor" class="img-thumbnail">
 				  		<p><strong><s:text name="viajero.nombre"></s:text>:</strong><s:property  value="%{emisor.nombre}"/></p>
 			  			<p><strong><s:text name="viajero.fechaingreso"></s:text>:</strong><s:date name="%{emisor.fechaIngresoSistema}" format="dd/MM/yyyy" /></p>
-			  			<p><strong><s:text name="viajero.calificacion"></s:text>:</strong> 1.2 de 5</p>
+			  			<p><strong><s:text name="viajero.calificacion"></s:text>:</strong> <s:property value="%{emisor.calificacionActual()}" /> / 5</p>
 			  			<p><strong><s:text name="mensaje.estado"></s:text>:</strong> <s:property value="%{estado}" /></p>
 				  	</div>				  	
 			  	</div>

@@ -52,7 +52,7 @@
 								<s:form cssClass="form-signin" theme="simple" role="form" action="buscarViajePorEvento">
 									<div class="col-md-12 tab-contentbsq">								
 										<div class="form-group col-md-5">
-											<label><s:text name="viaje.evento" /></label>
+											<label><s:text name="viaje.eventolbl" /></label>
 											<s:select list="eventoLista" listKey="id" listValue="nombre" name="evento_id" value="eventoLista.{id}" cssClass="form-control" />
 										</div>
 										<div class="form-group col-md-1">

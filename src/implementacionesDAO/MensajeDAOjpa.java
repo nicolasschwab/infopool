@@ -1,5 +1,6 @@
 package implementacionesDAO;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -28,6 +29,21 @@ public class MensajeDAOjpa extends GenericDAOjpa<Mensaje> implements MensajeDAO 
 			resultado = (List<T>) consulta.getResultList();
 		}catch(HibernateException e){
 			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return resultado;
+	}
+	
+	public Mensaje encontrar(Integer id){
+		Mensaje resultado = null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			resultado = (Mensaje) em.find(this.persistentClass, id);
+			resultado.getEmisor().calificacionActual();
+			resultado.getReceptor().calificacionActual();
+		}catch(HibernateException e){
+			e.printStackTrace();
 		}finally{
 			em.close();
 		}

@@ -21,7 +21,8 @@
 	            <table class="table" id="datatable">
 	              <thead>
 	                <tr>                  
-	                  <th><s:text name="mensaje.emisor" /></th>                  
+	                  <th><s:text name="mensaje.emisor" /></th>
+	                  <th><s:text name="mensaje.receptor" /></th>                  
 	                  <th><s:text name="mensaje.asunto" /></th>
 	                  <th><s:text name="mensaje.fecha" /></th>
 	                  <th><s:text name="mensaje.estado" /></th>
@@ -31,7 +32,8 @@
 	              <tbody>
 	                <s:iterator value="mensajeLista" >
 						<tr>
-							<td><s:property value="emisor.nombre" /></td>								
+							<td><s:property value="emisor.nombre" /></td>
+							<td><s:property value="receptor.nombre" /></td>								
 							<td><s:property value="asunto" /></td>
 							<td><s:date name="fecha"  format="dd/MM/YYYY"/></td>
 							<td><s:property value="estado" /></td>								

@@ -16,7 +16,7 @@
     	<jsp:param name="itemActivo" value="2"/>
     </jsp:include>
 
-<div class="main_bg"><!-- start main -->    
+<div class="main_bg">    
     <div class="container">
         <div class="main row">
 		  <div class="col-md-12">
@@ -38,13 +38,15 @@
 		  			<p><strong><s:text name="viajero.estado" />:</strong> <s:if test="usrlogueado.activo"><s:text name="global.activo" /></s:if><s:else><s:text name="global.inactivo" /></s:else></p>
 		  			<p><strong><s:text name="viajero.preferencias" />:</strong> <s:property value="usrlogueado.preferenciasViaje" /></p>
 		  		</div>
-		  	</div>
-		  	<br>
+		  	</div>		  	
 		  	<div class="row">
-		  		<div class="col-md-5 centrar">
-			  		<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.edicionbtn" /></a>
-				  	<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.cancelarbtn" /></a>				  	
-				  	<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.denunciasbtn" /></a>				  	
+		  		<div class="col-md-2 centrar">
+		  			<s:url id="edicionUsuario" action="edicionUsuario">
+						<s:param name="id" value="%{usrlogueado.id}"></s:param>
+					</s:url>
+			  		<s:a href="%{edicionUsuario}" cssClass="btn btn-primary" role="button"><s:text name="viajero.edicionbtn" /></s:a>
+				  	<!--  <a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.cancelarbtn" /></a>				  	
+				  	<a href="" class="btn btn-primary disabled" role="button"><s:text name="viajero.denunciasbtn" /></a>-->				  	
 		  		</div>
 		  	</div>
 		  </div>

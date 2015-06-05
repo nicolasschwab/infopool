@@ -16,6 +16,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
@@ -28,7 +29,8 @@ public class Viajero extends Usuario implements Serializable{
 	private String mail;
 	private Date fechaNacimiento;
 	private String preferenciasViaje;
-	private Date fechaIngresoSistema;	
+	private Date fechaIngresoSistema;
+	@Lob
 	private byte[] fotoPerfil;
 	private boolean activo;	
 	@OneToMany(mappedBy = "denunciante", cascade={CascadeType.PERSIST, CascadeType.REMOVE})

@@ -17,20 +17,20 @@ public class Test {
 		UsuarioDAO udao = FactoryDAO.getUsuarioDAO();
 		
 		//Registrar Usuarios
-		SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		/*SimpleDateFormat sdft = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat sdt = new SimpleDateFormat("HH:mm");
+		SimpleDateFormat sdt = new SimpleDateFormat("HH:mm");*/
 		
-		Date fechanac1 = sdf.parse("1994-01-01");
-		Usuario usuario1 = new Viajero("nschawb","nschwab2014","Nicolas","Schwab","2211234567","nicoschwab@hotmail.com",fechanac1,"Escuchar musica, tomar mate");
-		udao.registrar(usuario1);
+		/*Date fechanac1 = sdf.parse("1994-01-01");
+		Usuario usuario1 = new Viajero("ns","ns","Nicolas","Schwab","2211234567","nicoschwab@hotmail.com",fechanac1,"Escuchar musica, tomar mate");
+		udao.registrar(usuario1);*/
 		
-		Administrador usuario2 = new Administrador("jperez2","perez2014");
+		Administrador usuario2 = new Administrador("admin","admin");
 		udao.registrar(usuario2);
 		
-		Date fechanac3 = sdf.parse("1987-01-01");
-		Usuario usuario3 = new Viajero("jpq1987","jpq2014","Juan Pablo","Quiñones","2216081502","jpq1987@gmail.com",fechanac3,"Tomar mate y hablar");
-		udao.registrar(usuario3);
+		/*Date fechanac3 = sdf.parse("1987-01-01");
+		Usuario usuario3 = new Viajero("jpq","jpq","Juan Pablo","Quiñones","2216081502","jpq1987@gmail.com",fechanac3,"Tomar mate y hablar");
+		udao.registrar(usuario3);*/
 		
 		/*
 		//Listar Usuarios		 

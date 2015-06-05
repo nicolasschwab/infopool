@@ -36,6 +36,7 @@ public class Evento implements Serializable{
 		this.web = web;
 		this.ubicacion = ubicacion;
 		this.viajes = new ArrayList<Viaje>();
+		this.activo = true;
 	}
 	
 	public String getNombre() {

@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import model.DiasSemana;
 import model.Evento;
 import model.ForoMensajes;
+import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
@@ -571,16 +573,26 @@ public class ViajeAction extends ActionSupport {
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 		viaje.setActivo(false);
-		viajeDAO.modificar(viaje);
-		//FALTA LA PARTE DE AVISAR A LOS PASAJEROS DE LA CANCELACION
+		viajeDAO.modificar(viaje);		
+		for (Iterator<Viajero> i = viaje.getPasajeros().iterator(); i.hasNext(); ){
+			Viajero elViajero=i.next();			
+			Mensaje Mensaje= new Mensaje(new Date(),"Cancelación del Viaje","Hola compañero, le comunico que cancelé el viaje que compartimos a "+viaje.getDireccionDestino()+" el "+viaje.getFechaInicio(),"pendiente",viaje.getConductor(),elViajero,false);
+			FactoryDAO.getMensajeDAO().registrar(Mensaje);			
+		}
 		return SUCCESS;
 	}
 	
 	public String buscarViajePorEvento() {		
 		EventoDAOjpa eventodao = new EventoDAOjpa();
-		Evento evento = (Evento) eventodao.encontrar(this.evento_id);
-		eventoLista = eventodao.listar();				
-		viajeLista = (List<Viaje>) evento.getViajes();		
+		System.out.println("evento elegido" + this.evento_id);
+		if (this.evento_id != 0){
+			Evento evento = (Evento) eventodao.encontrar(this.evento_id);
+			eventoLista = eventodao.listar();				
+			viajeLista = (List<Viaje>) evento.getViajes();
+		}
+		else{
+			addFieldError("loginError", "No existen eventos");			
+		}
 		return SUCCESS;			
 	}
 	
@@ -630,6 +642,7 @@ public class ViajeAction extends ActionSupport {
 			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 		}
 		else{
+			System.out.println("viaje id de la sesion");
 			viaje = viajeDAO.encontrar(Integer.parseInt(session.get("id").toString()));
 			
 		}		

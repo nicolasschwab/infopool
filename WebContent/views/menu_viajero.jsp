@@ -14,6 +14,5 @@
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 2) {%> class="active" <%}%>><a href="miPerfil"><span class="fa fa-user" aria-hidden="true"> </span> <s:text name="menuviajero.perfil" /></a></li>
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 3) {%> class="active" <%}%>><a href="viajes"><span class="fa fa-road" aria-hidden="true"> </span> <s:text name="menuviajero.viajes" /></a></li>
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 4) {%> class="active" <%}%>><a href="listarMensajes"><span class="fa fa-comment" aria-hidden="true"> </span> <s:text name="menuviajero.mensajes" /></a></li>
-    <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 5) {%> class="active" <%}%>><a href="denunciasviajero"><span class="fa fa-thumbs-down" aria-hidden="true"> </span> <s:text name="menuviajero.denuncias" /></a></li>
   </ul>
 </div><!-- /.navbar-collapse -->            

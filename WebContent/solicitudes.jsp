@@ -17,9 +17,7 @@
 	<div class="main_bg">		
 		<div class="container">
 			<div class="main row">
-				<div>
-					<s:a href="javascript:history.back();" cssClass="btn btn-primary"><s:text name="global.regresar" /></s:a>
-				</div>
+				<s:fielderror />
 				<h3 class="tituloSeccion"><s:text name="solicitud.titulo" /></h3>
 				<table class="table" id="datatable">
 					<thead>
@@ -50,7 +48,7 @@
 										<s:a href="%{rechazarSolicitud}" cssClass="btn btn-default btn-xs btn-danger"><s:text name="solicitud.rechazar" /></s:a>
 									</s:elseif>
 									<s:elseif test="%{estado.name()=='RECHAZADO'}">
-										<s:a href="%{aceptarSolicitud}"	cssClass="btn btn-default btn-xs btn-success"><s:text name="solicitud.aceptar" /></s:a>
+										<s:text name="solicitud.rechazada" />
 									</s:elseif></td>
 							</tr>
 						</s:iterator>

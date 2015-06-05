@@ -22,6 +22,8 @@ import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
+
 import model.Usuario;
 import model.Viajero;
 
@@ -30,6 +32,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 public class LoginAction extends ActionSupport {
 	private static final long serialVersionUID = 1L;
+	public int id;
 	public String usuario;
 	public String clave;
 	public String rClave;
@@ -48,6 +51,12 @@ public class LoginAction extends ActionSupport {
 	public UsuarioDAOjpa usuarioDAO;
 	private Viajero usrlogueado;
 
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getUsuario() {
 		return usuario;
 	}
@@ -160,19 +169,25 @@ public class LoginAction extends ActionSupport {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user == null) {
-			Usuario u = usuarioDAO.existe(this.getUsuario(), this.getClave());
-			if (u != null) {
-				if (u.getActivo()){
-					session.put("usrLogin", u);
-					session.put("perfil", u.getPerfil());
-					return SUCCESS;
-				}
-				else{
-					addFieldError("loginError", "La cuenta a la que desea ingresa se encuentra desactivada temporalmente!");
+			if ((this.getUsuario().length() > 0) && (this.getClave().length() > 0)){
+				Usuario u = usuarioDAO.existe(this.getUsuario(), this.getClave());
+				if (u != null) {
+					if (u.getActivo()){
+						session.put("usrLogin", u);
+						session.put("perfil", u.getPerfil());
+						return SUCCESS;
+					}
+					else{
+						addFieldError("loginError", "La cuenta a la que desea ingresa se encuentra desactivada temporalmente!");
+						return INPUT;
+					}
+				} else {
+					addFieldError("loginError", "Los datos ingresado son incorrectos!");
 					return INPUT;
 				}
-			} else {
-				addFieldError("loginError", "Los datos ingresado son incorrectos!");
+			}
+			else{
+				addFieldError("loginError", "Debe ingresar el usuario y la clave para acceder!");
 				return INPUT;
 			}
 		} else {
@@ -180,43 +195,54 @@ public class LoginAction extends ActionSupport {
 		}
 	}
 
-	public String registrarUsuario() throws ParseException {
+	public String registrarUsuario() throws ParseException{
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user == null) {
-			Usuario u = usuarioDAO.existeNombreUsuario(this.getUsuario());
-			if (u == null) {
-				UsuarioDAO usuario = FactoryDAO.getUsuarioDAO();
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Date fechanac1 = sdf.parse(this.getFechaUsuario());
-				Usuario usuario1 = new Viajero(this.getUsuario(),
-						this.getClave(), this.getNombreUsuario(),
-						this.getApellidoUsuario(), this.getTelefonoUsuario(),
-						this.getMailUsuario(), fechanac1, this.getPrefUsuario());
-				
-				if (this.fperfilUsuario != null){
-					byte[] b = new byte[(int) this.fperfilUsuario.length()];
-					try {
-						FileInputStream fileInputStream = new FileInputStream(
-								this.fperfilUsuario);
-						fileInputStream.read(b);
-					} catch (IOException e1) {
-						System.out.println("Error Reading The File.");
-						e1.printStackTrace();
+			if ((this.getApellidoUsuario().length() > 0) && (this.getNombreUsuario().length() > 0) && (this.getFechaUsuario().length() > 0) && (this.getTelefonoUsuario().length() > 0) && (this.getMailUsuario().length() > 0) && (this.getUsuario().length() >0) && (this.getClave().length() > 0) && (this.getrClave().length() > 0) && (this.getPrefUsuario().length() > 0) && (this.getFperfilUsuario() != null)){
+				if (this.getrClave().equals(this.getClave())){
+					Usuario u = usuarioDAO.existeNombreUsuario(this.getUsuario());
+					if (u == null) {
+						UsuarioDAO usuario = FactoryDAO.getUsuarioDAO();
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						Date fechanac1 = sdf.parse(this.getFechaUsuario());
+						Usuario usuario1 = new Viajero(this.getUsuario(),
+								this.getClave(), this.getNombreUsuario(),
+								this.getApellidoUsuario(), this.getTelefonoUsuario(),
+								this.getMailUsuario(), fechanac1, this.getPrefUsuario());
+						
+						if (this.fperfilUsuario != null){
+							byte[] b = new byte[(int) this.fperfilUsuario.length()];
+							try {
+								FileInputStream fileInputStream = new FileInputStream(
+										this.fperfilUsuario);
+								fileInputStream.read(b);
+							} catch (IOException e1) {
+								System.out.println("Error Reading The File.");
+								e1.printStackTrace();
+							}
+							((Viajero) usuario1).setFotoPerfil(b);
+						}
+		
+						usuario.registrar(usuario1);
+						return SUCCESS;
 					}
-					((Viajero) usuario1).setFotoPerfil(b);
+					else{						
+						addFieldError("loginError", "El nombre de usuario ya existe");
+						return INPUT;
+					}
+				} else {
+					addFieldError("loginError", "Las claves no coinciden!");
+					return INPUT;
 				}
-
-				usuario.registrar(usuario1);
-				return SUCCESS;
-			} else {
-				addFieldError("loginError", "El nombre de usuario ya existe");
+			}
+			else{
+				addFieldError("loginError", "Debe completar todos los campos para poder registrarse!");
 				return INPUT;
 			}
 		} else {
 			return "conectado";
 		}
-
 	}
 
 	public String miPerfil() throws IOException {
@@ -245,5 +271,48 @@ public class LoginAction extends ActionSupport {
 	public void setUsrlogueado(Viajero usrlogueado) {
 		this.usrlogueado = usrlogueado;
 	}
-
+	
+	public String edicionUsuario(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		setUsrlogueado((Viajero) session.get("usrLogin"));		
+		return SUCCESS;
+	}
+	
+	public String editarUsuario() throws ParseException {		
+		Map<String, Object> session = ActionContext.getContext().getSession();		
+		setUsrlogueado((Viajero) session.get("usrLogin"));		
+		if (this.usrlogueado != null) {
+			if ((this.getApellidoUsuario().length() > 0) && (this.getNombreUsuario().length() > 0) && (this.getFechaUsuario().length() > 0) && (this.getTelefonoUsuario().length() > 0) && (this.getMailUsuario().length() > 0) && (this.getClave().length() > 0) && (this.getrClave().length() > 0) && (this.getPrefUsuario().length() > 0)){
+				if (this.getrClave().equals(this.getClave())){
+					Viajero u = (Viajero) this.usrlogueado;
+					if (u != null) {
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						Date fechanac1 = sdf.parse(this.getFechaUsuario());
+						u.setClave(this.getClave());
+						u.setNombre(this.getNombreUsuario());
+						u.setApellido(this.getApellidoUsuario());
+						u.setTelefono(this.telefonoUsuario);
+						u.setMail(this.getMailUsuario());
+						u.setFechaNacimiento(fechanac1);
+						u.setPreferenciasViaje(this.getPrefUsuario());
+						usuarioDAO.modificar(u);
+						return SUCCESS;
+					} else {
+						addFieldError("loginError", "El usuario no existe");
+						return INPUT;
+					}
+				}
+				else{
+					addFieldError("loginError", "Las claves ingresadas no coinciden!");
+					return INPUT;
+				}
+			}
+			else{
+				addFieldError("loginError", "Debe completar todos los campos!");
+				return INPUT;
+			}
+		} else {
+			return "login";
+		}	
+	}
 }

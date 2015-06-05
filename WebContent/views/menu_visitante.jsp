@@ -26,8 +26,5 @@
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 4) {%> class="active" <%}%> >
     	<a href="preguntas_frecuentes.jsp"><s:text name="menu.faq" /></a>
     </li>
-    <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 5) {%> class="active" <%}%> >
-    	<a href="contacto.jsp"><s:text name="menu.contacto" /></a>
-    </li>
   </ul>
 </div><!-- /.navbar-collapse -->            

@@ -23,13 +23,23 @@
 			<result name="input">/registro.jsp</result>
 			<result name="conectado">/index.jsp</result>
 		</action>
-
+		
 		<action name="cerrarSesion" method="cerrarSesion" class="loginAction">			
 			<result name="success">/index.jsp</result>
 		</action>
 
 		<action name="miPerfil" method="miPerfil" class="loginAction">			
 			<result name="success">/ver_detalle_viajero.jsp</result>
+		</action>
+		
+		<action name="edicionUsuario" method="edicionUsuario" class="loginAction">
+			<result name="success">/editar_usuario.jsp</result>					
+		</action>
+		
+		<action name="editarUsuario" method="editarUsuario" class="loginAction">			
+			<result name="success" type="redirect">miPerfil</result>
+			<result name="input">/editar_usuario.jsp</result>
+			<result name="login">/index.jsp</result>						
 		</action>
 
 		<!-- Actions Eventos -->
@@ -141,12 +151,15 @@
 		</action>
 		
 		<action name="asociarEvento" method="asociarEvento" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${id}</param>
+			</result>
 			<result name="input">/asociar_evento.jsp</result>
 		</action>
 		
 		<action name="cancelarViaje" method="cancelarViaje" class="viajeAction">
-			<result name="success">listarViajes</result>
+			<result name="success" type="redirect">listarViajes</result>
 		</action>
 
 		<action name="buscarViaje" method="buscarViaje" class="viajeAction">
@@ -178,20 +191,33 @@
 			<result name="success">/solicitudes.jsp</result>
 		</action>
 
-		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">ver_detalle_viaje.jsp</result>
+		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">			
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${idViaje}</param>				
+			</result>
+			<result name="input">/ver_detalle_viaje.jsp</result>
 		</action>		
 
 		<action name="aceptarSolicitudViaje" method="aceptarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">/solicitudes.jsp</result>
+			<result name="success" type="redirect">
+				<param name="location">solicitudesViaje</param>
+				<param name="id">${idViaje}</param>						
+			</result>
+			<result name="input">/solicitudes.jsp</result>
 		</action>
 
 		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">/solicitudes.jsp</result>
+			<result name="success" type="redirect">
+				<param name="location">solicitudesViaje</param>
+				<param name="id">${idViaje}</param>	
+			</result>
+			<result name="input">/solicitudes.jsp</result>
 		</action>	
 				
 		<action name="cancelacionSolicitudViaje" method="cancelacionSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">/solicitudes.jsp</result>
+			<result name="success" type="redirect">solicitudesViaje</result>
+			<result name="input">/solicitudes.jsp</result>						
 		</action>	
 		
 		<!-- Actions Mensajes -->
@@ -229,7 +255,10 @@
 		</action>
 		
 		<action name="enviarMensajeForo" method="enviarMensajeForo" class="mensajeAction">
-			<result name="success" type="redirect">detalleViaje</result>
+			<result name="success" type="redirect">				
+				<param name="location">detalleViaje</param>
+				<param name="id">${viajeId}</param>
+			</result>
 			<result name="login" >/login.jsp</result>
 			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>

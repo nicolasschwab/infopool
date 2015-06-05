@@ -232,10 +232,9 @@ public class MensajeAction extends ActionSupport {
 					}
 				this.asunto=elMensaje.getAsunto();    // setea datos en comun entre emisor y receptor
 				this.detalle=elMensaje.getDetalle();
-				this.estado=elMensaje.getEstado();
-				System.out.println(elMensaje.getAsunto());
+				this.estado=elMensaje.getEstado();				
 				if(elMensaje.isMensaje_sistema()){   // si es un mensaje enviado automaticamente por el sistema
-					this.queNoSos="Receptor";
+					this.queNoSos="Emisor";
 				}
 				return SUCCESS;
 			}		
@@ -307,21 +306,23 @@ public class MensajeAction extends ActionSupport {
 	public String enviarMensajeForo() throws ParseException{
 		String resul=this.validarSesion();
 		if(resul.equals(SUCCESS)){
-			Map<String, Object> session = ActionContext.getContext().getSession();
-			Usuario user = (Usuario) session.get("usrLogin");
-			Viaje elViaje=viajeDAO.encontrar(this.viajeId);
-			ForoMensajes nuevoMensaje= new ForoMensajes (new Date(),(Viajero)user,this.detalle,elViaje);
-			this.foroMensajeDAO.registrar(nuevoMensaje);
-			Collection<Viajero> lista=elViaje.getPasajeros();
-			session.put("id",this.viajeId);
-			lista.add(elViaje.getConductor());
-			for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
-				Viajero elViajero=i.next();
-				if(elViajero.getId()!=user.getId()){
-					Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+elViaje.getDireccionDestino()+" el "+elViaje.getFechaInicio(),"pendiente",user,elViajero,true);
-					this.mensajeDAO.registrar(Mensaje);
-				}				
-			}			
+			if (!this.detalle.equals("")){
+				Map<String, Object> session = ActionContext.getContext().getSession();
+				Usuario user = (Usuario) session.get("usrLogin");
+				Viaje viaje=viajeDAO.encontrar(this.viajeId);
+				ForoMensajes nuevoMensaje= new ForoMensajes (new Date(),(Viajero)user,this.detalle,viaje);
+				this.foroMensajeDAO.registrar(nuevoMensaje);
+				Collection<Viajero> lista=viaje.getPasajeros();
+				session.put("id",this.viajeId);
+				lista.add(viaje.getConductor());
+				for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
+					Viajero elViajero=i.next();
+					if(elViajero.getId()!=user.getId()){
+						Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compaÃ±ero, eh publicado un mensaje el foro del viaje que compartimos a "+viaje.getDireccionDestino()+" el "+viaje.getFechaInicio(),"pendiente",user,elViajero,true);
+						this.mensajeDAO.registrar(Mensaje);
+					}				
+				}
+			}
 		}
 		return resul;
 	}
