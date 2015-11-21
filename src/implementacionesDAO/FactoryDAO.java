@@ -43,4 +43,7 @@ public class FactoryDAO {
 	public static ViajeroDAO getViajeroDAO() {
 		return new ViajeroDAOjpa();
 	}
+	public static AutoDAOjpa getAutoDAO(){
+		return new AutoDAOjpa();
+	}
 }

@@ -9,15 +9,20 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -28,7 +33,9 @@ public class Viajero extends Usuario implements Serializable{
 	private String telefono;
 	private String mail;
 	private Date fechaNacimiento;
-	private String preferenciasViaje;
+	@ElementCollection(targetClass=Preferencias.class)
+	@Enumerated(EnumType.STRING)
+	private List<Preferencias> preferenciasViaje;
 	private Date fechaIngresoSistema;
 	@Lob
 	private byte[] fotoPerfil;
@@ -50,11 +57,21 @@ public class Viajero extends Usuario implements Serializable{
 	private Collection<Calificacion> misCalificacionesHechas;	
 	@OneToMany(mappedBy = "calificado", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Calificacion> misCalificacionesRecibidas;
+	@ManyToOne
+	private Auto auto;
 	
+	public Auto getAuto() {
+		return auto;
+	}
+
+	public void setAuto(Auto auto) {
+		this.auto = auto;
+	}
+
 	public Viajero() {		
 	}
 	
-	public Viajero(String usuario, String clave, String nombre, String apellido, String telefono, String mail, Date fechaNacimiento, String preferenciasViaje) {
+	public Viajero(String usuario, String clave, String nombre, String apellido, String telefono, String mail, Date fechaNacimiento, List<Preferencias>  preferenciasViaje) {
 		super(usuario,clave);		
 		this.nombre = nombre;
 		this.apellido = apellido;
@@ -72,7 +89,6 @@ public class Viajero extends Usuario implements Serializable{
 		this.misCalificacionesHechas = new ArrayList<Calificacion>();
 		this.misCalificacionesRecibidas = new ArrayList<Calificacion>();		
 	}
-
 	public String getNombre() {
 		return nombre;
 	}
@@ -103,12 +119,15 @@ public class Viajero extends Usuario implements Serializable{
 	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-	public String getPreferenciasViaje() {
+	
+	public List<Preferencias> getPreferenciasViaje() {
 		return preferenciasViaje;
 	}
-	public void setPreferenciasViaje(String preferenciasViaje) {
+
+	public void setPreferenciasViaje(List<Preferencias> preferenciasViaje) {
 		this.preferenciasViaje = preferenciasViaje;
 	}
+
 	public Date getFechaIngresoSistema() {
 		return fechaIngresoSistema;
 	}
