@@ -46,4 +46,10 @@ public class FactoryDAO {
 	public static AutoDAOjpa getAutoDAO(){
 		return new AutoDAOjpa();
 	}
+	public static NotificacionDAOjpa getNotificacionDAO(){
+		return new NotificacionDAOjpa();
+	}
+	public static EstadoNotificacionDAOjpa getEstadoNotificacionDAO(){
+		return new EstadoNotificacionDAOjpa();
+	}
 }

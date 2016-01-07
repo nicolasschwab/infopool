@@ -18,7 +18,7 @@ public class Auto implements Serializable{
 	private int id;
 	@Enumerated(EnumType.STRING)
 	private Marca marca;
-	private String modelo;
+	private Date modelo;
 	@Enumerated(EnumType.STRING)
 	private Combustible combustible;
 	@Enumerated(EnumType.STRING)
@@ -28,7 +28,7 @@ public class Auto implements Serializable{
 		
 	}
 	
-	public Auto(Marca marca, String modelo,Combustible combustible, TipoVehiculo tipo) {
+	public Auto(Marca marca, Date modelo,Combustible combustible, TipoVehiculo tipo) {
 		super();
 		this.marca = marca;
 		this.modelo = modelo;
@@ -46,11 +46,11 @@ public class Auto implements Serializable{
 	
 	
 
-	public String getModelo() {
+	public Date getModelo() {
 		return modelo;
 	}
 
-	public void setModelo(String modelo) {
+	public void setModelo(Date modelo) {
 		this.modelo = modelo;
 	}
 

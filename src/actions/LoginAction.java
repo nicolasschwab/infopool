@@ -71,6 +71,7 @@ public class LoginAction extends ActionSupport {
 	private List<String> losTipos=new ArrayList<String>();
 	private List<String> losCombustibles=new ArrayList<String>();
 	private List<Preferencias> lasPreferencias=new ArrayList<Preferencias>();
+	private String notif="";
 
 	
 
@@ -78,6 +79,12 @@ public class LoginAction extends ActionSupport {
 	private Viajero usrlogueado;
 	
 
+	public String getNotif() {
+		return notif;
+	}
+	public void setNotif(String notif) {
+		this.notif = notif;
+	}
 	public Boolean getFumar() {
 		return fumar;
 	}
@@ -380,7 +387,7 @@ public class LoginAction extends ActionSupport {
 		return true;
 	}
 	
-	private boolean validarAuto(){
+	private boolean validarAuto() throws ParseException{
 		lasMarcas.add("FORD");
 		lasMarcas.add("CITROEN");
 		lasMarcas.add("CHEVROLET");
@@ -405,9 +412,11 @@ public class LoginAction extends ActionSupport {
 		System.out.println(Calendar.getInstance().get(Calendar.YEAR));
 		if(lasMarcas.contains(this.getVistaMarca()) && losTipos.contains(this.getVistaTipo()) && losCombustibles.contains(this.getVistaCombustible()) && this.getModelo().length()>0 && Integer.parseInt(this.getModelo())<= Calendar.getInstance().get(Calendar.YEAR) ){
 				this.setMarca(Marca.valueOf(this.getVistaMarca()));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+				Date fechaModelo=sdf.parse(this.getModelo());
 				this.setTipo(TipoVehiculo.valueOf(this.getVistaTipo()));
 				this.setCombustible(Combustible.valueOf(this.getVistaCombustible()));
-				this.setAuto(new Auto(this.getMarca(), this.getModelo(), this.getCombustible(), this.getTipo()));
+				this.setAuto(new Auto(this.getMarca(), fechaModelo, this.getCombustible(), this.getTipo()));
 		}else{
 			this.setAuto(null);
 		}
@@ -417,7 +426,10 @@ public class LoginAction extends ActionSupport {
 
 	public String miPerfil() throws IOException {
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		setUsrlogueado((Viajero) session.get("usrLogin"));		
+		setUsrlogueado((Viajero) session.get("usrLogin"));
+		if(this.getNotif()!=""){
+			new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+		}
 		return SUCCESS;
 	}
 
@@ -448,18 +460,16 @@ public class LoginAction extends ActionSupport {
 		return SUCCESS;
 	}
 	
-	public String editarUsuario() throws ParseException {		
+	public String editarUsuario() throws ParseException {	
 		Map<String, Object> session = ActionContext.getContext().getSession();		
 		setUsrlogueado((Viajero) session.get("usrLogin"));		
 		if (this.usrlogueado != null) {
-			if ((this.getApellidoUsuario().length() > 0) && (this.getNombreUsuario().length() > 0) && (this.getFechaUsuario().length() > 0) && (this.getTelefonoUsuario().length() > 0) && (this.getMailUsuario().length() > 0) && (this.getClave().length() > 0) && (this.getrClave().length() > 0) ){
-				if (this.getrClave().equals(this.getClave())){
+			if ((this.getApellidoUsuario().length() > 0) && (this.getNombreUsuario().length() > 0) && (this.getFechaUsuario().length() > 0) && (this.getTelefonoUsuario().length() > 0) && (this.getMailUsuario().length() > 0)  ){
 					if(this.validarPreferencias()){						
 						Viajero u = (Viajero) this.usrlogueado;
 						if (u != null) {
 							SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 							Date fechanac1 = sdf.parse(this.getFechaUsuario());
-							u.setClave(this.getClave());
 							u.setNombre(this.getNombreUsuario());
 							u.setApellido(this.getApellidoUsuario());
 							u.setTelefono(this.telefonoUsuario);
@@ -475,12 +485,7 @@ public class LoginAction extends ActionSupport {
 					}else{
 						addFieldError("loginError", "Las preferencias elegidas son incorrectas");
 						return INPUT;
-					}					
-				}
-				else{
-					addFieldError("loginError", "Las claves ingresadas no coinciden!");
-					return INPUT;
-				}
+					}
 			}
 			else{
 				addFieldError("loginError", "Debe completar todos los campos!");

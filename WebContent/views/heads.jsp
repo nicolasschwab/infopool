@@ -6,6 +6,8 @@
 <link href="css/bootstrap.min.css" rel='stylesheet' type='text/css' />
 <link href="css/bootstrap-datetimepicker.min.css" rel='stylesheet' type='text/css' />
 <link href="css/dataTables.bootstrap.css" rel='stylesheet' type='text/css' />
+<link href="css/style.css" rel='stylesheet' type='text/css' />
+<link href="css/estilosNotificaciones.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> 
     addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
@@ -24,8 +26,13 @@
 <script type="text/javascript" src="js/moment.js"></script>
 <script type="text/javascript" src="js/bootstrap-datetimepicker.js"></script>
 <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="js/notificaciones.js"></script>
+
 <script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
 <script type="text/javascript" src="js/jqBootstrapValidation.js"></script>
+<script type="text/javascript" src="js/funcionesAltaUsuario.js"></script>
+<script type="text/javascript" src="js/funcionesEditarUsuario.js"></script>
+<script type="text/javascript" src="js/editarUsuario.js"></script>
 
 <script type="text/javascript">
     $(function() {        

@@ -109,17 +109,23 @@ public class CalificacionAction extends ActionSupport {
 		return resul;
 	}	
 	
-	public String calificarViaje(){		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		Usuario usrlogueado = (Usuario) session.get("usrLogin");
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		this.idViaje = Integer.parseInt(request.getParameter("idViaje"));
-		viaje = FactoryDAO.getViajeDAO().encontrar(this.idViaje);
-		calificado = FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(request.getParameter("idPasajero")));
-		calificador = (Viajero) usrlogueado;
-		Calificacion calificacion = new Calificacion(calificador, calificado, this.calificacionnro, viaje);
-		calificacionDAO.registrar(calificacion);
-		return SUCCESS;
+	public String calificarViaje(){
+		String resul=this.validarSesion();
+		if(resul==SUCCESS){
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			Usuario usrlogueado = (Usuario) session.get("usrLogin");
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			this.idViaje = Integer.parseInt(request.getParameter("idViaje"));
+			viaje = FactoryDAO.getViajeDAO().encontrar(this.idViaje);
+			calificado = FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(request.getParameter("idPasajero")));
+			calificador = (Viajero) usrlogueado;
+			Calificacion calificacion = new Calificacion(calificador, calificado, this.calificacionnro, viaje);
+			calificacionDAO.registrar(calificacion);
+			NotificacionAction notificacion=new NotificacionAction();
+			notificacion.crearNotificacionCalificacion();
+			return SUCCESS;
+		}
+		return resul;
 	}
 	
 	private String validarSesion(){

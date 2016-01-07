@@ -60,6 +60,7 @@ public class Viajero extends Usuario implements Serializable{
 	@ManyToOne
 	private Auto auto;
 	
+
 	public Auto getAuto() {
 		return auto;
 	}

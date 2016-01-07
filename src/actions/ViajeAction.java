@@ -63,19 +63,23 @@ public class ViajeAction extends ActionSupport {
 	private Viaje viaje = new Viaje();	
 	private Viajero usrlogueado;
 	private List<ForoMensajes> foroMensajes;
-	
-	
-
-
-	
-
+	private String notif="";
 	private boolean esPasajero;
 	
 	/*
 	 * Setter y Getters
 	 */
+	
 	public int getActivo() {
 		return activo;
+	}
+
+	public String getNotif() {
+		return notif;
+	}
+
+	public void setNotif(String notif) {
+		this.notif = notif;
 	}
 
 	public void setActivo(int activo) {
@@ -506,7 +510,11 @@ public class ViajeAction extends ActionSupport {
 									viaje.setHoraPartida(horap);
 									viaje.setHoraRegreso(horar);
 									viaje.setDireccionOrigen(this.getDireccionOrigen());									
-									viajeDao.modificar(viaje);				
+									viajeDao.modificar(viaje);
+									NotificacionAction notificacion=new NotificacionAction();
+									for(Viajero pasajero:viaje.getPasajeros()){
+										notificacion.crearNotificacionModificacionViaje(pasajero, viaje);
+									}									
 									return SUCCESS;
 								}
 								else{
@@ -573,11 +581,11 @@ public class ViajeAction extends ActionSupport {
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 		viaje.setActivo(false);
-		viajeDAO.modificar(viaje);		
+		viajeDAO.modificar(viaje);
+		NotificacionAction notificacion=new NotificacionAction();
 		for (Iterator<Viajero> i = viaje.getPasajeros().iterator(); i.hasNext(); ){
 			Viajero elViajero=i.next();			
-			Mensaje Mensaje= new Mensaje(new Date(),"Cancelación del Viaje","Hola compañero, le comunico que cancelé el viaje que compartimos a "+viaje.getDireccionDestino()+" el "+viaje.getFechaInicio(),"pendiente",viaje.getConductor(),elViajero,false);
-			FactoryDAO.getMensajeDAO().registrar(Mensaje);			
+			notificacion.crearNotificacionModificacionViaje(elViajero, viaje);
 		}
 		return SUCCESS;
 	}
@@ -651,6 +659,9 @@ public class ViajeAction extends ActionSupport {
 			esPasajero = viaje.esConductor(usrlogueado);
 		}		
 		foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
+		if(this.getNotif()!=""){
+			new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+		}		
 		return SUCCESS;
 	}
 

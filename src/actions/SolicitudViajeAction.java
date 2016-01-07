@@ -42,7 +42,16 @@ public class SolicitudViajeAction extends ActionSupport{
 	private List<SolicitudViaje> solicitudesviaje = new ArrayList<SolicitudViaje>();
 	
 	private SolicitudViajeDAOjpa solicitudViajeDAO;	
+	private String notif="";
 	
+	
+	
+	public String getNotif() {
+		return notif;
+	}
+	public void setNotif(String notif) {
+		this.notif = notif;
+	}
 	public int getIdViaje() {
 		return idViaje;
 	}
@@ -127,9 +136,17 @@ public class SolicitudViajeAction extends ActionSupport{
 	public String solicitudesViaje(){
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id"))); 
-		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);		
-		return SUCCESS;
+		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		Usuario user = (Usuario) session.get("usrLogin");
+		if(viaje.getConductor().getId()==user.getId()){
+			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+			if(this.getNotif()!=""){
+				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+			}
+			return SUCCESS;
+		}
+		return "sinPermisos";
 	}
 	
 	public String registroSolicitudViaje(){		
@@ -145,12 +162,14 @@ public class SolicitudViajeAction extends ActionSupport{
 				idViaje=viaje.getId();				
 				List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
 				if(solicito.isEmpty()){
-					System.out.println("error al solicitar de nuevo la solicitud");
 					fechaSolicitud = new Date();				
 					estado = EstadoSolicitud.PENDIENTE;					
 					solicitudviaje = new SolicitudViaje(fechaSolicitud,estado,viaje,viajero);					
 					//solicitudViajeDAO = (SolicitudViajeDAOjpa) FactoryDAO.getSolicitudViajeDAO();
-					solicitudViajeDAO.registrar(solicitudviaje);					
+					solicitudViajeDAO.registrar(solicitudviaje);
+					//registro una notificacion
+					NotificacionAction notificacionAction=new NotificacionAction();
+					notificacionAction.crearNotificacionSolicitudNueva(viaje);
 					return SUCCESS;				
 				}else{					
 					addFieldError("loginError", "Usted ya solicito participar en este viaje");
@@ -180,6 +199,8 @@ public class SolicitudViajeAction extends ActionSupport{
 			viajero = solicitud.getViajero();
 			viajero.getMisViajesPasajero().add(viaje);		
 			viajeroDAO.modificar(viajero);
+			NotificacionAction notificacion=new NotificacionAction();
+			notificacion.crearNotificacionSolicitudAceptar(viajero, viaje);
 			return SUCCESS;
 		}
 		else{
@@ -203,7 +224,9 @@ public class SolicitudViajeAction extends ActionSupport{
 			viajeroDAO.modificar(viajeroSolicitud);		
 		}		
 		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(solicitud.getViaje());
-		idViaje = viaje.getId();		
+		idViaje = viaje.getId();	
+		NotificacionAction notificacion=new NotificacionAction();
+		notificacion.crearNotificacionRechazoSolicitud(viajeroSolicitud, viaje);
 		return SUCCESS;
 	}
 	

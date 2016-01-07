@@ -25,6 +25,8 @@ public abstract class Usuario {
 	private Collection<Mensaje> misMensajesRecibidos;	
 	@OneToMany(mappedBy = "emisor", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Mensaje> misMensajesEnviados;
+	@OneToMany(mappedBy = "receptor", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
+	private Collection<Notificacion> misNotificaciones;
 	
 	public Usuario(){		
 	}	
@@ -35,6 +37,16 @@ public abstract class Usuario {
 		this.clave = clave;
 		this.misMensajesRecibidos = new ArrayList<Mensaje>();
 		this.misMensajesEnviados = new ArrayList<Mensaje>();
+		this.misNotificaciones = new ArrayList<Notificacion>();
+	}
+	
+	
+	public Collection<Notificacion> getMisNotificaciones() {
+		return misNotificaciones;
+	}
+
+	public void setMisNotificaciones(Collection<Notificacion> misNotificaciones) {
+		this.misNotificaciones = misNotificaciones;
 	}
 
 	public int getId(){

@@ -38,7 +38,7 @@
 		
 		<action name="editarUsuario" method="editarUsuario" class="loginAction">			
 			<result name="success" type="redirect">miPerfil</result>
-			<result name="input">/editar_usuario.jsp</result>
+			<result name="input">/ver_detalle_viajero</result>
 			<result name="login">/index.jsp</result>						
 		</action>
 
@@ -189,6 +189,7 @@
 		<!-- Actions SolicitudesViaje -->
 		<action name="solicitudesViaje" method="solicitudesViaje" class="solicitudViajeAction">
 			<result name="success">/solicitudes.jsp</result>
+			<result name="sinPermisos">/indexjsp/</result>
 		</action>
 
 		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">			
@@ -277,6 +278,7 @@
 			</result>
 		</action>
 		
+		<!-- Action Notificaciones -->
 	</package>
 	
 	<package name="image" namespace="/" extends="struts-default">
@@ -286,6 +288,18 @@
 		
 		<action name="ImageAction" class="actions.ImageAction">
 			<result name="success" type="imageResult"></result>
+		</action>
+	</package>
+	<package name="notificacionesJson" namespace="/" extends="json-default">		
+		<action name="misNotificaciones" method="misNotificaciones" class="actions.NotificacionAction">
+			<result type="json">
+        		<param name="root">valoresJson</param>
+   			</result>
+		</action>
+		<action name="misNotificacionesActualizar" method="misNotificacionesActualizar" class="actions.NotificacionAction">
+			<result type="json">
+        		<param name="root">valoresJson</param>
+   			</result>
 		</action>
 	</package>
 </struts>

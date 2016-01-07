@@ -49,9 +49,16 @@ public class MensajeAction extends ActionSupport {
 	private int viajeId;
 	private String respDetalle;
 	private String queNoSos;
+	private String notif="";
 	
 	
 	
+	public String getNotif() {
+		return notif;
+	}
+	public void setNotif(String notif) {
+		this.notif = notif;
+	}
 	public String getQueNoSos() {
 		return queNoSos;
 	}
@@ -189,6 +196,9 @@ public class MensajeAction extends ActionSupport {
 					this.emisor=user;
 					Mensaje nuevoMensaje= new Mensaje (this.fecha, this.asunto,this.detalle,this.estado,this.emisor,this.receptor);
 					this.mensajeDAO.registrar(nuevoMensaje);
+					NotificacionAction notificacion=new NotificacionAction();
+					this.mensajeLista=this.mensajeDAO.listar(user);
+					notificacion.crearNotificacionPrivado(this.receptor, this.mensajeLista.get(this.mensajeLista.size()-1).getId());
 					return SUCCESS;	
 				}else{
 					this.listaUsuarios();
@@ -216,27 +226,39 @@ public class MensajeAction extends ActionSupport {
 				this.id=Integer.parseInt(elId[0]);
 				Mensaje elMensaje;
 				elMensaje=this.mensajeDAO.encontrar(this.id);
-				if(elMensaje.getEmisor().getId()!=user.getId()){ // setea datos particulares para ver el mensaje siendo el receptor
-					this.queNoSos="Emisor";					
-					this.emisor=elMensaje.getEmisor();	
-					this.receptorID=String.valueOf(elMensaje.getEmisor().getId());
-					if(elMensaje.getEstado().equals("pendiente" )){
-						elMensaje.setEstado("leido");
+				//cheque que el emisor o el receptor sea el ususario logueado
+				//para que alguien no pueda cambiar el ID y ver cualquier mensaje
+				if(elMensaje.getEmisor().getId()==user.getId() || elMensaje.getReceptor().getId()==user.getId())
+				{				
+					if(elMensaje.getEmisor().getId()!=user.getId()){ // setea datos particulares para ver el mensaje siendo el receptor
+						this.queNoSos="Emisor";					
+						this.emisor=elMensaje.getEmisor();	
+						this.receptorID=String.valueOf(elMensaje.getEmisor().getId());
+						if(elMensaje.getEstado().equals("pendiente" )){
+							elMensaje.setEstado("leido");
+							
+							this.mensajeDAO.modificar(elMensaje);
+						}
 						
-						this.mensajeDAO.modificar(elMensaje);
+					}else{    // setea datos particulares para  ver el mensaje siendo el emisor
+						this.queNoSos="Receptor";
+						this.emisor=elMensaje.getReceptor();					
+						}
+					this.asunto=elMensaje.getAsunto();    // setea datos en comun entre emisor y receptor
+					this.detalle=elMensaje.getDetalle();
+					this.estado=elMensaje.getEstado();				
+					if(elMensaje.isMensaje_sistema()){   // si es un mensaje enviado automaticamente por el sistema
+						this.queNoSos="Emisor";
+					}				
+					if(this.getNotif()!=""){
+						new NotificacionAction().cambiarEstadoAVisitado(this.notif);
 					}
 					
-				}else{    // setea datos particulares para  ver el mensaje siendo el emisor
-					this.queNoSos="Receptor";
-					this.emisor=elMensaje.getReceptor();					
-					}
-				this.asunto=elMensaje.getAsunto();    // setea datos en comun entre emisor y receptor
-				this.detalle=elMensaje.getDetalle();
-				this.estado=elMensaje.getEstado();				
-				if(elMensaje.isMensaje_sistema()){   // si es un mensaje enviado automaticamente por el sistema
-					this.queNoSos="Emisor";
+					return SUCCESS;
 				}
-				return SUCCESS;
+				else{
+					return "sinpermisos";
+				}
 			}		
 			else {
 				return "sinpermisos";

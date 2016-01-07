@@ -20,7 +20,7 @@
 
 	<div class="main_bg">
 		<div class="container">
-
+			<div class="col-md-6 margentb2">
 			<h3 class="tituloSeccion margentb2">
 				<s:text name="viajero.registrolbl" />
 			</h3>
@@ -162,7 +162,7 @@
 					</div>
 				</fieldset>
 			</s:form>
-
+			</div >
 		</div>
 	</div>
 	<%@ include file="views/footer.jsp"%>

@@ -1,0 +1,145 @@
+#notificaciones {
+	background-color: #eee;
+	margin: 20px auto 0;
+	width: 350px;
+	overflow:visible;
+	position:absolute;
+	right:5%;
+	top:67%;
+	height:auto;
+	display:none;
+	z-index:100;
+	}
+#notificaciones #header{
+	background-color: #555;
+	color: white;
+	padding: 10px;
+	text-align: center;
+	text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+#notificaciones #bodyNotificaciones{
+	/*height: 100px;*/
+	color:black;
+	max-height:600%;
+}
+#notificaciones #bodyNotificaciones:hover {
+	overflow-y: scroll; 
+}
+#notificaciones #bodyNotificaciones .mensaje-autor{
+	margin-bottom: 50px;
+
+}
+#notificaciones #bodyNotificaciones .mensaje-autor img, #chat #mensajes .mensaje-amigo img{
+	display: inline-block;
+	vertical-align: top;
+}
+#notificaciones #bodyNotificaciones .mensaje-autor .contenido{
+	background-color: white;
+	border-radius: 5px;
+	box-shadow: 2px 2px 3px rgba(0,0,0,0.3);
+	display: inline-block;
+	font-size: 13px;
+	padding: 15px;
+	vertical-align: top;
+	width: 280px;
+}
+#notificaciones #bodyNotificaciones .mensaje-autor .fecha{
+	color: #777;
+	font-style: italic;
+	font-size: 13px;
+	text-align: right;
+	margin-right: 35px;
+	margin-top: 10px;
+}
+.flechaArriba{
+	display: inline-block;
+	margin-right: -6px;
+	width: 0; 
+	height: 0; 
+	border-style:solid;
+	border-width:10px;
+	position:absolute;
+	right:3%;
+	bottom:100%;	
+	border-color:transparent transparent red transparent;
+}
+.foto{
+	display: inline-block;
+	vertical-align: top;
+	width: 80%;
+    padding: 0px;
+    height: 55%;
+}
+.infoNotificacion{
+	
+}
+.imgNotificacion{
+	float:left;
+	width:25%;
+	padding:0px;
+	margin:0px;
+	padding-top:2%;
+}
+.contenedor{
+	display:block;
+	padding-left:3%;
+	padding-right:8%;
+	height:75px;
+}
+.datosMenores{
+	
+	font-size:70%;
+}
+.clearfix{
+	clear:both;
+}
+.colorFechaInfo{
+	color: #999;
+	padding:0px;
+	margin:0px;
+}
+.iconoInfo{
+	padding:0px;
+	margin:0px;
+	margin-right:5px;
+	float:left;
+}
+hr { 
+  background-color: grey;
+  height: 1px;
+  margin:0px;
+  padding:0px; 
+}
+.iconoInfo .fa-comment{
+	color:green;
+}
+.iconoInfo .fa-ban{
+	color:red;
+}
+.footer{
+	color: black;
+	padding: 10px;
+	text-align: center;
+	text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+}
+.linkNotificacion:hover{
+	text-decoration:none;
+}
+.circulo{
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    border-radius: 50%;
+    background: #196A99;
+    width: 20px;
+    height: 20px;
+    top: 15%;
+    position: absolute;
+    text-align: center;
+    display:none;
+}
+.visto{
+	background-color:#D4D5D6;
+}
+#mensaje{
+	    font-size: 90%;
+}
