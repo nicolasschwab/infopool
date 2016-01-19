@@ -1,8 +1,9 @@
-/META-INF
-/actions
-/aop
-/implementacionesDAO
-/interfacesDAO
-/model
+/META-INF/
+/actions/
+/aop/
+/i18n/
+/implementacionesDAO/
+/interfacesDAO/
+/model/
 /struts.xml
-/util
+/util/

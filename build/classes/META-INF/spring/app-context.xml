@@ -29,9 +29,23 @@
 		</property>
 	</bean>
 
+	
+
 	<bean id="mailMail" class="actions.Mail">
 		<property name="mailSender" ref="mailSender" />
 	</bean>
+	
+	<bean id="notificacionDAO" class="implementacionesDAO.NotificacionDAOjpa" />
+	<bean id="notificacionAction" class="actions.NotificacionAction"
+		scope="prototype">
+		<property name="notificacionDAO" ref="notificacionDAO" />
+	</bean>
+	
+	<bean id="calificacionDAO" class="implementacionesDAO.CalificacionDAOjpa" />
+	<bean id="calificacionAction" class="actions.CalificacionAction"	scope="prototype">
+		<property name="calificacionDAO" ref="calificacionDAO" />
+	</bean>
+	
 
 	<bean id="usuarioDAO" class="implementacionesDAO.UsuarioDAOjpa" />
 	<bean id="loginAction" class="actions.LoginAction" scope="prototype">
@@ -68,6 +82,8 @@
 		scope="prototype">
 		<property name="solicitudViajeDAO" ref="solicitudViajeDAO" />
 	</bean>
+	
+
 	
 	<bean id="logAspect" class="aop.DenunciaAspect" />	
 	<aop:aspectj-autoproxy/>	

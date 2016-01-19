@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd" >
 <struts>
-	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />
+	<constant name="struts.custom.i18n.resources" value="i18n.i18n"></constant>
+	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />	
 	<constant name="struts.devMode" value="true" />
 	<package name="default" namespace="" extends="struts-default">
 
@@ -22,13 +23,23 @@
 			<result name="input">/registro.jsp</result>
 			<result name="conectado">/index.jsp</result>
 		</action>
-
+		
 		<action name="cerrarSesion" method="cerrarSesion" class="loginAction">			
 			<result name="success">/index.jsp</result>
 		</action>
 
 		<action name="miPerfil" method="miPerfil" class="loginAction">			
 			<result name="success">/ver_detalle_viajero.jsp</result>
+		</action>
+		
+		<action name="edicionUsuario" method="edicionUsuario" class="loginAction">
+			<result name="success">/editar_usuario.jsp</result>					
+		</action>
+		
+		<action name="editarUsuario" method="editarUsuario" class="loginAction">			
+			<result name="success" type="redirect">miPerfil</result>
+			<result name="input">/ver_detalle_viajero</result>
+			<result name="login">/index.jsp</result>						
 		</action>
 
 		<!-- Actions Eventos -->
@@ -66,6 +77,10 @@
 		<action name="editarEvento" method="editarEvento" class="eventoAction">
 			<result name="success" type="redirect">listarEventos</result>
 			<result name="input">/editar_evento.jsp</result>
+		</action>
+		
+		<action name="cancelarEvento" method="cancelarEvento" class="eventoAction">
+			<result name="success" type="redirect">listarEventos</result>
 		</action>
 
 		<!-- Actions Viajeros -->
@@ -136,12 +151,15 @@
 		</action>
 		
 		<action name="asociarEvento" method="asociarEvento" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${id}</param>
+			</result>
 			<result name="input">/asociar_evento.jsp</result>
 		</action>
 		
 		<action name="cancelarViaje" method="cancelarViaje" class="viajeAction">
-			<result name="success">listarViajes</result>
+			<result name="success" type="redirect">listarViajes</result>
 		</action>
 
 		<action name="buscarViaje" method="buscarViaje" class="viajeAction">
@@ -171,18 +189,36 @@
 		<!-- Actions SolicitudesViaje -->
 		<action name="solicitudesViaje" method="solicitudesViaje" class="solicitudViajeAction">
 			<result name="success">/solicitudes.jsp</result>
+			<result name="sinPermisos">/indexjsp/</result>
 		</action>
 
-		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">ver_detalle_viaje.jsp</result>
+		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">			
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${idViaje}</param>				
+			</result>
+			<result name="input">/ver_detalle_viaje.jsp</result>
 		</action>		
 
 		<action name="aceptarSolicitudViaje" method="aceptarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">/solicitudes.jsp</result>
+			<result name="success" type="redirect">
+				<param name="location">solicitudesViaje</param>
+				<param name="id">${idViaje}</param>						
+			</result>
+			<result name="input">/solicitudes.jsp</result>
 		</action>
 
 		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success">/solicitudes.jsp</result>
+			<result name="success" type="redirect">
+				<param name="location">solicitudesViaje</param>
+				<param name="id">${idViaje}</param>	
+			</result>
+			<result name="input">/solicitudes.jsp</result>
+		</action>	
+				
+		<action name="cancelacionSolicitudViaje" method="cancelacionSolicitudViaje" class="solicitudViajeAction">
+			<result name="success" type="redirect">solicitudesViaje</result>
+			<result name="input">/solicitudes.jsp</result>						
 		</action>	
 		
 		<!-- Actions Mensajes -->
@@ -220,11 +256,29 @@
 		</action>
 		
 		<action name="enviarMensajeForo" method="enviarMensajeForo" class="mensajeAction">
-			<result name="success" type="redirect">detalleViaje</result>
+			<result name="success" type="redirect">				
+				<param name="location">detalleViaje</param>
+				<param name="id">${viajeId}</param>
+			</result>
 			<result name="login" >/login.jsp</result>
 			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
+		<!-- Action Calificaciones -->		
+		<action name="calificaciones" method="calificaciones" class="calificacionAction">
+			<result name="success" >/registrar_calificaciones.jsp</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>			
+		</action>
+		
+		<action name="calificarViaje" method="calificarViaje" class="calificacionAction">
+			<result name="success" type="redirect">
+				<param name="location">calificaciones</param>
+				<param name="idViaje">${idViaje}</param>
+			</result>
+		</action>
+		
+		<!-- Action Notificaciones -->
 	</package>
 	
 	<package name="image" namespace="/" extends="struts-default">
@@ -234,6 +288,18 @@
 		
 		<action name="ImageAction" class="actions.ImageAction">
 			<result name="success" type="imageResult"></result>
+		</action>
+	</package>
+	<package name="notificacionesJson" namespace="/" extends="json-default">		
+		<action name="misNotificaciones" method="misNotificaciones" class="actions.NotificacionAction">
+			<result type="json">
+        		<param name="root">valoresJson</param>
+   			</result>
+		</action>
+		<action name="misNotificacionesActualizar" method="misNotificacionesActualizar" class="actions.NotificacionAction">
+			<result type="json">
+        		<param name="root">valoresJson</param>
+   			</result>
 		</action>
 	</package>
 </struts>
