@@ -73,4 +73,25 @@ public class UsuarioDAOjpa extends GenericDAOjpa<Usuario> implements UsuarioDAO 
 		}
 		return usr;
 	}
+
+	@Override
+	public Usuario encontrarPorId(String participante) {		
+		Usuario usr=null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where u.id= :id ";
+			Query consulta = em.createQuery(qString);
+			consulta.setParameter("id", Integer.parseInt(participante));
+			List<Usuario> resultado = (List<Usuario>) consulta.getResultList();
+			if (resultado.size() > 0){
+				usr = (Usuario) resultado.get(0);
+				usr.calificacionActual();				
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return usr;
+	}
 }

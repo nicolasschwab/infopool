@@ -647,11 +647,11 @@ public class ViajeAction extends ActionSupport {
 		usrlogueado = (Viajero) session.get("usrLogin");
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		if(request.getParameter("id")!=null){
-			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
 		}
 		else{
 			System.out.println("viaje id de la sesion");
-			viaje = viajeDAO.encontrar(Integer.parseInt(session.get("id").toString()));
+			viaje = viajeDAO.encontrarPorId(Integer.parseInt(session.get("id").toString()));
 			
 		}		
 		esPasajero = viaje.esPasajero(usrlogueado);
@@ -672,6 +672,19 @@ public class ViajeAction extends ActionSupport {
 		eventoLista = unEvento.listar();
 		viajeLista = viajeDAO.listarViajesNoAsociados(user,unEvento.encontrar(this.valor));
 		return SUCCESS;
+	}
+
+	public boolean validarPertenece(int viajeId, Viajero receptor) {
+		Viaje viaje=FactoryDAO.getViajeDAO().encontrarPorId(viajeId);
+		for(Viajero viajero :viaje.getPasajeros()){
+			if(viajero.getId()==receptor.getId()){
+				return true;
+			}
+		}
+		if(viaje.getConductor().getId()==receptor.getId()){
+			return true;
+		}
+		return false;
 	}
 
 }

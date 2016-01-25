@@ -6,4 +6,6 @@ public interface UsuarioDAO extends GenericDAO<Usuario> {
 	public Usuario existe(String usuario, String Clave);
 
 	public Usuario encontrarUsuarioSistema();
+
+	public Usuario encontrarPorId(String participante);
 }

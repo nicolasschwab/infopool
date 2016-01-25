@@ -20,23 +20,22 @@
 	            <h3 class="tituloSeccion"><s:text name="mensaje.misMensajes"/></h3>	            
 	            <table class="table" id="datatable">
 	              <thead>
-	                <tr>                  
-	                  <th><s:text name="mensaje.emisor" /></th>
+	                <tr>
+	                  <th><s:text name="mensaje.viajeA" /></th>                  
 	                  <th><s:text name="mensaje.receptor" /></th>                  
-	                  <th><s:text name="mensaje.asunto" /></th>
-	                  <th><s:text name="mensaje.fecha" /></th>
-	                  <th><s:text name="mensaje.estado" /></th>
+	                  <th><s:text name="mensaje.asunto" /></th>                
 	                  <th><s:text name="global.acciones" /></th>
 	                </tr>
 	              </thead>
 	              <tbody>
 	                <s:iterator value="mensajeLista" >
 						<tr>
-							<td><s:property value="emisor.nombre" /></td>
-							<td><s:property value="receptor.nombre" /></td>								
-							<td><s:property value="asunto" /></td>
-							<td><s:date name="fecha"  format="dd/MM/YYYY"/></td>
-							<td><s:property value="estado" /></td>								
+							<td><s:property value="viaje.direccionOrigen" /> - <s:property value="viaje.direccionDestino" /></td>
+							<td><s:iterator value="participantes" >
+									<s:property value="nombre" />
+								</s:iterator>
+							</td>								
+							<td><s:property value="asunto" /></td>															
 							<td>
 								<s:url id="verDetalle" action="detalle">
 									<s:param name="id" value="%{id}"></s:param>

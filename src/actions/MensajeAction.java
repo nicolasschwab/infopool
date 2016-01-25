@@ -50,6 +50,7 @@ public class MensajeAction extends ActionSupport {
 	private String respDetalle;
 	private String queNoSos;
 	private String notif="";
+	private Usuario user;
 	
 	
 	
@@ -137,12 +138,12 @@ public class MensajeAction extends ActionSupport {
 	public void setReceptor(Usuario receptor) {
 		this.receptor = receptor;
 	}	
-	public String listarMensajes(){
+	/*public String listarMensajes(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		Usuario user = (Usuario) session.get("usrLogin");
 		mensajeLista = mensajeDAO.listar(user);
 		return SUCCESS;
-	}
+	}*/
 	public MensajeDAOjpa getMensajeDAO() {
 		return mensajeDAO;
 	}
@@ -172,7 +173,7 @@ public class MensajeAction extends ActionSupport {
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		Usuario user = (Usuario) session.get("usrLogin");	
 		this.listaReceptores= new ArrayList<Viajero>(); 
-		Viaje unViaje=viajeDAO.encontrar(this.viajeId);
+		Viaje unViaje=viajeDAO.encontrarPorId(this.viajeId);
 		lista=(List<Viajero>) unViaje.getPasajeros();
 		lista.add(unViaje.getConductor());
 		for (Viajero viajero : lista) {	
@@ -183,7 +184,7 @@ public class MensajeAction extends ActionSupport {
 		}
 	}
 	
-	public String enviarMensaje(){
+	/*public String enviarMensaje(){
 		
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		Usuario user = (Usuario) session.get("usrLogin");
@@ -194,7 +195,7 @@ public class MensajeAction extends ActionSupport {
 					this.fecha=new Date();
 					this.estado="pendiente";
 					this.emisor=user;
-					Mensaje nuevoMensaje= new Mensaje (this.fecha, this.asunto,this.detalle,this.estado,this.emisor,this.receptor);
+					Mensaje nuevoMensaje= new Mensaje (this.fecha, this.asunto,this.detalle,this.estado,this.emisor);
 					this.mensajeDAO.registrar(nuevoMensaje);
 					NotificacionAction notificacion=new NotificacionAction();
 					this.mensajeLista=this.mensajeDAO.listar(user);
@@ -228,7 +229,7 @@ public class MensajeAction extends ActionSupport {
 				elMensaje=this.mensajeDAO.encontrar(this.id);
 				//cheque que el emisor o el receptor sea el ususario logueado
 				//para que alguien no pueda cambiar el ID y ver cualquier mensaje
-				if(elMensaje.getEmisor().getId()==user.getId() || elMensaje.getReceptor().getId()==user.getId())
+				if(elMensaje.getEmisor().getId()==user.getId() )
 				{				
 					if(elMensaje.getEmisor().getId()!=user.getId()){ // setea datos particulares para ver el mensaje siendo el receptor
 						this.queNoSos="Emisor";					
@@ -268,7 +269,7 @@ public class MensajeAction extends ActionSupport {
 		}
 
 	}
-	
+	*/
 	
 	
 	
@@ -281,7 +282,7 @@ public class MensajeAction extends ActionSupport {
 				this.receptor=this.viajeroDAO.encontrar(Integer.parseInt(this.receptorID));
 				this.emisor=user;
 				this.estado="pendiente";
-				Mensaje nuevoMensaje= new Mensaje (this.fecha, this.asunto,this.respDetalle,this.estado,this.emisor,this.receptor);
+				Mensaje nuevoMensaje= new Mensaje (this.fecha,this.respDetalle,this.estado,this.emisor);
 				this.mensajeDAO.registrar(nuevoMensaje);
 				Mensaje elMensaje;
 				elMensaje=this.mensajeDAO.encontrar(this.id);		
@@ -312,7 +313,7 @@ public class MensajeAction extends ActionSupport {
 	}
 	private String validarSesion(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
-		Usuario user = (Usuario) session.get("usrLogin");
+		user = (Usuario) session.get("usrLogin");
 		if (user != null) {
 			if (user.getPerfil().equals("viajero")) {				
 				return SUCCESS;
@@ -340,12 +341,24 @@ public class MensajeAction extends ActionSupport {
 				for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
 					Viajero elViajero=i.next();
 					if(elViajero.getId()!=user.getId()){
-						Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+viaje.getDireccionDestino()+" el "+viaje.getFechaInicio(),"pendiente",user,elViajero,true);
-						this.mensajeDAO.registrar(Mensaje);
+						//Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+viaje.getDireccionDestino()+" el "+viaje.getFechaInicio(),"pendiente",user,true);
+						//this.mensajeDAO.registrar(Mensaje);
 					}				
 				}
 			}
 		}
 		return resul;
+	}
+	public Mensaje crearMensaje(String detalleMensaje) {
+		String permisos=this.validarSesion();
+		if(permisos==SUCCESS){
+			this.fecha=new Date();
+			this.emisor=user;
+			this.estado="pendiente";
+			Mensaje nuevoMensaje= new Mensaje(this.fecha, detalleMensaje,this.estado,this.emisor);
+			FactoryDAO.getMensajeDAO().registrar(nuevoMensaje);
+			return nuevoMensaje;
+		}
+		return null;
 	}
 }

@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 @Entity
@@ -20,11 +21,9 @@ public abstract class Usuario {
 	private int id;	
 	@Column(unique=true)
 	private String usuario;
-	private String clave;	
-	@OneToMany(mappedBy = "receptor", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private Collection<Mensaje> misMensajesRecibidos;	
-	@OneToMany(mappedBy = "emisor", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private Collection<Mensaje> misMensajesEnviados;
+	private String clave;		
+	@ManyToMany(cascade={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy="participantes")
+	private Collection<Conversacion> misConversaciones;
 	@OneToMany(mappedBy = "receptor", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Notificacion> misNotificaciones;
 	
@@ -35,8 +34,7 @@ public abstract class Usuario {
 		super();
 		this.usuario = usuario;
 		this.clave = clave;
-		this.misMensajesRecibidos = new ArrayList<Mensaje>();
-		this.misMensajesEnviados = new ArrayList<Mensaje>();
+		this.misConversaciones = new ArrayList<Conversacion>();
 		this.misNotificaciones = new ArrayList<Notificacion>();
 	}
 	
@@ -64,17 +62,11 @@ public abstract class Usuario {
 	public void setClave(String clave) {
 		this.clave = clave;
 	}
-	public Collection<Mensaje> getMisMensajesRecibidos() {
-		return misMensajesRecibidos;
+	public Collection<Conversacion> getMisMensajesEnviados() {
+		return misConversaciones;
 	}
-	public void setMisMensajesRecibidos(Collection<Mensaje> misMensajesRecibidos) {
-		this.misMensajesRecibidos = misMensajesRecibidos;
-	}
-	public Collection<Mensaje> getMisMensajesEnviados() {
-		return misMensajesEnviados;
-	}
-	public void setMisMensajesEnviados(Collection<Mensaje> misMensajesEnviados) {
-		this.misMensajesEnviados = misMensajesEnviados;
+	public void setMisMensajesEnviados(Collection<Conversacion> misMensajesEnviados) {
+		this.misConversaciones = misMensajesEnviados;
 	}	
 	
 	public abstract String getPerfil();

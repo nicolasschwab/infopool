@@ -8,6 +8,7 @@
 <link href="css/dataTables.bootstrap.css" rel='stylesheet' type='text/css' />
 <link href="css/style.css" rel='stylesheet' type='text/css' />
 <link href="css/estilosNotificaciones.css" rel='stylesheet' type='text/css' />
+<link href="css/estilosConversacion.css" rel='stylesheet' type='text/css' />
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <script type="application/x-javascript"> 
     addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
@@ -21,6 +22,7 @@
 
 <!-- start plugins -->
 <script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/conversaciones.js"></script>
 <script type="text/javascript" src="js/bootstrap.js"></script>
 <script type="text/javascript" src="js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/moment.js"></script>
@@ -31,8 +33,7 @@
 <script type="text/javascript" src="js/modernizr.custom.28468.js"></script>
 <script type="text/javascript" src="js/jqBootstrapValidation.js"></script>
 <script type="text/javascript" src="js/funcionesAltaUsuario.js"></script>
-<script type="text/javascript" src="js/funcionesEditarUsuario.js"></script>
-<script type="text/javascript" src="js/editarUsuario.js"></script>
+
 
 <script type="text/javascript">
     $(function() {        

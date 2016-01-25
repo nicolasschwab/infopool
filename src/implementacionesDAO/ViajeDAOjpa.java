@@ -93,13 +93,14 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 		return resultado;
 	}
 	
-	public Viaje encontrar(Integer id){
+	public Viaje encontrarPorId(int id){
 		Viaje resultado = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
 			resultado = (Viaje) em.find(this.persistentClass, id);			
 			for (Viajero pasajero : resultado.getPasajeros()){
 				pasajero.getPerfil();
+				pasajero.getId();
 				pasajero.calificacionActual();
 			}
 			for (SolicitudViaje solicitud : resultado.getSolicitudes()) {

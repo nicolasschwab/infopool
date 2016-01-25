@@ -222,23 +222,31 @@
 		</action>	
 		
 		<!-- Actions Mensajes -->
-		<action name="listarMensajes" method="listarMensajes" class="mensajeAction">
+		<action name="listarConversaciones" method="listarConversaciones" class="conversacionAction">
 			<result name="success">/mensajes.jsp</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="responderMensaje" method="responderMensaje" class="conversacionAction">
+			<result name="success">/ver_detalle_conversacion.jsp</result>
+			<result name="login" >/login.jsp</result>
+			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
 		<action name="nuevoMensaje" method="nuevoMensaje" class="mensajeAction">
 			<result name="success">/registrar_mensaje.jsp</result>
 		</action>
 		
-		<action name="enviarMensaje" method="enviarMensaje" class="mensajeAction">
-			<result name="success"  type="redirect">listarMensajes</result>
+		<action name="enviarMensaje" method="crearConversacion" class="conversacionAction">
+			<result name="success"  type="redirect">listarConversaciones</result>
 			<result name="input">/registrar_mensaje.jsp</result>
 			<result name="login" >/login.jsp</result>
 			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="detalle" method="detalle" class="mensajeAction">
-			<result name="success">/ver_detalle_mensaje.jsp</result>			
+		<action name="detalle" method="detalle" class="conversacionAction">
+			<result name="success">/ver_detalle_conversacion.jsp</result>			
 			<result name="login" >/login.jsp</result>
 			<result name="sinpermisos" type="redirect" >cerrarSesion</result>
 		</action>

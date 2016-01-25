@@ -108,7 +108,9 @@ hr {
   background-color: grey;
   height: 1px;
   margin:0px;
-  padding:0px; 
+  padding:0px;
+  margin-left: 15px;
+  margin-right: 15px; 
 }
 .iconoInfo .fa-comment{
 	color:green;

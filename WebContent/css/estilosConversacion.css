@@ -1,0 +1,83 @@
+.informacion{
+	border-radius:0px;
+	border: 1px solid lightgrey;
+	text-align:center;
+	height: 58px;
+}
+.texto{
+	color:grey;
+	font-size:18px;
+	padding-bottom: 5px;
+    padding-top: 5px;
+}
+.mediano{
+	font-size:15px;
+}
+.subMenu{
+	padding-top:30px;
+}
+.nombre-mensaje{
+	float:left;
+}
+.fechaMensaje{
+	float:right;
+	color:lightgrey;
+	margin-top: -5px;
+}
+.nombreMensaje{
+	color:blue;
+	margin-top: -5px;
+}
+.detalleMensaje{
+	
+}
+.sinPadding{
+	padding:0px;
+}
+.sinPaddingBot{
+	padding-bottom:0px;
+}
+.paddingTop{
+	padding-top:10px;	
+}
+.mensajeLista{
+	list-style:none;
+	height:60px;
+}
+.nombreLista{
+	color:black;
+	font-size:18px;
+}
+.imagenLista{
+	height:50px;
+	width:50px;
+	float:left;
+	margin:7px;
+	margin-bottom:0px;
+}
+.border{
+	border-radius:0px;
+	border: 1px solid lightgrey;
+	width:100%;
+	float:left;
+}
+.paddingLeft{
+	padding-left:0px;
+}
+.datosMensaje{
+	float:left;
+}
+.ultimaFecha{
+	padding-top:2px;
+	float:right;
+	color:lightgrey;
+}
+.soyYoDetalle{
+	float:right;
+}
+.soyYoDatos{
+	float:left;
+}
+.seleccionado{
+	background: lightblue;
+}

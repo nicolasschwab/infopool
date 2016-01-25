@@ -35,6 +35,12 @@
 		<property name="mailSender" ref="mailSender" />
 	</bean>
 	
+	<bean id="conversacionDAO" class="implementacionesDAO.ConversacionDAOjpa" />
+	<bean id="conversacionAction" class="actions.ConversacionAction"
+		scope="prototype">
+		<property name="conversacionDAO" ref="conversacionDAO" />
+	</bean>
+	
 	<bean id="notificacionDAO" class="implementacionesDAO.NotificacionDAOjpa" />
 	<bean id="notificacionAction" class="actions.NotificacionAction"
 		scope="prototype">

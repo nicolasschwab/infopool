@@ -52,4 +52,7 @@ public class FactoryDAO {
 	public static EstadoNotificacionDAOjpa getEstadoNotificacionDAO(){
 		return new EstadoNotificacionDAOjpa();
 	}
+	public static ConversacionDAOjpa getConversacionDAO(){
+		return new ConversacionDAOjpa();
+	}
 }
