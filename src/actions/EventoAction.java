@@ -83,14 +83,12 @@ public class EventoAction extends ActionSupport {
 	}
 	
 	public String registroEvento(){
-		return SUCCESS;
+		return tienePermisosAdmin();
 	}
 	
 	public String registrarEvento() throws ParseException{
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
-		if (user != null) {	
-			if (user.equals("administrador")) {
+		String tienePermisoDeAdmin=this.tienePermisosAdmin();
+		if(tienePermisoDeAdmin==SUCCESS){
 				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
 					if(!eventoDAO.existeNombreEvento(this.getNombre())){					
 						EventoDAO evento = FactoryDAO.getEventoDAO();				
@@ -109,41 +107,39 @@ public class EventoAction extends ActionSupport {
 					return INPUT;
 				}
 			}
-			else{
-				return "sinpermisos";
-			}
-		}
-		else{
-			return "login";
-		}		
+		return tienePermisoDeAdmin;
 	}
 	
 	public String listarEventos(){
 		eventoLista = eventoDAO.listar();
-		return SUCCESS;
+		return tienePermisos();
 	}
 	
 	public String eventos(){
-		return SUCCESS;
+		return tienePermisosAdmin();
 	}
 	
 	public String detalleEvento(){
+		String tienePermisoDeAdmin=this.tienePermisosAdmin();
+		if(tienePermisoDeAdmin==SUCCESS){
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		return SUCCESS;
+		}
+		return tienePermisoDeAdmin;
 	}
 	
 	public String edicionEvento(){
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		return SUCCESS;
+		String tienePermisoDeAdmin=this.tienePermisosAdmin();
+		if(tienePermisoDeAdmin==SUCCESS){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+		}
+		return tienePermisoDeAdmin;
 	}
 	
 	public String editarEvento() throws ParseException{		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
-		if (user != null) {	
-			if (user.equals("administrador")) {
+		String tienePermisoDeAdmin=this.tienePermisosAdmin();
+		if(tienePermisoDeAdmin==SUCCESS){
 				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
 					HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 					evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
@@ -168,20 +164,12 @@ public class EventoAction extends ActionSupport {
 					return INPUT;
 				}
 			}
-			else{
-				return "sinpermisos";
-			}
-		}
-		else{
-			return "login";
-		}
+		return tienePermisoDeAdmin;
 	}
 	
-	public String cancelarEvento() throws ParseException{		
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
-		if (user != null) {	
-			if (user.equals("administrador")) {
+	public String cancelarEvento() throws ParseException{
+		String tienePermisoDeAdmin=this.tienePermisosAdmin();
+		if(tienePermisoDeAdmin==SUCCESS){
 				EventoDAO evento = FactoryDAO.getEventoDAO();
 				ViajeDAO viajedao = FactoryDAO.getViajeDAO();
 				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
@@ -196,13 +184,33 @@ public class EventoAction extends ActionSupport {
 				}
 				
 				//FALTA AVISAR A LOS VIAJES REGISTRADOS
+				
+			}
+		return tienePermisoDeAdmin;
+	}
+	
+	private String tienePermisosAdmin(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String user = (String) session.get("perfil");
+		if (user != null) {	
+			if (user.equals("administrador")) {
 				return SUCCESS;
 			}else{
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		}
 		else{
-			return "login";
+			return "sinPermisos";
+		}
+	}
+	private String tienePermisos(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String user = (String) session.get("perfil");
+		if (user != null) {	
+			return SUCCESS;
+		}
+		else{
+			return "sinPermisos";
 		}
 	}
 	

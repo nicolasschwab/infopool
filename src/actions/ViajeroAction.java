@@ -4,6 +4,7 @@ import implementacionesDAO.ViajeroDAOjpa;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -41,30 +42,57 @@ public class ViajeroAction extends ActionSupport{
 	
 	
 	public String viajeros(){
-		viajeroLista = viajeroDAO.listar();
-		return SUCCESS;
+		String tienePermisosAdimin=validarSesionAdmin();
+		if(tienePermisosAdimin==SUCCESS){
+			viajeroLista = viajeroDAO.listar();
+		}
+		return tienePermisosAdimin;
 	}
 	
 	public String detalleViajero(){
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viajero = viajeroDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		return SUCCESS;
+		String tienePermisosAdimin=validarSesionAdmin();
+		if(tienePermisosAdimin==SUCCESS){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			viajero = viajeroDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+		}
+		return tienePermisosAdimin;
 	}
 	
 	public String desactivarViajero(){
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viajero = viajeroDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		viajero.setActivo(false);
-		viajeroDAO.modificar(viajero);
-		return SUCCESS;
+		String tienePermisosAdimin=validarSesionAdmin();
+		if(tienePermisosAdimin==SUCCESS){	
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			viajero = viajeroDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			viajero.setActivo(false);
+			viajeroDAO.modificar(viajero);
+		}
+		return tienePermisosAdimin;
 	}
 	
 	public String activarViajero(){
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viajero = viajeroDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		viajero.setActivo(true);
-		viajeroDAO.modificar(viajero);
-		return SUCCESS;
+		String tienePermisosAdimin=validarSesionAdmin();
+		if(tienePermisosAdimin==SUCCESS){		
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			viajero = viajeroDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			viajero.setActivo(true);
+			viajeroDAO.modificar(viajero);
+		}
+		return tienePermisosAdimin;
+	}
+	
+	private String validarSesionAdmin(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		String user = (String) session.get("perfil");
+		if (user != null) {	
+			if (user.equals("administrador")) {
+				return SUCCESS;
+			}else{
+				return "sinPermisos";
+			}
+		}
+		else{
+			return "login";
+		}
 	}
 
 }

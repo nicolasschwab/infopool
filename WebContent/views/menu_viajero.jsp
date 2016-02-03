@@ -13,7 +13,7 @@
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 1) {%> class="active" <%}%>><a href="index.jsp"><span class="fa fa-home" aria-hidden="true"> </span> <s:text name="menu.inicio" /></a></li>                
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 2) {%> class="active" <%}%>><a href="miPerfil"><span class="fa fa-user" aria-hidden="true"> </span> <s:text name="menuviajero.perfil" /></a></li>
     <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 3) {%> class="active" <%}%>><a href="viajes"><span class="fa fa-road" aria-hidden="true"> </span> <s:text name="menuviajero.viajes" /></a></li>
-    <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 4) {%> class="active" <%}%>><a href="listarConversaciones"><span class="fa fa-comment" aria-hidden="true"> </span> <s:text name="menuviajero.mensajes" /></a></li>
+    <li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 4) {%> class="active" <%}%>><a href="detalle"><span class="fa fa-comment" aria-hidden="true"> </span> <s:text name="menuviajero.mensajes" /></a></li>
     <li><a href="#" onclick="javascript: mostrarNotificaciones()"><i class="fa fa-bell-o"></i><span id="circulo" class="circulo"></span></a></li>
   </ul>
   <div id="notificaciones">

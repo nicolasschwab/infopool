@@ -183,16 +183,24 @@
 							</s:if>
 							<s:else>								
 								<s:if test="%{esPasajero!=true}">
-									<s:url id="registroSolicitudURL" action="registroSolicitudViaje">
-										<s:param name="id" value="%{id}"></s:param>
-									</s:url>
-									<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.registrarsolicitudbtn" /></s:a>
+									<s:if test="%{tieneSolicitud!=true}">									
+										<s:url id="registroSolicitudURL" action="registroSolicitudViaje">
+											<s:param name="id" value="%{id}"></s:param>
+										</s:url>
+										<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-block" role="button"><s:text name="viaje.registrarsolicitudbtn" /></s:a>
+									</s:if>
+									<s:else>
+										<s:url id="cancelacionSolicitudViaje" action="cancelacionSolicitudViaje">
+											<s:param name="id" value="%{id}"></s:param>
+										</s:url>
+										<s:a href="%{cancelacionSolicitudViaje}" cssClass="btn btn-primary btn-block"><s:text name="viaje.eliminarsolicitudbtn" /></s:a>
+									</s:else>
 								</s:if>					
 								<s:else>						
-									<s:url id="cancelacionSolicitudViaje" action="cancelacionSolicitudViaje">
+									<s:url id="cancelarSubscripcionViaje" action="cancelarSubscripcionViaje">
 										<s:param name="id" value="%{id}"></s:param>
 									</s:url>
-									<a href="%{cancelacionSolicitudViaje}" class="btn btn-primary btn-block"><s:text name="viaje.eliminarsolicitudbtn" /></a>
+									<a href="%{cancelarSubscripcionViaje}" class="btn btn-primary btn-block"><s:text name="viaje.cancelarSubscripcion" /></a>
 									<s:url id="registroCalificar" action="calificaciones">
 										<s:param name="idViaje" value="%{id}"></s:param>
 									</s:url>						

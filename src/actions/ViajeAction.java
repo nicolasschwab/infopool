@@ -3,6 +3,7 @@ package actions;
 import implementacionesDAO.EventoDAOjpa;
 import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.ViajeDAOjpa;
+import interfacesDAO.EventoDAO;
 import interfacesDAO.ViajeDAO;
 
 import java.text.ParseException;
@@ -49,7 +50,7 @@ public class ViajeAction extends ActionSupport {
 	private String[] categorias;
 	private String rol;
 	private List<Evento> eventoLista = new ArrayList<Evento>();
-	private ViajeDAOjpa viajeDAO;
+	private ViajeDAO viajeDAO;
 	private List<Viaje> viajeListaConductor = new ArrayList<Viaje>();
 	private List<Viaje> viajeListaPasajero = new ArrayList<Viaje>();
 	private List<Viaje> viajeLista;
@@ -61,17 +62,25 @@ public class ViajeAction extends ActionSupport {
 	private String dirOrigen;
 	private String dirDestino;
 	private Viaje viaje = new Viaje();	
-	private Viajero usrlogueado;
+	private Usuario usrlogueado;
 	private List<ForoMensajes> foroMensajes;
 	private String notif="";
 	private boolean esPasajero;
-	
+	private boolean tieneSolicitud;
 	/*
 	 * Setter y Getters
 	 */
 	
 	public int getActivo() {
 		return activo;
+	}
+
+	public boolean isTieneSolicitud() {
+		return tieneSolicitud;
+	}
+
+	public void setTieneSolicitud(boolean tieneSolicitud) {
+		this.tieneSolicitud = tieneSolicitud;
 	}
 
 	public String getNotif() {
@@ -214,11 +223,11 @@ public class ViajeAction extends ActionSupport {
 		this.eventoLista = eventoLista;
 	}
 
-	public ViajeDAOjpa getViajeDAO() {
+	public ViajeDAO getViajeDAO() {
 		return viajeDAO;
 	}
 
-	public void setViajeDAO(ViajeDAOjpa viajeDAO) {
+	public void setViajeDAO(ViajeDAO viajeDAO) {
 		this.viajeDAO = viajeDAO;
 	}
 
@@ -318,11 +327,11 @@ public class ViajeAction extends ActionSupport {
 		this.diasSemana = diasSemana;
 	}
 
-	public Viajero getUsrlogueado() {
+	public Usuario getUsrlogueado() {
 		return usrlogueado;
 	}
 
-	public void setUsrlogueado(Viajero usrlogueado) {
+	public void setUsrlogueado(Usuario usrlogueado) {
 		this.usrlogueado = usrlogueado;
 	}
 	
@@ -433,7 +442,7 @@ public class ViajeAction extends ActionSupport {
 					return INPUT;
 				}
 			} else {
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		} else {
 			return "login";
@@ -441,12 +450,16 @@ public class ViajeAction extends ActionSupport {
 	}
 	
 	public String edicionViaje(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Viajero) session.get("usrLogin");
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
-		esPasajero = viaje.esPasajero(usrlogueado);
-		return SUCCESS;
+		if(this.validarSesion()){	
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			usrlogueado = (Viajero) session.get("usrLogin");
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
+			esPasajero = viaje.esPasajero(usrlogueado);
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
 	}
 	
 	public String editarViaje() throws ParseException {					
@@ -542,149 +555,222 @@ public class ViajeAction extends ActionSupport {
 					return INPUT;
 				}
 			} else {
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		} else {
 			return "login";
 		}
-		//FALTA LA PARTE DE AVISAR A LOS PASAJEROS DE LA MODIFICACION
 	}
 	
 	public String asociacionEvento(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Viajero) session.get("usrLogin");
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
-		eventoLista = FactoryDAO.getEventoDAO().listar();
-		return SUCCESS;
+		if(this.validarSesion()){
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			usrlogueado = (Viajero) session.get("usrLogin");
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
+			eventoLista = FactoryDAO.getEventoDAO().listar();
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
 	}
 	
 	public String asociarEvento(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Viajero) session.get("usrLogin");
-		viaje = viajeDAO.encontrar(this.id);
-		EventoDAOjpa eventodao = new EventoDAOjpa();
-		Evento evento = (Evento) eventodao.encontrar(this.evento_id);		
-		//Actualizamos el viaje con los valores del evento
-		viaje.setEvento(evento);
-		viaje.setDiasSemana(null);
-		viaje.setDireccionDestino(evento.getUbicacion());
-		viaje.setFechaInicio(evento.getFechaHora());
-		viaje.setFechaFin(null);
-		viajeDAO.modificar(viaje);
-		return SUCCESS;
+		if(this.validarSesion()){		
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			usrlogueado = (Viajero) session.get("usrLogin");
+			viaje = viajeDAO.encontrar(this.id);
+			EventoDAO eventodao = FactoryDAO.getEventoDAO();
+			Evento evento = (Evento) eventodao.encontrar(this.evento_id);		
+			//Actualizamos el viaje con los valores del evento
+			viaje.setEvento(evento);
+			viaje.setDiasSemana(null);
+			viaje.setDireccionDestino(evento.getUbicacion());
+			viaje.setFechaInicio(evento.getFechaHora());
+			viaje.setFechaFin(null);
+			viajeDAO.modificar(viaje);
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
 	}
 	
 	public String cancelarViaje(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Viajero) session.get("usrLogin");
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		viaje.setActivo(false);
-		viajeDAO.modificar(viaje);
-		NotificacionAction notificacion=new NotificacionAction();
-		for (Iterator<Viajero> i = viaje.getPasajeros().iterator(); i.hasNext(); ){
-			Viajero elViajero=i.next();			
-			notificacion.crearNotificacionModificacionViaje(elViajero, viaje);
+		if(this.validarSesion()){		
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			usrlogueado = (Viajero) session.get("usrLogin");
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			viaje.setActivo(false);
+			viajeDAO.modificar(viaje);
+			NotificacionAction notificacion=new NotificacionAction();
+			for (Iterator<Viajero> i = viaje.getPasajeros().iterator(); i.hasNext(); ){
+				Viajero elViajero=i.next();			
+				notificacion.crearNotificacionModificacionViaje(elViajero, viaje);
+			}
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
 		}
-		return SUCCESS;
 	}
 	
-	public String buscarViajePorEvento() {		
-		EventoDAOjpa eventodao = new EventoDAOjpa();
-		System.out.println("evento elegido" + this.evento_id);
-		if (this.evento_id != 0){
-			Evento evento = (Evento) eventodao.encontrar(this.evento_id);
-			eventoLista = eventodao.listar();				
-			viajeLista = (List<Viaje>) evento.getViajes();
+	public String buscarViajePorEvento() {
+		if(this.validarSesion()){		
+			EventoDAO eventodao = FactoryDAO.getEventoDAO();
+			if (this.evento_id != 0){
+				Evento evento = (Evento) eventodao.encontrar(this.evento_id);
+				eventoLista = eventodao.listar();				
+				viajeLista = (List<Viaje>) evento.getViajes();
+			}
+			else{
+				addFieldError("loginError", "No existen eventos");			
+			}
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
 		}
-		else{
-			addFieldError("loginError", "No existen eventos");			
-		}
-		return SUCCESS;			
 	}
 	
 	public String listarPorFecha() throws ParseException {
-		EventoDAOjpa unEvento = new EventoDAOjpa();
-		eventoLista = unEvento.listar();
-		if (this.getFecha() != null && !this.getFecha().equals("")) {
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date fecha = sdf.parse(this.getFecha());
-			ViajeDAOjpa unViaje = new ViajeDAOjpa();
-			viajeLista = unViaje.buscarPorFecha(fecha);
-			return SUCCESS;
-		} else {
-			addFieldError("loginError", "Por favor seleccione una fecha");
-			return SUCCESS;
+		if(this.validarSesion()){			
+			EventoDAO unEvento = FactoryDAO.getEventoDAO();
+			eventoLista = unEvento.listar();
+			if (this.getFecha() != null && !this.getFecha().equals("")) {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date fecha = sdf.parse(this.getFecha());
+				ViajeDAO unViaje = FactoryDAO.getViajeDAO();
+				viajeLista = unViaje.buscarPorFecha(fecha);
+				return SUCCESS;
+			} else {
+				addFieldError("loginError", "Por favor seleccione una fecha");
+				return SUCCESS;
+			}
+		}else{
+			return "sinPermisos";
 		}
 	}
 
 	public String listarPorDireccion() {
-		EventoDAOjpa unEvento = new EventoDAOjpa();
-		eventoLista = unEvento.listar();
-		if (this.direccionOrigen != null && !this.direccionOrigen.equals("")) {
-			if (this.direccionDestino != null && !this.direccionDestino.equals("")) {
-				viajeLista = this.viajeDAO.buscarPorDireccion(this.getDireccionOrigen(), this.getDireccionDestino());
+		if(this.validarSesion()){			
+			EventoDAO unEvento = FactoryDAO.getEventoDAO();
+			eventoLista = unEvento.listar();
+			if (this.direccionOrigen != null && !this.direccionOrigen.equals("")) {
+				if (this.direccionDestino != null && !this.direccionDestino.equals("")) {
+					viajeLista = this.viajeDAO.buscarPorDireccion(this.getDireccionOrigen(), this.getDireccionDestino());
+				} else {
+					addFieldError("loginError", "Por favor ingrese la direccion destino");
+				}
 			} else {
-				addFieldError("loginError", "Por favor ingrese la direccion destino");
+				addFieldError("loginError", "Por favor ingrese la direccion origen");
 			}
-		} else {
-			addFieldError("loginError", "Por favor ingrese la direccion origen");
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
 		}
-		return SUCCESS;
 	}
 
 	public String listarViajes() {
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		Usuario user = (Usuario) session.get("usrLogin");
-		viajeListaConductor = viajeDAO.listarViajesConductor(user);
-		viajeListaPasajero = viajeDAO.listarViajesPasajero(user);
-		return SUCCESS;
+		if(this.validarSesion()){		
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			Usuario user = (Usuario) session.get("usrLogin");
+			viajeListaConductor = viajeDAO.listarViajesConductor(user);
+			viajeListaPasajero = viajeDAO.listarViajesPasajero(user);
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
 	}
 
 	public String detalleViaje() {
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		usrlogueado = (Viajero) session.get("usrLogin");
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		if(request.getParameter("id")!=null){
-			viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
+		if(this.validarSesion()){			
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			usrlogueado = (Viajero) session.get("usrLogin");
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			if(request.getParameter("id")!=null){
+				viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
+			}
+			else{
+				System.out.println("viaje id de la sesion");
+				viaje = viajeDAO.encontrarPorId(Integer.parseInt(session.get("id").toString()));
+				
+			}		
+			esPasajero = viaje.esPasajero(usrlogueado);
+			if (!esPasajero){
+				esPasajero = viaje.esConductor(usrlogueado);
+			}
+			this.setTieneSolicitud(false);
+			if(new SolicitudViajeAction().tieneSolicitud(viaje,usrlogueado)){
+				this.setTieneSolicitud(true);
+			}
+			foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
+			if(this.getNotif()!=""){
+				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+			}		
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
 		}
-		else{
-			System.out.println("viaje id de la sesion");
-			viaje = viajeDAO.encontrarPorId(Integer.parseInt(session.get("id").toString()));
-			
-		}		
-		esPasajero = viaje.esPasajero(usrlogueado);
-		if (!esPasajero){
-			esPasajero = viaje.esConductor(usrlogueado);
-		}		
-		foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
-		if(this.getNotif()!=""){
-			new NotificacionAction().cambiarEstadoAVisitado(this.notif);
-		}		
-		return SUCCESS;
 	}
 
 	public String listarTodosLosViajes() {
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		Usuario user = (Usuario) session.get("usrLogin");
-		EventoDAOjpa unEvento = new EventoDAOjpa();
-		eventoLista = unEvento.listar();
-		viajeLista = viajeDAO.listarViajesNoAsociados(user,unEvento.encontrar(this.valor));
-		return SUCCESS;
+		if(this.validarSesion()){		
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			Usuario user = (Usuario) session.get("usrLogin");
+			EventoDAO unEvento = FactoryDAO.getEventoDAO();
+			eventoLista = unEvento.listar();
+			viajeLista = viajeDAO.listarViajesNoAsociados(user,unEvento.encontrar(this.valor));
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
 	}
 
 	public boolean validarPertenece(int viajeId, Viajero receptor) {
-		Viaje viaje=FactoryDAO.getViajeDAO().encontrarPorId(viajeId);
-		for(Viajero viajero :viaje.getPasajeros()){
-			if(viajero.getId()==receptor.getId()){
+		if(this.validarSesion()){		
+			Viaje viaje=FactoryDAO.getViajeDAO().encontrarPorId(viajeId);
+			for(Viajero viajero :viaje.getPasajeros()){
+				if(viajero.getId()==receptor.getId()){
+					return true;
+				}
+			}
+			if(viaje.getConductor().getId()==receptor.getId()){
 				return true;
 			}
+			return false;
+		}else{
+			return false;
 		}
-		if(viaje.getConductor().getId()==receptor.getId()){
-			return true;
+	}
+	
+	public String cancelarSubscripcionViaje(){
+		if(this.validarSesion()){
+			if(this.validarPertenece(this.getId(), (Viajero)this.getUsrlogueado())){
+				Viaje viaje =this.getViajeDAO().encontrarPorId(this.getId());
+				if(new SolicitudViajeAction().eliminarSolicitud(viaje,(Viajero)this.getUsrlogueado())){
+					List<Viajero> pasajeros=(List<Viajero>) viaje.getPasajeros();
+					for(Viajero viajero :pasajeros){
+						if(viajero.getId()== ((Viajero)this.getUsrlogueado()).getId()){
+							viaje.getPasajeros().remove(viajero);
+						}
+					}
+					this.getViajeDAO().modificar(viaje);
+					return SUCCESS;
+				}
+				return "sinPermisos";				
+			}
+			return "sinPermisos";
+		}else{
+			return "sinPermisos";
 		}
-		return false;
 	}
 
+	private boolean validarSesion(){
+		Map<String, Object> session = ActionContext.getContext().getSession();
+		this.setUsrlogueado(null);
+		this.setUsrlogueado((Usuario) session.get("usrLogin"));
+		if(this.getUsrlogueado()==null){
+			return false;
+		}
+		return true;
+	}
 }

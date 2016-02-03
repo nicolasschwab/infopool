@@ -75,9 +75,9 @@
 			    								<s:if test="%{#parameters.id[0]==conversacion.id}">
 			    									<div class="mensajeLista seleccionado">
 			    								</s:if>	    							
-					    						<s:if test="%{#parameters.id[0]!=conversacion.id}">
+					    						<s:else>
 					    							<div class="mensajeLista">
-			    								</s:if>
+			    								</s:else>
 			    								
 					    							<div class="imagenLista">
 					    								<img src="<s:url action="ImageAction">
@@ -164,15 +164,17 @@
 											<div class="clearfix"></div>
 										</s:iterator>
 									</div>
-									<div class="panel-footer">
-										<div>
-											<s:form role="form" action="responderMensaje">
-												<s:hidden  name="id" value="%{conversacion.id}"> </s:hidden>
-												<input id="btn-input" name="detalle" type="text" class="form-control input-sm chat_input" placeholder="<s:text name='viaje.chatmsg' />" /> 
-												<span class="input-group-btn"><s:submit cssClass="btn btn-primary" value="%{getText('global.enviar')}"/></span>
-											</s:form>
+									<s:if test="%{conversacion!=null}">
+										<div class="panel-footer">
+											<div>
+												<s:form role="form" action="responderMensaje">
+													<s:hidden  name="id" value="%{conversacion.id}"> </s:hidden>
+													<input id="btn-input" name="detalle" type="text" class="form-control input-sm chat_input" placeholder="<s:text name='viaje.chatmsg' />" /> 
+													<span class="input-group-btn"><s:submit cssClass="btn btn-primary" value="%{getText('global.enviar')}"/></span>
+												</s:form>
+											</div>
 										</div>
-									</div>
+									</s:if>
 								</div>
 							</div>
 						</div>

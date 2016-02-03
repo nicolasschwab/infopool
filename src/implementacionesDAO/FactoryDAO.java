@@ -43,16 +43,16 @@ public class FactoryDAO {
 	public static ViajeroDAO getViajeroDAO() {
 		return new ViajeroDAOjpa();
 	}
-	public static AutoDAOjpa getAutoDAO(){
+	public static AutoDAO getAutoDAO(){
 		return new AutoDAOjpa();
 	}
-	public static NotificacionDAOjpa getNotificacionDAO(){
+	public static NotificacionDAO getNotificacionDAO(){
 		return new NotificacionDAOjpa();
 	}
-	public static EstadoNotificacionDAOjpa getEstadoNotificacionDAO(){
+	public static EstadoNotificacionDAO getEstadoNotificacionDAO(){
 		return new EstadoNotificacionDAOjpa();
 	}
-	public static ConversacionDAOjpa getConversacionDAO(){
+	public static ConversacionDAO getConversacionDAO(){
 		return new ConversacionDAOjpa();
 	}
 }

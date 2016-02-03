@@ -136,7 +136,7 @@ public class CalificacionAction extends ActionSupport {
 				return SUCCESS;
 			}		
 			else {
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		} else {
 			return "login";

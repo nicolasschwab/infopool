@@ -111,15 +111,18 @@ public class MensajeAction extends ActionSupport {
 	public void setMensajeDAO(MensajeDAOjpa mensajeDAO) {
 		this.mensajeDAO = mensajeDAO;
 	}
-	public String verDetalleMensaje(){		
-		return SUCCESS;
+	public String verDetalleMensaje(){
+		return this.validarSesion();		
 	}
-	public String nuevoMensaje(){	
+	public String nuevoMensaje(){
+		String tienePermisos=this.validarSesion();
+		if(tienePermisos==SUCCESS){		
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		String[] elId= request.getParameterValues("id");
 		this.setViajeId(Integer.parseInt(elId[0]));
 		this.listaUsuarios();
-		return SUCCESS;
+		}
+		return tienePermisos;
 	}	
 	
 	private void listaUsuarios(){
@@ -154,7 +157,7 @@ public class MensajeAction extends ActionSupport {
 				return SUCCESS;
 			}		
 			else {
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		} else {
 			return "login";

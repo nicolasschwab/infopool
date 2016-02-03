@@ -6,20 +6,13 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.support.FactoryBeanRegistrySupport;
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
-
-import implementacionesDAO.ConversacionDAOjpa;
 import implementacionesDAO.FactoryDAO;
 import interfacesDAO.ConversacionDAO;
 import interfacesDAO.UsuarioDAO;
-import interfacesDAO.ViajeDAO;
 import model.Conversacion;
 import model.Mensaje;
-import model.Usuario;
-import model.Viaje;
 import model.Viajero;
 
 public class ConversacionAction  extends ActionSupport{
@@ -29,7 +22,7 @@ public class ConversacionAction  extends ActionSupport{
 	private List<Mensaje> mensajes;
 	private String receptorID;
 	private String asunto;
-	private ConversacionDAOjpa conversacionDAO= FactoryDAO.getConversacionDAO();
+	private ConversacionDAO conversacionDAO= FactoryDAO.getConversacionDAO();
 	private int viajeId;
 	private String detalle;
 	private Date fechaUltimaModificacion;
@@ -52,10 +45,10 @@ public class ConversacionAction  extends ActionSupport{
 	public void setDetalle(String detalleMensaje) {
 		this.detalle = detalleMensaje;
 	}
-	public ConversacionDAOjpa getConversacionDAO() {
+	public ConversacionDAO getConversacionDAO() {
 		return conversacionDAO;
 	}
-	public void setConversacionDAO(ConversacionDAOjpa conversacionDAO) {
+	public void setConversacionDAO(ConversacionDAO conversacionDAO) {
 		this.conversacionDAO = conversacionDAO;
 	}
 	public int getId() {
@@ -187,19 +180,26 @@ public class ConversacionAction  extends ActionSupport{
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
 			this.setConversacion(conversacionDAO.encontrarPorId(id));
-			boolean pertenece=false;
-			for(Viajero viajero :this.getConversacion().getParticipantes()){
-				if(viajero.getId()==user.getId()){
-					pertenece=true;
-					this.listarConversaciones();				
-					for(Conversacion conversacion : this.getMensajeLista()){
-						Mensaje ultimoMensaje=(Mensaje) conversacion.getMensajes().toArray()[conversacion.getMensajes().size()-1];
-						this.getConversacionVista().add(new conversacionVista(conversacion,ultimoMensaje));
+			if(this.getConversacion()!=null){
+				boolean pertenece=false;
+				for(Viajero viajero :this.getConversacion().getParticipantes()){
+					if(viajero.getId()==user.getId()){
+						pertenece=true;
 					}
 				}
+				if(!pertenece){
+					this.setConversacion(null);
+				}
+			}			
+			this.listarConversaciones();				
+			for(Conversacion conversacion : this.getMensajeLista()){
+				Mensaje ultimoMensaje=(Mensaje) conversacion.getMensajes().toArray()[conversacion.getMensajes().size()-1];
+				this.getConversacionVista().add(new conversacionVista(conversacion,ultimoMensaje));
 			}
-			if(!pertenece){
-				this.setConversacion(null);
+			if(this.getConversacion()==null){
+				if(this.getMensajeLista().size()>0){
+					this.setConversacion(this.getMensajeLista().get(0));
+				}				
 			}
 		}
 		return estaLogueado;
@@ -212,7 +212,7 @@ public class ConversacionAction  extends ActionSupport{
 				return SUCCESS;
 			}		
 			else {
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		} else {
 			return "login";

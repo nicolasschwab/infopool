@@ -14,6 +14,7 @@ import com.opensymphony.xwork2.ActionSupport;
 
 import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.NotificacionDAOjpa;
+import interfacesDAO.NotificacionDAO;
 import interfacesDAO.UsuarioDAO;
 import model.Notificacion;
 import model.Usuario;
@@ -30,7 +31,7 @@ public class NotificacionAction extends ActionSupport {
 	private Collection<Notificacion> notificacionesDelUsuario;
 	private List<NotifiacionVista> valoresJson= new ArrayList<NotifiacionVista>();
 	private Usuario usrLogueado;
-	public NotificacionDAOjpa notificacionDAO=FactoryDAO.getNotificacionDAO();;
+	public NotificacionDAO notificacionDAO=FactoryDAO.getNotificacionDAO();
 	private String[] argumentos= new String[3];
 
 	public List<NotifiacionVista> getValoresJson() {
@@ -41,11 +42,11 @@ public class NotificacionAction extends ActionSupport {
 		this.valoresJson = valoresJson;
 	}
 	
-	public NotificacionDAOjpa getNotificacionDAO() {
+	public NotificacionDAO getNotificacionDAO() {
 		return notificacionDAO;
 	}
 	
-	public void setNotificacionDAO(NotificacionDAOjpa notificacionDAO) {
+	public void setNotificacionDAO(NotificacionDAO notificacionDAO) {
 		this.notificacionDAO = notificacionDAO;
 	}
 	
@@ -110,6 +111,8 @@ public class NotificacionAction extends ActionSupport {
 		if(this.validarLogin()){
 			this.setNotificacionesDelUsuario(notificacionDAO.ListarPorUsuario(this.getUsrLogueado()));
 			this.prepararRespuestaAjax();
+		}else{
+			return "sinPermisos";
 		}
 		return SUCCESS;
 	}
@@ -127,6 +130,8 @@ public class NotificacionAction extends ActionSupport {
 				}
 			}
 			this.prepararRespuestaAjax();
+		}else{
+			return "sinPermisos";
 		}
 		return SUCCESS;
 	}

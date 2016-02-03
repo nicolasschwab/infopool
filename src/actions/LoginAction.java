@@ -1,7 +1,6 @@
 package actions;
 
 import implementacionesDAO.FactoryDAO;
-import implementacionesDAO.UsuarioDAOjpa;
 import interfacesDAO.AutoDAO;
 import interfacesDAO.UsuarioDAO;
 
@@ -75,7 +74,7 @@ public class LoginAction extends ActionSupport {
 
 	
 
-	public UsuarioDAOjpa usuarioDAO;
+	public UsuarioDAO usuarioDAO;
 	private Viajero usrlogueado;
 	
 
@@ -215,11 +214,11 @@ public class LoginAction extends ActionSupport {
 		this.fperfilUsuarioFileName = fperfilUsuarioFileName;
 	}
 
-	public UsuarioDAOjpa getUsuarioDAO() {
+	public UsuarioDAO getUsuarioDAO() {
 		return usuarioDAO;
 	}
 
-	public void setUsuarioDAO(UsuarioDAOjpa usuarioDAO) {
+	public void setUsuarioDAO(UsuarioDAO usuarioDAO) {
 		this.usuarioDAO = usuarioDAO;
 	}
 	public String getVistaMarca() {
@@ -425,16 +424,22 @@ public class LoginAction extends ActionSupport {
 	}
 
 	public String miPerfil() throws IOException {
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		setUsrlogueado((Viajero) session.get("usrLogin"));
-		if(this.getNotif()!=""){
-			new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+		if(this.estaLogeuado()){		
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			setUsrlogueado((Viajero) session.get("usrLogin"));
+			if(this.getNotif()!=""){
+				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+			}
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
 		}
-		return SUCCESS;
 	}
 
 	public String cerrarSesion() {
-		ActionContext.getContext().getSession().clear();
+		if(this.estaLogeuado()){		
+			ActionContext.getContext().getSession().clear();			
+		}
 		return SUCCESS;
 	}
 
@@ -455,9 +460,13 @@ public class LoginAction extends ActionSupport {
 	}
 	
 	public String edicionUsuario(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		setUsrlogueado((Viajero) session.get("usrLogin"));		
-		return SUCCESS;
+		if(this.estaLogeuado()){		
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			setUsrlogueado((Viajero) session.get("usrLogin"));		
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
 	}
 	
 	public String editarUsuario() throws ParseException {	

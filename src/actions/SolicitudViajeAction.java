@@ -5,6 +5,7 @@ import implementacionesDAO.SolicitudViajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
 import implementacionesDAO.ViajeroDAOjpa;
 import interfacesDAO.EventoDAO;
+import interfacesDAO.SolicitudViajeDAO;
 import interfacesDAO.ViajeDAO;
 import interfacesDAO.ViajeroDAO;
 
@@ -37,14 +38,10 @@ public class SolicitudViajeAction extends ActionSupport{
 	private Viajero viajero;
 	private SolicitudViaje solicitud;
 	private int idViaje;
-
 	private SolicitudViaje solicitudviaje;
-	private List<SolicitudViaje> solicitudesviaje = new ArrayList<SolicitudViaje>();
-	
-	private SolicitudViajeDAOjpa solicitudViajeDAO;	
-	private String notif="";
-	
-	
+	private List<SolicitudViaje> solicitudesviaje = new ArrayList<SolicitudViaje>();	
+	private SolicitudViajeDAO solicitudViajeDAO= FactoryDAO.getSolicitudViajeDAO();	
+	private String notif="";	
 	
 	public String getNotif() {
 		return notif;
@@ -124,29 +121,33 @@ public class SolicitudViajeAction extends ActionSupport{
 		this.solicitudesviaje = solicitudesviaje;
 	}
 
-	public SolicitudViajeDAOjpa getSolicitudViajeDAO() {
+	public SolicitudViajeDAO getSolicitudViajeDAO() {
 		return solicitudViajeDAO;
 	}
 
-	public void setSolicitudViajeDAO(SolicitudViajeDAOjpa solicitudDAO) {
+	public void setSolicitudViajeDAO(SolicitudViajeDAO solicitudDAO) {
 		this.solicitudViajeDAO = solicitudDAO;
 	}
 	
 	
 	public String solicitudesViaje(){
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		Usuario user = (Usuario) session.get("usrLogin");
-		if(viaje.getConductor().getId()==user.getId()){
-			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
-			if(this.getNotif()!=""){
-				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+		String tienePermisos=this.validarSesion();
+		if(tienePermisos==SUCCESS){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			ViajeDAO viajeDAO = FactoryDAO.getViajeDAO();
+			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			Map<String, Object> session = ActionContext.getContext().getSession();
+			Usuario user = (Usuario) session.get("usrLogin");
+			if(viaje.getConductor().getId()==user.getId()){
+				solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+				if(this.getNotif()!=""){
+					new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+				}
+				return SUCCESS;
 			}
-			return SUCCESS;
+			return "sinPermisos";
 		}
-		return "sinPermisos";
+		return tienePermisos;
 	}
 	
 	public String registroSolicitudViaje(){		
@@ -177,7 +178,7 @@ public class SolicitudViajeAction extends ActionSupport{
 				}
 			}
 			else{
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		}
 		else{
@@ -185,79 +186,112 @@ public class SolicitudViajeAction extends ActionSupport{
 		}	
 	}
 		
-	public String aceptarSolicitudViaje(){		
-		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
-		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
-		idViaje = viaje.getId();	
-		if (viaje.getAsientos() > viaje.getPasajeros().size()){
-			solicitud.setEstado(EstadoSolicitud.ACEPTADO);
-			solicitudViajeDAO.modificar(solicitud);
-			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
-			viajero = solicitud.getViajero();
-			viajero.getMisViajesPasajero().add(viaje);		
-			viajeroDAO.modificar(viajero);
-			NotificacionAction notificacion=new NotificacionAction();
-			notificacion.crearNotificacionSolicitudAceptar(viajero, viaje);
-			return SUCCESS;
+	public String aceptarSolicitudViaje(){
+		String tienePermisos=this.validarSesion();
+		if(tienePermisos==SUCCESS){
+			ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+			ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
+			idViaje = viaje.getId();	
+			if (viaje.getAsientos() > viaje.getPasajeros().size()){
+				solicitud.setEstado(EstadoSolicitud.ACEPTADO);
+				solicitudViajeDAO.modificar(solicitud);
+				solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+				viajero = solicitud.getViajero();
+				viajero.getMisViajesPasajero().add(viaje);		
+				viajeroDAO.modificar(viajero);
+				NotificacionAction notificacion=new NotificacionAction();
+				notificacion.crearNotificacionSolicitudAceptar(viajero, viaje);
+				return SUCCESS;
+			}
+			else{
+				solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+				addFieldError("loginError", "Se completaron todos los asientos!");
+				return INPUT;
+			}
 		}
-		else{
-			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
-			addFieldError("loginError", "Se completaron todos los asientos!");
-			return INPUT;
-		}
+		return tienePermisos;
 	}
 	
 	public String rechazarSolicitudViaje(){
-		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
-		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-		solicitud.setEstado(EstadoSolicitud.RECHAZADO);
-		solicitudViajeDAO.modificar(solicitud);		
-		viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
-		Viajero viajeroSolicitud = solicitud.getViajero();		
-		if (viaje.esPasajero(viajeroSolicitud)){			
-			viajeroSolicitud.getMisViajesPasajero().remove(viaje);		
-			viajeroDAO.modificar(viajeroSolicitud);		
-		}		
-		solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(solicitud.getViaje());
-		idViaje = viaje.getId();	
-		NotificacionAction notificacion=new NotificacionAction();
-		notificacion.crearNotificacionRechazoSolicitud(viajeroSolicitud, viaje);
-		return SUCCESS;
+		String tienePermisos=this.validarSesion();
+		if(tienePermisos==SUCCESS){
+			ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
+			ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			solicitud.setEstado(EstadoSolicitud.RECHAZADO);
+			solicitudViajeDAO.modificar(solicitud);		
+			viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
+			Viajero viajeroSolicitud = solicitud.getViajero();		
+			if (viaje.esPasajero(viajeroSolicitud)){			
+				viajeroSolicitud.getMisViajesPasajero().remove(viaje);		
+				viajeroDAO.modificar(viajeroSolicitud);		
+			}		
+			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(solicitud.getViaje());
+			idViaje = viaje.getId();	
+			NotificacionAction notificacion=new NotificacionAction();
+			notificacion.crearNotificacionRechazoSolicitud(viajeroSolicitud, viaje);
+		}
+		return tienePermisos;
 	}
 	
-	public String cancelarSolicitudViaje(){		
-		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
-		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
+	public boolean tieneSolicitud(Viaje viaje,Usuario viajero){
+		String tienePermisos=this.validarSesion();
+		if(tienePermisos==SUCCESS){
+			this.setSolicitudesviaje(this.getSolicitudViajeDAO().listarSolicitudesViaje(viaje));
+			for(SolicitudViaje solicitud : this.getSolicitudesviaje()){
+				if(solicitud.getViajero().getId()==viajero.getId()){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public String cancelacionSolicitudViaje(){		
+		String tienePermisos=this.validarSesion();
+		if(tienePermisos==SUCCESS){
+				ViajeroDAO viajeroDAO = FactoryDAO.getViajeroDAO();
+				ViajeDAO viajeDAO = FactoryDAO.getViajeDAO();
+				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);				
+				viajero = viajeroDAO.encontrar(((Usuario)ActionContext.getContext().getSession().get("usrLogin")).getId());				
+				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+				this.setIdViaje(viaje.getId());
+				if(!this.eliminarSolicitud(viaje, viajero)){
+					addFieldError("loginError", "Usted no forma parte de este viaje");
+				}
+		}
+		return tienePermisos;
+	}
+	
+	public boolean eliminarSolicitud(Viaje viaje,Viajero viajeroId){
+		List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
+		if(!solicito.isEmpty()){									
+			for(SolicitudViaje solicitud : solicito){
+				solicitudViajeDAO.eliminar(solicitud.getId());
+				addFieldError("loginError", "La solicitud se elimino con exito!");
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	private String validarSesion(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		String user = (String) session.get("perfil");
 		if (user != null) {	
 			if (user.equals("viajero")) {
-				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-				
-				viajero = viajeroDAO.encontrar(((Usuario)session.get("usrLogin")).getId());				
-				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));	
-				
-				List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
-				if(!solicito.isEmpty()){									
-					// FALTA ELIMINAR LA SOLICITUD Y AL VIAJERO
-					return SUCCESS;				
-				}else{
-					addFieldError("loginError", "Usted ya solicito participar en este viaje");
-					return SUCCESS;
-				}
+				return SUCCESS;
 			}
 			else{
-				return "sinpermisos";
+				return "sinPermisos";
 			}
 		}
 		else{
 			return "login";
 		}	
 	}
-
 }
