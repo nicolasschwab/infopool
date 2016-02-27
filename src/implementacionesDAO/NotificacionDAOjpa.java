@@ -20,7 +20,7 @@ public class NotificacionDAOjpa extends GenericDAOjpa<Notificacion> implements N
 		super(Notificacion.class);
 	}	
 	
-	public List<Notificacion> ListarPorUsuario(Usuario usr){
+	public List<Notificacion> listarPorUsuario(Usuario usr){
 		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.receptor= :usr ";
 		List<Notificacion> resultados=null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		

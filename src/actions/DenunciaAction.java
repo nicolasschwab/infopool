@@ -157,7 +157,7 @@ public class DenunciaAction extends ActionSupport{
 		viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		Usuario user = (Usuario) session.get("usrLogin");
-		for (Viajero viajero : viaje.getPasajeros()) {
+		for (Viajero viajero : viaje.obtenerPasajeros()) {
 			if(viajero.getId()!=user.getId()){
 				listaDenunciados.add(viajero);
 			}

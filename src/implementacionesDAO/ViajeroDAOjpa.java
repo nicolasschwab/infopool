@@ -21,12 +21,7 @@ public class ViajeroDAOjpa extends GenericDAOjpa<Viajero> implements ViajeroDAO 
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
 			resultado = (Viajero) em.find(this.persistentClass, id);
-			resultado.getPerfil();
-			resultado.calificacionActual();
-			resultado.getMisCalificacionesHechas().size();
-			resultado.getMisCalificacionesRecibidas().size();
-			resultado.getMisViajesConductor().size();
-			resultado.getMisViajesPasajero().size();
+			resultado.getPerfil();			
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
@@ -34,4 +29,5 @@ public class ViajeroDAOjpa extends GenericDAOjpa<Viajero> implements ViajeroDAO 
 		}
 		return resultado;
 	}
+	
 }

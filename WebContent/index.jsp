@@ -1,6 +1,3 @@
-<%
-  request.getSession(true);    
-%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML>
 <html>
@@ -10,15 +7,14 @@
 </head>
 <body>
 
-    <%@ include file="views/header.jsp"%>    
-    <jsp:include page="views/menu.jsp">
+    <jsp:include page="views/header.jsp">
     	<jsp:param name="itemActivo" value="1"/>
-    </jsp:include>
+    </jsp:include>    
 
-    <div class="main_bg"><!-- start main -->
+    <div class="main_bg">
         <div class="container">
             <div class="row">            
-                <img src="images/logoh.png" width="100%">
+                <img src="resources/images/logoh.png" width="100%">
             </div>
         </div>
         <div class="container">

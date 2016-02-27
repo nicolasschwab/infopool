@@ -1,43 +1,72 @@
 package model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Conversacion implements Serializable{
 
 	private static final long serialVersionUID = 1L;
-	@Id @GeneratedValue@Column(name="conversacion_Id")
+	
+	@Id @GeneratedValue 
+	@Column(name="conversacion_id")
 	private int id;
-	@OneToMany
-	private Collection<Mensaje> mensajes;
+	
+	@OneToMany(mappedBy="conversacion")
+	private Collection<Mensaje> mensajes = new ArrayList<Mensaje>();
+	
 	@ManyToMany
-	@JoinTable(name="conversacion_usuario", joinColumns=@JoinColumn(name="conversacion_Id"), inverseJoinColumns=@JoinColumn(name="id"))  
-	private Collection<Viajero> participantes;
-	@ManyToOne
+	@JoinTable( name="Conversacion_Usuario", 
+				joinColumns={@JoinColumn(name="conversacion_id", nullable=false)}, 
+				inverseJoinColumns={@JoinColumn(name="usuario_id", nullable=false)})  
+	private Collection<Viajero> participantesConversacion = new ArrayList<Viajero>();
+	
+	@OneToOne(mappedBy="foroViaje")
 	private Viaje viaje;
+	
+	@Column(nullable=false)
 	private String asunto;
+	
+	@Column(nullable=false)
 	private Date fechaUltimaModificacion;
 	
+	@Enumerated(EnumType.STRING)
+	private TipoConversacion tipoConversacion;
+			
 	public Conversacion(){
-		this.setFechaUltimaModificacion(new Date());
+		super();		
 	}
+			
+	public Conversacion(Collection<Mensaje> mensajes,
+			Collection<Viajero> participantesConversacion, Viaje viaje, String asunto,
+			Date fechaUltimaModificacion, TipoConversacion tipoConversacion) {
+		super();
+		this.mensajes = mensajes;
+		this.participantesConversacion = participantesConversacion;
+		this.viaje = viaje;
+		this.asunto = asunto;
+		this.fechaUltimaModificacion = fechaUltimaModificacion;
+		this.tipoConversacion = tipoConversacion;
+	}
+	
 	public int getId() {
 		return id;
-	}
-	public void setId(int id) {
+	}	
+	public void setId(int id){
 		this.id = id;
 	}
 	public Collection<Mensaje> getMensajes() {
@@ -46,11 +75,11 @@ public class Conversacion implements Serializable{
 	public void setMensajes(Collection<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
-	public Collection<Viajero> getParticipantes() {
-		return participantes;
+	public Collection<Viajero> getParticipantesConversacion() {
+		return participantesConversacion;
 	}
-	public void setParticipantes(Collection<Viajero> participantes) {
-		this.participantes = participantes;
+	public void setParticipantesConversacion(Collection<Viajero> participantesConversacion) {
+		this.participantesConversacion = participantesConversacion;
 	}
 	public String getAsunto() {
 		return asunto;
@@ -70,7 +99,11 @@ public class Conversacion implements Serializable{
 	public void setFechaUltimaModificacion(Date fechaUltimaModificacion) {
 		this.fechaUltimaModificacion = fechaUltimaModificacion;
 	}
-	
-	
+	public TipoConversacion getTipoConversacion() {
+		return tipoConversacion;
+	}
+	public void setTipoConversacion(TipoConversacion tipoConversacion) {
+		this.tipoConversacion = tipoConversacion;
+	}	
 	
 }

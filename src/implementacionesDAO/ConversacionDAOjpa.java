@@ -1,18 +1,19 @@
 package implementacionesDAO;
 
-import java.util.Collection;
+import interfacesDAO.ConversacionDAO;
+
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.hibernate.HibernateException;
-
-import interfacesDAO.ConversacionDAO;
 import model.Conversacion;
 import model.Mensaje;
 import model.Usuario;
 import model.Viajero;
+
+import org.hibernate.HibernateException;
+
 import util.EntityFactoryUtil;
 
 public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements ConversacionDAO {
@@ -38,7 +39,7 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 				for(Mensaje men : conver.getMensajes()){
 					men.getDetalle();
 				}
-				for(Viajero usr : conver.getParticipantes()){
+				for(Viajero usr : conver.getParticipantesConversacion()){
 					usr.getNombre();
 				}
 			}
@@ -62,7 +63,7 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 					for(Mensaje men : conver.getMensajes()){
 						men.getDetalle();
 					}
-					for(Viajero usr : conver.getParticipantes()){
+					for(Viajero usr : conver.getParticipantesConversacion()){
 						usr.getNombre();
 					}
 				}
@@ -90,13 +91,13 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 				for(Mensaje men : conver.getMensajes()){
 					men.getDetalle();
 				}
-				for(Viajero usr : conver.getParticipantes()){
+				for(Viajero usr : conver.getParticipantesConversacion()){
 					usr.getNombre();
 				}
 				conver.getViaje().getDireccionDestino();
-				for(Viajero viajero :conver.getParticipantes()){
+				for(Viajero viajero :conver.getParticipantesConversacion()){
 					viajero.getNombre();
-					viajero.calificacionActual();
+					//viajero.calificacionActual();
 				}
 			}
 		}catch(HibernateException e){

@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,53 +11,51 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Mensaje implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id @GeneratedValue
 	private int id;
-	private Date fecha;
+	
+	@Column(nullable=false)
+	private Date fechaPublicacion;
+	
+	@Column(nullable=false)
 	private String detalle;
+	
+	@Column(nullable=false)
 	private String estado;	
-	@ManyToOne
+	
+	@ManyToOne(optional=false)
 	private Usuario emisor;
-	private boolean mensaje_sistema;	
-
-	public Mensaje() {		
-	}
-
-	public Mensaje( Date fecha, String detalle, String estado, Usuario emisor) {
+	
+	@ManyToOne(optional=false)
+	private Conversacion conversacion;
+	
+	public Mensaje() {
 		super();
-		this.fecha = fecha;
-		this.detalle = detalle;
-		this.estado = estado;
-		this.emisor = emisor;
 	}
 	
-	public Mensaje( Date fecha, String detalle, String estado, Usuario emisor, boolean mensaje_sistema) {
+	public Mensaje( Date fechaPublicacion, String detalle, String estado, Usuario emisor, Conversacion conversacion) {
 		super();
-		this.fecha = fecha;
+		this.fechaPublicacion = fechaPublicacion;
 		this.detalle = detalle;
 		this.estado = estado;
 		this.emisor = emisor;
-		this.mensaje_sistema=mensaje_sistema;
+		this.conversacion = conversacion;
 	}
 
 	public int getId() {
 		return id;
 	}
-	
-	public boolean isMensaje_sistema() {
-		return mensaje_sistema;
+	public void setId(int id){
+		this.id = id;
 	}
-
-	public void setMensaje_sistema(boolean mensaje_sistema) {
-		this.mensaje_sistema = mensaje_sistema;
+	public Date getFechaPublicacion() {
+		return fechaPublicacion;
 	}
-	
-	public Date getFecha() {
-		return fecha;
-	}
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaPublicacion(Date fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
 	}
 	public String getDetalle() {
 		return detalle;
@@ -76,5 +75,10 @@ public class Mensaje implements Serializable{
 	public void setEmisor(Usuario emisor) {
 		this.emisor = emisor;
 	}
-	
+	public Conversacion getConversacion() {
+		return conversacion;
+	}
+	public void setConversacion(Conversacion conversacion) {
+		this.conversacion = conversacion;
+	}	
 }

@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -10,54 +11,52 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Denuncia implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id @GeneratedValue
 	private int id;
-	private Date fecha;
+	
+	@Column(nullable = false)
+	private Date fechaHora;
+	
+	@Column(nullable = false)
 	private String motivo;
+	
+	@Column(nullable = false)
 	private String mensaje;
+	
+	@Column
 	private String respuesta;
-	@ManyToOne
+	
+	@ManyToOne(optional=false)
 	private Viajero denunciado;
-	@ManyToOne
+	
+	@ManyToOne(optional=false)
 	private Viajero denunciante;
 	
 	public Denuncia() {
 		super();
 	}
 	
-	public Denuncia(Date fecha, String motivo, String mensaje,String respuesta, Viajero denunciado, Viajero denunciante) {
+	public Denuncia(Date fechaHora, String motivo, String mensaje,String respuesta, Viajero denunciado, Viajero denunciante) {
 		super();		
-		this.fecha = fecha;
+		this.fechaHora = fechaHora;
 		this.motivo = motivo;
 		this.mensaje = mensaje;
 		this.respuesta = respuesta;
 		this.denunciado = denunciado;
 		this.denunciante = denunciante;
 	}
-	
-	public Denuncia(int id, Date fecha, String motivo, String mensaje,String respuesta, Viajero denunciado, Viajero denunciante) {
-		super();
-		this.id = id;
-		this.fecha = fecha;
-		this.motivo = motivo;
-		this.mensaje = mensaje;
-		this.respuesta = respuesta;
-		this.denunciado = denunciado;
-		this.denunciante = denunciante;
-	}
-
+		
 	public int getId() {
 		return id;
+	}	
+	public Date getFechaHora() {
+		return fechaHora;
 	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public Date getFecha() {
-		return fecha;
-	}
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setFechaHora(Date fechaHora) {
+		this.fechaHora = fechaHora;
 	}
 	public String getMotivo() {
 		return motivo;
@@ -88,7 +87,6 @@ public class Denuncia implements Serializable{
 	}
 	public void setDenunciante(Viajero denunciante) {
 		this.denunciante = denunciante;
-	}
-	
+	}	
 
 }

@@ -4,10 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -16,93 +14,104 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Type;
 
 @Entity
-public class Viaje implements Serializable{	
+public class Viaje implements Serializable{
+	
 	private static final long serialVersionUID = 1L;	
+	
 	@Id @GeneratedValue
 	private int id;
-	private Date fechaInicio;
-	private Date fechaFin;
-	@ElementCollection(targetClass=DiasSemana.class)
-	@Enumerated(EnumType.STRING)
-	private List<DiasSemana> diasSemana;	
-	private Date horaPartida;
-	private Date horaRegreso;
-	private int asientos;
+	
+	@Column(nullable = false)
 	private String direccionOrigen;
+	
+	@Column(nullable = false)
 	private String direccionDestino;
-	private boolean activo;	
-	@OneToMany(mappedBy="viaje",cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private Collection<SolicitudViaje> solicitudes;	
-	@ManyToOne
-	private Evento evento;	
-	@OneToMany(mappedBy="viaje", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private Collection<ForoMensajes> mensajes;	
-	@OneToMany(mappedBy="viaje", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
-	private Collection<Calificacion> calificaciones;	
-	@ManyToOne
-	private Viajero conductor;	
+	
+	@Column
+	@Type(type="text")
+    private String puntosTrayecto;
+	
+	@Column(nullable = false)
+	private Date fechaPublicacion;
+	
+	@Column(nullable = false)
+	private Date fechaInicio;
+	
+	@Column
+	private Date fechaFin;		
+	
+	@OneToMany(mappedBy="viaje")
+	private Collection<SolicitudViaje> solicitudesViaje = new ArrayList<SolicitudViaje>();	
+	
+	@ManyToOne(optional=true)
+	private Evento eventoAsociado;
+	
+	@OneToOne(optional=true)
+	private Conversacion foroViaje;
+	
+	@OneToMany(mappedBy="viaje")
+	private Collection<Calificacion> calificaciones = new ArrayList<Calificacion>();
+	
+	@OneToMany(mappedBy="viaje")
+	private Collection<FrecuenciaViaje> frecuencias = new ArrayList<FrecuenciaViaje>();
+	
+	@ManyToOne(optional=false)
+	private Viajero conductor;
+	
 	@ManyToMany(mappedBy="misViajesPasajero")
 	private Collection<Viajero> pasajeros;
+		
+	@Enumerated(EnumType.STRING)
+	private TramoViaje tramoViaje;
 	
-	public Viaje() {		
-	}
+	@Enumerated(EnumType.STRING)
+	private TipoViaje tipoViaje;
 	
-	public Viaje(Date fechaInicio, Date fechaFin, List<DiasSemana> diasSemana,Date horaPartida, Date horaRegreso, int asientos, String direccionOrigen, String direccionDestino, Evento evento,Viajero conductor) {
+	@Column
+	private String descripcion;
+	
+	@Column(nullable=false)
+	private float kilometros;
+	
+	@Column(nullable=false)
+	private boolean activo;
+	
+	public Viaje() {
 		super();
-		this.fechaInicio = fechaInicio;
-		this.fechaFin = fechaFin;
-		this.diasSemana = diasSemana;
-		this.horaPartida = horaPartida;
-		this.horaRegreso = horaRegreso;
-		this.asientos = asientos;
+	}	
+	public Viaje(String direccionOrigen, String direccionDestino,
+			String puntosTrayecto, Date fechaPublicacion, Date fechaInicio, Date fechaFin,
+			Evento eventoAsociado, Conversacion foroViaje, Collection<FrecuenciaViaje> frecuencias,
+			Viajero conductor, TramoViaje tramoViaje, TipoViaje tipoViaje, String descripcion, float kilometros,
+			boolean activo) {
+		super();
 		this.direccionOrigen = direccionOrigen;
 		this.direccionDestino = direccionDestino;
-		this.activo = true;
-		this.solicitudes = new ArrayList<SolicitudViaje>();
-		this.evento = evento;
-		this.mensajes = new ArrayList<ForoMensajes>();
-		this.calificaciones = new ArrayList<Calificacion>();
-		this.conductor = conductor;
-		this.pasajeros = new ArrayList<Viajero>();
-	}
-
-	public Date getFechaInicio() {
-		return fechaInicio;
-	}
-	public void setFechaInicio(Date fechaInicio) {
+		this.puntosTrayecto = puntosTrayecto;
+		this.fechaPublicacion = fechaPublicacion;
 		this.fechaInicio = fechaInicio;
-	}
-	public Date getFechaFin() {
-		return fechaFin;
-	}
-	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
+		this.eventoAsociado = eventoAsociado;
+		this.foroViaje = foroViaje;
+		this.frecuencias = frecuencias;
+		this.conductor = conductor;
+		this.tramoViaje = tramoViaje;
+		this.tipoViaje = tipoViaje;
+		this.descripcion = descripcion;
+		this.kilometros = kilometros;
+		this.activo = activo;
 	}
-	public List<DiasSemana> getDiasSemana() {
-		return diasSemana;
+	
+	public int getId() {
+		return id;
 	}
-	public void setDiasSemana(List<DiasSemana> diasSemana) {
-		this.diasSemana = diasSemana;
-	}
-	public Date getHoraPartida() {
-		return horaPartida;
-	}
-	public void setHoraPartida(Date horaPartida) {
-		this.horaPartida = horaPartida;
-	}
-	public Date getHoraRegreso() {
-		return horaRegreso;
-	}
-	public void setHoraRegreso(Date horaRegreso) {
-		this.horaRegreso = horaRegreso;
-	}
-	public int getAsientos() {
-		return asientos;
-	}
-	public void setAsientos(int asientos) {
-		this.asientos = asientos;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getDireccionOrigen() {
 		return direccionOrigen;
@@ -116,29 +125,47 @@ public class Viaje implements Serializable{
 	public void setDireccionDestino(String direccionDestino) {
 		this.direccionDestino = direccionDestino;
 	}
-	public boolean getActivo() {
-		return activo;
+	public String getPuntosTrayecto() {
+		return puntosTrayecto;
 	}
-	public void setActivo(boolean activo) {
-		this.activo = activo;
+	public void setPuntosTrayecto(String puntosTrayecto) {
+		this.puntosTrayecto = puntosTrayecto;
 	}
-	public Collection<SolicitudViaje> getSolicitudes() {
-		return solicitudes;
+	public Date getFechaPublicacion() {
+		return fechaPublicacion;
 	}
-	public void setSolicitudes(Collection<SolicitudViaje> solicitudes) {
-		this.solicitudes = solicitudes;
+	public void setFechaPublicacion(Date fechaPublicacion) {
+		this.fechaPublicacion = fechaPublicacion;
 	}
-	public Evento getEvento() {
-		return evento;
+	public Date getFechaInicio() {
+		return fechaInicio;
 	}
-	public void setEvento(Evento evento) {
-		this.evento = evento;
+	public void setFechaInicio(Date fechaInicio) {
+		this.fechaInicio = fechaInicio;
 	}
-	public Collection<ForoMensajes> getMensajes() {
-		return mensajes;
+	public Date getFechaFin() {
+		return fechaFin;
 	}
-	public void setMensajes(Collection<ForoMensajes> mensajes) {
-		this.mensajes = mensajes;
+	public void setFechaFin(Date fechaFin) {
+		this.fechaFin = fechaFin;
+	}
+	public Collection<SolicitudViaje> getSolicitudesViaje() {
+		return solicitudesViaje;
+	}
+	public void setSolicitudesViaje(Collection<SolicitudViaje> solicitudesViaje) {
+		this.solicitudesViaje = solicitudesViaje;
+	}
+	public Evento getEventoAsociado() {
+		return eventoAsociado;
+	}
+	public void setEventoAsociado(Evento eventoAsociado) {
+		this.eventoAsociado = eventoAsociado;
+	}	
+	public Conversacion getForoViaje() {
+		return foroViaje;
+	}
+	public void setForoViaje(Conversacion foroViaje) {
+		this.foroViaje = foroViaje;
 	}
 	public Collection<Calificacion> getCalificaciones() {
 		return calificaciones;
@@ -146,8 +173,11 @@ public class Viaje implements Serializable{
 	public void setCalificaciones(Collection<Calificacion> calificaciones) {
 		this.calificaciones = calificaciones;
 	}
-	public int getId() {
-		return id;
+	public Collection<FrecuenciaViaje> getFrecuencias() {
+		return frecuencias;
+	}
+	public void setFrecuencias(Collection<FrecuenciaViaje> frecuencias) {
+		this.frecuencias = frecuencias;
 	}
 	public Viajero getConductor() {
 		return conductor;
@@ -161,39 +191,58 @@ public class Viaje implements Serializable{
 	public void setPasajeros(Collection<Viajero> pasajeros) {
 		this.pasajeros = pasajeros;
 	}
-
-	public String misDias() {
-		String dias = "";
-		for (DiasSemana dia : diasSemana) {
-			dias += dia.toString() + ", ";
-		}
-		return dias.substring(0,(dias.length()-2));
+	public TramoViaje getTramoViaje() {
+		return tramoViaje;
+	}
+	public void setTramoViaje(TramoViaje tramoViaje) {
+		this.tramoViaje = tramoViaje;
+	}
+	public TipoViaje getTipoViaje() {
+		return tipoViaje;
+	}
+	public void setTipoViaje(TipoViaje tipoViaje) {
+		this.tipoViaje = tipoViaje;
 	}	
-	
-	public boolean esPasajero(Usuario usr){
-		boolean esP = false;
-		for (Viajero v : pasajeros){
-			if (v.getUsuario().equals(usr.getUsuario())){
-				esP = true;
-			}			
-		}
-		return esP;
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public float getKilometros() {
+		return kilometros;
+	}
+	public void setKilometros(float kilometros) {
+		this.kilometros = kilometros;
+	}
+	public boolean getActivo() {
+		return activo;
+	}
+	public void setActivo(boolean activo) {
+		this.activo = activo;
 	}
 	
-	public boolean esConductor(Usuario usr){
-		boolean esC = false;
-		if (this.conductor.getUsuario().equals(usr.getUsuario())){
-			esC = true;
+	public Collection<Viajero> obtenerPasajeros(){		
+		return this.pasajeros;
+	}	
+	public boolean esConductor(Usuario usuario){
+		boolean esConductor = false;
+		if (this.conductor.getUsuario().equals(usuario.getUsuario())){
+			esConductor = true;
 		}
-		return esC;
+		return esConductor;
 	}
-	
-	public boolean diaSeleccionado(String dia){
-		for (DiasSemana diaSem : diasSemana) {
-			if (diaSem.name().equals(dia)){
-				return true;
+	public boolean esPasajero(Usuario usuario){
+		System.out.println("si esta en la lista de pasajeros del viaje: "+this.pasajeros.contains(usuario.getUsuario()));
+		return this.pasajeros.contains(usuario.getUsuario());
+	}
+	public boolean tieneDisponibleFrecuencia(DiasSemana diaSolicitud) {
+		boolean disponible = false;
+		for(FrecuenciaViaje f : this.getFrecuencias()){
+			if (f.getDiaFrecuencia().equals(diaSolicitud)){
+				disponible = (f.getAsientosDisponibles() > 0);
 			}
 		}
-		return false;
+		return disponible;
 	}
 }

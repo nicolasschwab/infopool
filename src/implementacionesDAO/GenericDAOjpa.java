@@ -1,13 +1,17 @@
 package implementacionesDAO;
 
 import interfacesDAO.GenericDAO;
+
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+
 import org.hibernate.HibernateException;
+
 import util.EntityFactoryUtil;
 
 public class GenericDAOjpa<T> implements GenericDAO<T> {
@@ -19,12 +23,12 @@ public class GenericDAOjpa<T> implements GenericDAO<T> {
 		this.persistentClass = persistentClass;
 	}
 
-	public <T> void registrar(T objetoT) {
+	public <T> void registrar(T objectT) {
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
 		EntityTransaction etx = em.getTransaction();
 		try{			
 			etx.begin();
-			em.persist(objetoT);
+			em.persist(objectT);
 			em.flush();
 			etx.commit();
 		}catch(PersistenceException e){
@@ -35,12 +39,12 @@ public class GenericDAOjpa<T> implements GenericDAO<T> {
 		}
 	}
 
-	public <T> void eliminar(T objetoT) {
+	public <T> void eliminar(T objectT) {
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
 		EntityTransaction etx = em.getTransaction();
 		try{			
 			etx.begin();
-			T objectToBeRemoved = (T) em.getReference(persistentClass,objetoT);
+			T objectToBeRemoved = (T) em.getReference(persistentClass,objectT);
 			em.remove(objectToBeRemoved);
 			em.flush();
 			etx.commit();
@@ -52,12 +56,12 @@ public class GenericDAOjpa<T> implements GenericDAO<T> {
 		}
 	}
 
-	public <T> void modificar(T objetoT) {
+	public <T> void modificar(T objectT) {
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
 		EntityTransaction etx = em.getTransaction();
 		try{			
 			etx.begin();
-			em.merge(objetoT);
+			em.merge(objectT);
 			em.flush();
 			etx.commit();
 		}catch(HibernateException e){
@@ -69,29 +73,29 @@ public class GenericDAOjpa<T> implements GenericDAO<T> {
 	}
 
 	public <T> List<T> listar() {
-		List<T> resultado = null;
+		List<T> result = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
-			Query consulta = em.createQuery("select e from " + persistentClass.getSimpleName() + " e");
-			resultado = (List<T>) consulta.getResultList();
+			Query q = em.createQuery("select e from " + persistentClass.getSimpleName() + " e");
+			result = (List<T>) q.getResultList();
 		}catch(HibernateException e){
 			e.printStackTrace();			
 		}finally{
 			em.close();
 		}
-		return resultado;
+		return result;
 	}
 	
-	public <T> T encontrar(Serializable objeto){
-		T resultado = null;
+	public <T> T encontrar(Serializable object){
+		T result = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
-			resultado = (T) em.find(persistentClass, objeto);
+			result = (T) em.find(persistentClass, object);
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{
 			em.close();
 		}
-		return resultado;
+		return result;
 	}
 }

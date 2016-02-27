@@ -12,7 +12,18 @@ http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 			<property name="hibernate.connection.username" value="root" />
 			<property name="hibernate.connection.password" value="root" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />			
+			<property name="hibernate.hbm2ddl.auto" value="update" />
+			
+			<!-- configuración de un pool via c3p0 -->
+			<property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />            
+            <property name="hibernate.c3p0.acquire_increment" value="1" />
+            <property name="hibernate.c3p0.idle_test_period" value="3600" />
+            <property name="hibernate.c3p0.min_size" value="5" />
+            <property name="hibernate.c3p0.max_size" value="20" />
+            <property name="hibernate.c3p0.max_statements" value="50" />            
+            <property name="hibernate.c3p0.timeout" value="480" />
+            <property name="hibernate.c3p0.preferredTestQuery" value="select 1;" />            
+            
 		</properties>
 	</persistence-unit>
 	

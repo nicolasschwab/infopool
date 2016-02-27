@@ -86,7 +86,7 @@ public class EventoAction extends ActionSupport {
 		return tienePermisosAdmin();
 	}
 	
-	public String registrarEvento() throws ParseException{
+	/*public String registrarEvento() throws Exception{
 		String tienePermisoDeAdmin=this.tienePermisosAdmin();
 		if(tienePermisoDeAdmin==SUCCESS){
 				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
@@ -108,7 +108,7 @@ public class EventoAction extends ActionSupport {
 				}
 			}
 		return tienePermisoDeAdmin;
-	}
+	}*/
 	
 	public String listarEventos(){
 		eventoLista = eventoDAO.listar();
@@ -137,7 +137,7 @@ public class EventoAction extends ActionSupport {
 		return tienePermisoDeAdmin;
 	}
 	
-	public String editarEvento() throws ParseException{		
+	public String editarEvento() throws Exception{		
 		String tienePermisoDeAdmin=this.tienePermisosAdmin();
 		if(tienePermisoDeAdmin==SUCCESS){
 				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
@@ -148,7 +148,7 @@ public class EventoAction extends ActionSupport {
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 						Date fechaeve = sdf.parse(this.getFechaHora());
 						evnt.setNombre(this.getNombre());
-						evnt.setFechaHora(fechaeve);
+						evnt.setFecha(fechaeve);
 						evnt.setWeb(this.getWeb());
 						evnt.setUbicacion(this.getUbicacion());
 						evento.modificar(evnt);
@@ -167,7 +167,7 @@ public class EventoAction extends ActionSupport {
 		return tienePermisoDeAdmin;
 	}
 	
-	public String cancelarEvento() throws ParseException{
+	public String cancelarEvento() throws Exception{
 		String tienePermisoDeAdmin=this.tienePermisosAdmin();
 		if(tienePermisoDeAdmin==SUCCESS){
 				EventoDAO evento = FactoryDAO.getEventoDAO();
@@ -178,7 +178,7 @@ public class EventoAction extends ActionSupport {
 				evento.modificar(evnt);
 				
 				//Cancelamos los viajes correspondientes al evento y se notifica a los viajeros
-				for (Viaje viaje : evnt.getViajes()) {
+				for (Viaje viaje : evnt.getViajesAsociados()) {
 					viaje.setActivo(false);
 					viajedao.modificar(viaje);
 				}

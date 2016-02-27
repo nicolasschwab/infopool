@@ -1,7 +1,9 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,28 +11,46 @@ import javax.persistence.ManyToOne;
 
 @Entity
 public class Calificacion implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id @GeneratedValue
 	private int id;	
-	@ManyToOne
+	
+	@ManyToOne(optional=false)
 	private Viajero calificador;	
-	@ManyToOne
+	
+	@ManyToOne(optional=false)
 	private Viajero calificado;	
-	private int calificacion;	
-	@ManyToOne
+	
+	@Column(nullable=false)
+	private int calificacion;
+	
+	@Column
+	private Date fechaCalificacion;
+	
+	@ManyToOne(optional=false)
 	private Viaje viaje;
 	
 	public Calificacion() {		
+		super();
 	}
 	
-	public Calificacion(Viajero calificador, Viajero calificado, int calificacion, Viaje viaje) {
+	public Calificacion(Viajero calificador, Viajero calificado, int calificacion, Date fechaCalificacion, Viaje viaje) {
 		super();
 		this.calificador = calificador;
 		this.calificado = calificado;
-		this.calificacion = calificacion;
+		this.calificacion = calificacion;		
+		this.fechaCalificacion = fechaCalificacion;
 		this.viaje = viaje;
 	}
-	
+		
+	public int getId() {
+		return id;
+	}
+	public void setId(int id){
+		this.id = id;
+	}
 	public Viajero getCalificador() {
 		return calificador;
 	}
@@ -48,6 +68,12 @@ public class Calificacion implements Serializable{
 	}
 	public void setCalificacion(int calificacion) {
 		this.calificacion = calificacion;
+	}	
+	public Date getFechaCalificacion() {
+		return fechaCalificacion;
+	}
+	public void setFechaCalificacion(Date fechaCalificacion) {
+		this.fechaCalificacion = fechaCalificacion;
 	}
 	public Viaje getViaje() {
 		return viaje;
@@ -55,9 +81,5 @@ public class Calificacion implements Serializable{
 	public void setViaje(Viaje viaje) {
 		this.viaje = viaje;
 	}
-	public int getId() {
-		return id;
-	}
-	
 	
 }

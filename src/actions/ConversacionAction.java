@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+
 import implementacionesDAO.FactoryDAO;
 import interfacesDAO.ConversacionDAO;
 import interfacesDAO.UsuarioDAO;
@@ -112,7 +113,7 @@ public class ConversacionAction  extends ActionSupport{
 		this.fechaUltimaModificacion = fechaUltimaModificacion;
 	}
 	
-	public String crearConversacion(){
+	/*public String crearConversacion(){
 		String estaLogueado=this.validarSesion(); 
 		if(estaLogueado==SUCCESS){
 			ViajeAction viajeAction=new ViajeAction();
@@ -149,7 +150,7 @@ public class ConversacionAction  extends ActionSupport{
 			
 		}
 		return estaLogueado;
-	}
+	}*/
 	
 	public String listarConversaciones(){
 		String estaLogueado=this.validarSesion();
@@ -162,13 +163,13 @@ public class ConversacionAction  extends ActionSupport{
 				conversacion.getViaje().setDireccionDestino(conversacion.getViaje().getDireccionDestino().split(",")[0]);
 				conversacion.getViaje().setDireccionOrigen(conversacion.getViaje().getDireccionOrigen().split(",")[0]);
 				Viajero remover=null;
-				for(Viajero viajero :conversacion.getParticipantes()){
+				for(Viajero viajero :conversacion.getParticipantesConversacion()){
 					if(viajero.getId()==user.getId()){
 						remover=viajero;
 					}
 				}
 				if(remover!=null){
-					conversacion.getParticipantes().remove(remover);
+					conversacion.getParticipantesConversacion().remove(remover);
 				}
 			}
 			this.setMensajeLista(conversaciones);			
@@ -182,7 +183,7 @@ public class ConversacionAction  extends ActionSupport{
 			this.setConversacion(conversacionDAO.encontrarPorId(id));
 			if(this.getConversacion()!=null){
 				boolean pertenece=false;
-				for(Viajero viajero :this.getConversacion().getParticipantes()){
+				for(Viajero viajero :this.getConversacion().getParticipantesConversacion()){
 					if(viajero.getId()==user.getId()){
 						pertenece=true;
 					}
@@ -218,11 +219,11 @@ public class ConversacionAction  extends ActionSupport{
 			return "login";
 		}
 	}
-	public String responderMensaje(){
+	/*public String responderMensaje() throws Exception{
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
 			this.setConversacion(conversacionDAO.encontrarPorId(this.getId()));
-			for(Viajero viajero :conversacion.getParticipantes()){
+			for(Viajero viajero :conversacion.getParticipantesConversacion()){
 				if(viajero.getId()==user.getId()){
 					this.setMensaje(new MensajeAction().crearMensaje(this.getDetalle())); // creo y persisto el mensaje
 					this.getConversacion().getMensajes().add(this.getMensaje());
@@ -239,7 +240,7 @@ public class ConversacionAction  extends ActionSupport{
 			}
 		}
 		return estaLogueado;		
-	}
+	}*/
 
 	public class conversacionVista{
 		Conversacion conversacion;

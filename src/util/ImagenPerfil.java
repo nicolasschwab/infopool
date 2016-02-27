@@ -45,6 +45,9 @@ public class ImagenPerfil extends HttpServlet {
 			ImageIO.write(bImageFromConvert, "jpg", response.getOutputStream());
 		} catch (IOException ioe) {
 			System.out.println("ERROR " + ioe);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	

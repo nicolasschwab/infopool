@@ -1,11 +1,16 @@
 package implementacionesDAO;
 
 import interfacesDAO.UsuarioDAO;
+
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 import model.Usuario;
+
 import org.hibernate.HibernateException;
+
 import util.EntityFactoryUtil;
 
 public class UsuarioDAOjpa extends GenericDAOjpa<Usuario> implements UsuarioDAO {
@@ -43,8 +48,7 @@ public class UsuarioDAOjpa extends GenericDAOjpa<Usuario> implements UsuarioDAO 
 			consulta.setParameter("clave", clave);			
 			List<Usuario> resultado = (List<Usuario>) consulta.getResultList();
 			if (resultado.size() > 0){
-				usr = (Usuario) resultado.get(0);
-				usr.calificacionActual();				
+				usr = (Usuario) resultado.get(0);								
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();			
@@ -63,8 +67,7 @@ public class UsuarioDAOjpa extends GenericDAOjpa<Usuario> implements UsuarioDAO 
 			Query consulta = em.createQuery(qString);	
 			List<Usuario> resultado = (List<Usuario>) consulta.getResultList();
 			if (resultado.size() > 0){
-				usr = (Usuario) resultado.get(0);
-				usr.calificacionActual();				
+				usr = (Usuario) resultado.get(0);		
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();			
@@ -84,8 +87,7 @@ public class UsuarioDAOjpa extends GenericDAOjpa<Usuario> implements UsuarioDAO 
 			consulta.setParameter("id", Integer.parseInt(participante));
 			List<Usuario> resultado = (List<Usuario>) consulta.getResultList();
 			if (resultado.size() > 0){
-				usr = (Usuario) resultado.get(0);
-				usr.calificacionActual();				
+				usr = (Usuario) resultado.get(0);			
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();			

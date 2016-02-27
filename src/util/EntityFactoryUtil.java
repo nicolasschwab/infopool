@@ -4,18 +4,18 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 public class EntityFactoryUtil {
-	private static final EntityManagerFactory em;
+	private static final EntityManagerFactory emf;
 	static {
 		try {
-			em = Persistence.createEntityManagerFactory("infopool");
-		} catch (Throwable ex) {
+			emf = Persistence.createEntityManagerFactory("infopool");
+		} catch (Throwable t) {
 			// Log the exception
-			System.err.println("Initial EntityManagerFactory creation failed." + ex);
-			throw new ExceptionInInitializerError(ex);
+			System.err.println("Initial EntityManagerFactory creation failed." + t);
+			throw new ExceptionInInitializerError(t);
 		}
 	}
 
 	public static EntityManagerFactory getEm() {
-		return em;
+		return emf;
 	}
 }

@@ -1,12 +1,10 @@
 package actions;
 
 import implementacionesDAO.FactoryDAO;
-import implementacionesDAO.ForoMensajesDAOjpa;
 import implementacionesDAO.MensajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
 
 import java.text.ParseException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -16,7 +14,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.ForoMensajes;
 import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
@@ -38,8 +35,7 @@ public class MensajeAction extends ActionSupport {
 	private Usuario emisor;
 	private MensajeDAOjpa mensajeDAO;
 	private ViajeDAOjpa viajeDAO=(ViajeDAOjpa) FactoryDAO.getViajeDAO();
-	private List<Viajero> listaReceptores ;
-	private ForoMensajesDAOjpa foroMensajeDAO=(ForoMensajesDAOjpa) FactoryDAO.getForoMensajesDAO();
+	private List<Viajero> listaReceptores ;	
 	private List<Viajero> lista;
 	private int viajeId;
 	private String respDetalle;
@@ -130,7 +126,7 @@ public class MensajeAction extends ActionSupport {
 		Usuario user = (Usuario) session.get("usrLogin");	
 		this.listaReceptores= new ArrayList<Viajero>(); 
 		Viaje unViaje=viajeDAO.encontrarPorId(this.viajeId);
-		lista=(List<Viajero>) unViaje.getPasajeros();
+		lista=(List<Viajero>) unViaje.obtenerPasajeros();
 		lista.add(unViaje.getConductor());
 		for (Viajero viajero : lista) {	
 			if (viajero.getId()!=user.getId()){
@@ -170,10 +166,8 @@ public class MensajeAction extends ActionSupport {
 			if (!this.detalle.equals("")){
 				Map<String, Object> session = ActionContext.getContext().getSession();
 				Usuario user = (Usuario) session.get("usrLogin");
-				Viaje viaje=viajeDAO.encontrar(this.viajeId);
-				ForoMensajes nuevoMensaje= new ForoMensajes (new Date(),(Viajero)user,this.detalle,viaje);
-				this.foroMensajeDAO.registrar(nuevoMensaje);
-				Collection<Viajero> lista=viaje.getPasajeros();
+				Viaje viaje=viajeDAO.encontrar(this.viajeId);				
+				Collection<Viajero> lista=viaje.obtenerPasajeros();
 				session.put("id",this.viajeId);
 				lista.add(viaje.getConductor());
 				for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
@@ -187,7 +181,7 @@ public class MensajeAction extends ActionSupport {
 		}
 		return resul;
 	}
-	public Mensaje crearMensaje(String detalleMensaje) {
+	/*public Mensaje crearMensaje(String detalleMensaje) throws Exception {
 		String permisos=this.validarSesion();
 		if(permisos==SUCCESS){
 			this.fecha=new Date();
@@ -198,5 +192,5 @@ public class MensajeAction extends ActionSupport {
 			return nuevoMensaje;
 		}
 		return null;
-	}
+	}*/
 }

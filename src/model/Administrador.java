@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 public class Administrador extends Usuario {
 	
 	public Administrador(){		
+		super();
 	}
 	
 	public Administrador(String usuario, String clave){
@@ -14,15 +15,12 @@ public class Administrador extends Usuario {
 	
 	public String getPerfil(){
 		return "administrador";
-	}
-	
+	}	
 	public boolean getActivo(){
 		return true;
 	}
-	
-	public float calificacionActual(){
-		return 0;
+	public boolean soyAdministrador(){
+		return true;
 	}
-	
-	
+		
 }

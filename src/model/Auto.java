@@ -1,82 +1,76 @@
 package model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Auto implements Serializable{
+	
 	private static final long serialVersionUID = 1L;
+	
 	@Id @GeneratedValue
 	private int id;
-	@Enumerated(EnumType.STRING)
-	private Marca marca;
-	private Date modelo;
-	@Enumerated(EnumType.STRING)
-	private Combustible combustible;
-	@Enumerated(EnumType.STRING)
-	private TipoVehiculo tipo;
 	
-	public Auto(){
+	@ManyToOne
+	private MarcaAuto marca;
+	
+	@ManyToOne
+	private ModeloAuto modelo;
+	
+	@Enumerated(EnumType.STRING)
+	private Combustible combustibleAlternativo;
+	
+	@Column
+	private String caracteristicas;
 		
+	public Auto() {
+		super();
 	}
 	
-	public Auto(Marca marca, Date modelo,Combustible combustible, TipoVehiculo tipo) {
+	public Auto(MarcaAuto marca, ModeloAuto modelo, Combustible combustibleAlternativo, String caracteristicas) {
 		super();
 		this.marca = marca;
 		this.modelo = modelo;
-		this.combustible = combustible;
-		this.tipo = tipo;
+		this.combustibleAlternativo = combustibleAlternativo;
+		this.caracteristicas = caracteristicas;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-
-	public void setId(int id) {
+	public void setId(int id){
 		this.id = id;
 	}
-	
-	
-
-	public Date getModelo() {
-		return modelo;
-	}
-
-	public void setModelo(Date modelo) {
-		this.modelo = modelo;
-	}
-
-	public Marca getMarca() {
+	public MarcaAuto getMarca() {
 		return marca;
 	}
-
-	public void setMarca(Marca marca) {
+	public void setMarca(MarcaAuto marca) {
 		this.marca = marca;
 	}
-
-	public Combustible getCombustible() {
-		return combustible;
+	public ModeloAuto getModelo() {
+		return modelo;
 	}
-
-	public void setCombustible(Combustible combustible) {
-		this.combustible = combustible;
+	public void setModelo(ModeloAuto modelo) {
+		this.modelo = modelo;
 	}
-
-	public TipoVehiculo getTipo() {
-		return tipo;
+	public Combustible getCombustibleAlternativo() {
+		return combustibleAlternativo;
 	}
-
-	public void setTipo(TipoVehiculo tipo) {
-		this.tipo = tipo;
+	public void setCombustibleAlternativo(Combustible combustibleAlternativo) {
+		this.combustibleAlternativo = combustibleAlternativo;
 	}
-	
+	public String getCaracteristicas() {
+		return caracteristicas;
+	}
+	public void setCaracteristicas(String caracteristicas) {
+		this.caracteristicas = caracteristicas;
+	}	
 
 }

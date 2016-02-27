@@ -1,376 +1,168 @@
 package actions;
 
-import implementacionesDAO.EventoDAOjpa;
-import implementacionesDAO.FactoryDAO;
-import implementacionesDAO.ViajeDAOjpa;
-import interfacesDAO.EventoDAO;
+import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.ViajeDAO;
+import interfacesDAO.ViajeroDAO;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.DiasSemana;
-import model.Evento;
-import model.ForoMensajes;
-import model.Mensaje;
+import org.apache.struts2.ServletActionContext;
+
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
-
-import org.apache.struts2.ServletActionContext;
+import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class ViajeAction extends ActionSupport {
+	
 	private static final long serialVersionUID = 1L;
 	private int id;
-	private String fechaInicio;
-	private String fechaFin;
-	private List<DiasSemana> diasSemana = new ArrayList<DiasSemana>();
-	private String horaPartida;
-	private String horaRegreso;
-	private int asientos;
-	private String direccionDestino;
+	
+	/* DATOS FORMULARIO */
 	private String direccionOrigen;
-	private int activo;
-	private int evento_id;
-	private int conductor_id;
+	private String direccionDestino;
+	private String fechaViaje;
+	private String ubicacionLocal;
+	private String evento;
 	
-	private String tipoViaje;
-	private String fechaIniciop;
-	private String fechaIniciod;
-	private String[] categorias;
-	private String rol;
-	private List<Evento> eventoLista = new ArrayList<Evento>();
+	/* */ 
 	private ViajeDAO viajeDAO;
-	private List<Viaje> viajeListaConductor = new ArrayList<Viaje>();
-	private List<Viaje> viajeListaPasajero = new ArrayList<Viaje>();
-	private List<Viaje> viajeLista;
-	private int valor = -3;
-	private int cantpasajeros;
-	private int cantsolicitudes;
-	private String diasviaje;
-	private String fecha;
-	private String dirOrigen;
-	private String dirDestino;
-	private Viaje viaje = new Viaje();	
-	private Usuario usrlogueado;
-	private List<ForoMensajes> foroMensajes;
-	private String notif="";
-	private boolean esPasajero;
-	private boolean tieneSolicitud;
-	/*
-	 * Setter y Getters
-	 */
+	private ViajeroDAO viajeroDAO;
+	private FrecuenciaViajeDAO frecuenciaViajeDAO;
+	private Viaje viaje;
+	private Viajero viajero;
+	public Usuario user;
 	
-	public int getActivo() {
-		return activo;
-	}
-
-	public boolean isTieneSolicitud() {
-		return tieneSolicitud;
-	}
-
-	public void setTieneSolicitud(boolean tieneSolicitud) {
-		this.tieneSolicitud = tieneSolicitud;
-	}
-
-	public String getNotif() {
-		return notif;
-	}
-
-	public void setNotif(String notif) {
-		this.notif = notif;
-	}
-
-	public void setActivo(int activo) {
-		this.activo = activo;
-	}
+	/* DATOS VISTAS */	
+	private List<Viaje> listaViajes = null;
+	private boolean soyViajero;
 	
-	public int getAsientos() {
-		return asientos;
-	}
-	
-	public List<ForoMensajes> getForoMensajes() {
-		return foroMensajes;
-	}
-
-	public void setForoMensajes(List<ForoMensajes> foroMensajes) {
-		this.foroMensajes = foroMensajes;
-	}
-
-	public void setAsientos(int asientos) {
-		this.asientos = asientos;
-	}
-
-	public String getDireccionDestino() {
-		return direccionDestino;
-	}
-
-	public void setDireccionDestino(String direccionDestino) {
-		this.direccionDestino = direccionDestino;
-	}
-
-	public String getDireccionOrigen() {
-		return direccionOrigen;
-	}
-
-	public void setDireccionOrigen(String direccionOrigen) {
-		this.direccionOrigen = direccionOrigen;
-	}
-
-	public String getFechaFin() {
-		return fechaFin;
-	}
-
-	public void setFechaFin(String fechaFin) {
-		this.fechaFin = fechaFin;
-	}
-
-	public String getFechaInicio() {
-		return fechaInicio;
-	}
-
-	public void setFechaInicio(String fechaInicio) {
-		this.fechaInicio = fechaInicio;
-	}
-
-	public String getHoraPartida() {
-		return horaPartida;
-	}
-
-	public void setHoraPartida(String horaPartida) {
-		this.horaPartida = horaPartida;
-	}
-
-	public String getHoraRegreso() {
-		return horaRegreso;
-	}
-
-	public void setHoraRegreso(String horaRegreso) {
-		this.horaRegreso = horaRegreso;
-	}
-
-	public int getConductor_id() {
-		return conductor_id;
-	}
-
-	public void setConductor_id(int conductor_id) {
-		this.conductor_id = conductor_id;
-	}
-
-	public int getEvento_id() {
-		return evento_id;
-	}
-
-	public void setEvento_id(int evento_id) {
-		this.evento_id = evento_id;
-	}
-	
-	public String getTipoViaje() {
-		return tipoViaje;
-	}
-
-	public void setTipoViaje(String tipoViaje) {
-		this.tipoViaje = tipoViaje;
-	}
-		
-	public String getFechaIniciop() {
-		return fechaIniciop;
-	}
-
-	public void setFechaIniciop(String fechaIniciop) {
-		this.fechaIniciop = fechaIniciop;
-	}
-
-	public String getFechaIniciod() {
-		return fechaIniciod;
-	}
-
-	public void setFechaIniciod(String fechaIniciod) {
-		this.fechaIniciod = fechaIniciod;
-	}
-
-	public String[] getCategorias() {
-		return categorias;
-	}
-
-	public void setCategorias(String[] categorias) {
-		this.categorias = categorias;
-	}
-
-	public String getRol() {
-		return rol;
-	}
-
-	public void setRol(String rol) {
-		this.rol = rol;
-	}
-
-	public List<Evento> getEventoLista() {
-		return eventoLista;
-	}
-
-	public void setEventoLista(List<Evento> eventoLista) {
-		this.eventoLista = eventoLista;
-	}
-
-	public ViajeDAO getViajeDAO() {
-		return viajeDAO;
-	}
-
-	public void setViajeDAO(ViajeDAO viajeDAO) {
-		this.viajeDAO = viajeDAO;
-	}
-
-	public List<Viaje> getViajeListaConductor() {
-		return viajeListaConductor;
-	}
-
-	public void setViajeListaConductor(List<Viaje> viajeListaConductor) {
-		this.viajeListaConductor = viajeListaConductor;
-	}
-
-	public List<Viaje> getViajeListaPasajero() {
-		return viajeListaPasajero;
-	}
-
-	public void setViajeListaPasajero(List<Viaje> viajeListaPasajero) {
-		this.viajeListaPasajero = viajeListaPasajero;
-	}
-
-	public List<Viaje> getViajeLista() {
-		return viajeLista;
-	}
-
-	public void setViajeLista(List<Viaje> viajeLista) {
-		this.viajeLista = viajeLista;
-	}
-
-	public int getValor() {
-		return valor;
-	}
-
-	public void setValor(int valor) {
-		this.valor = valor;
-	}
-
-	public int getCantpasajeros() {
-		return cantpasajeros;
-	}
-
-	public void setCantpasajeros(int cantpasajeros) {
-		this.cantpasajeros = cantpasajeros;
-	}
-
-	public int getCantsolicitudes() {
-		return cantsolicitudes;
-	}
-
-	public void setCantsolicitudes(int cantsolicitudes) {
-		this.cantsolicitudes = cantsolicitudes;
-	}
-
-	public String getDiasviaje() {
-		return diasviaje;
-	}
-
-	public void setDiasviaje(String diasviaje) {
-		this.diasviaje = diasviaje;
-	}
-
-	public String getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(String fecha) {
-		this.fecha = fecha;
-	}
-
-	public String getDirOrigen() {
-		return dirOrigen;
-	}
-
-	public void setDirOrigen(String dirOrigen) {
-		this.dirOrigen = dirOrigen;
-	}
-
-	public String getDirDestino() {
-		return dirDestino;
-	}
-
-	public void setDirDestino(String dirDestino) {
-		this.dirDestino = dirDestino;
-	}
-
-	public Viaje getViaje() {
-		return viaje;
-	}
-
-	public void setViaje(Viaje viaje) {
-		this.viaje = viaje;
-	}
-
-	public List<DiasSemana> getDiasSemana() {
-		return diasSemana;
-	}
-
-	public void setDiasSemana(List<DiasSemana> diasSemana) {
-		this.diasSemana = diasSemana;
-	}
-
-	public Usuario getUsrlogueado() {
-		return usrlogueado;
-	}
-
-	public void setUsrlogueado(Usuario usrlogueado) {
-		this.usrlogueado = usrlogueado;
-	}
-	
-	public boolean getEsPasajero() {
-		return esPasajero;
-	}
-
-	public void setEsPasajero(boolean esPasajero) {
-		this.esPasajero = esPasajero;
-	}
-
 	public int getId() {
 		return id;
 	}
-	
-	public void setId(int id){
+	public void setId(int id) {
 		this.id = id;
 	}
-
+	public String getDireccionOrigen() {
+		return direccionOrigen;
+	}
+	public void setDireccionOrigen(String direccionOrigen) {
+		this.direccionOrigen = direccionOrigen;
+	}
+	public String getDireccionDestino() {
+		return direccionDestino;
+	}
+	public void setDireccionDestino(String direccionDestino) {
+		this.direccionDestino = direccionDestino;
+	}
+	public String getFechaViaje() {
+		return fechaViaje;
+	}
+	public void setFechaViaje(String fechaViaje) {
+		this.fechaViaje = fechaViaje;
+	}
+	public String getUbicacionLocal() {
+		return ubicacionLocal;
+	}
+	public void setUbicacionLocal(String ubicacionLocal) {
+		this.ubicacionLocal = ubicacionLocal;
+	}
+	public String getEvento() {
+		return evento;
+	}
+	public void setEvento(String evento) {
+		this.evento = evento;
+	}
+		
+	public ViajeDAO getViajeDAO() {
+		return viajeDAO;
+	}
+	public void setViajeDAO(ViajeDAO viajeDAO) {
+		this.viajeDAO = viajeDAO;
+	}
+	public ViajeroDAO getViajeroDAO() {
+		return viajeroDAO;
+	}
+	public void setViajeroDAO(ViajeroDAO viajeroDAO) {
+		this.viajeroDAO = viajeroDAO;
+	}
+	public FrecuenciaViajeDAO getFrecuenciaViajeDAO() {
+		return frecuenciaViajeDAO;
+	}
+	public void setFrecuenciaViajeDAO(FrecuenciaViajeDAO frecuenciaViajeDAO) {
+		this.frecuenciaViajeDAO = frecuenciaViajeDAO;
+	}
+	public Viaje getViaje() {
+		return viaje;
+	}
+	public void setViaje(Viaje viaje) {
+		this.viaje = viaje;
+	}
+	public Viajero getViajero() {
+		return viajero;
+	}
+	public void setViajero(Viajero viajero) {
+		this.viajero = viajero;
+	}
+	public Usuario getUser() {
+		return user;
+	}
+	public void setUser(Usuario user) {
+		this.user = user;
+	}	
+	public List<Viaje> getListaViajes() {
+		return listaViajes;
+	}
+	public void setListaViajes(List<Viaje> listaViajes) {
+		this.listaViajes = listaViajes;
+	}	
+	
+	
+	public boolean getSoyViajero() {
+		return soyViajero;
+	}
+	public void setSoyViajero(boolean soyViajero) {
+		this.soyViajero = soyViajero;
+	}
+	public String BusquedaViaje() {
+		if (SessionUtil.checkLogin()){
+			listaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
+			return SUCCESS;
+		}
+		return "sinPermisos";
+	}
+	
+	public String DetalleViaje() throws Exception {
+		if (SessionUtil.checkLogin()){
+			viajero = (Viajero) SessionUtil.getUsuario();						
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			if(request.getParameter("id") != null){
+				viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
+			}
+			else{
+				System.out.println("viaje id de la sesion");
+				//viaje = viajeDAO.encontrarPorId(Integer.parseInt(session.get("id").toString()));				
+			}								
+			/*if(this.getNotif()!=""){
+				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
+			}*/
+			boolean soyPasajero = viaje.esPasajero(viajero);
+			boolean soyConductor = viaje.esConductor(viajero);
+			soyViajero = (!soyPasajero || !soyConductor);
+			System.out.println(soyPasajero+"-"+soyConductor+"-"+soyViajero);
+			return SUCCESS;
+		}else{
+			return "sinPermisos";
+		}
+	}
+	
 	/*
-	 * Metodos
-	 */	
-	public String viajes() {
-		return SUCCESS;
-	}
-	
-	public String buscarViaje() {
-		return SUCCESS;
-	}
-	
-	public String buscarFecha() {
-		return SUCCESS;
-	}
-
-	public String registroViaje() {
-		return SUCCESS;
-	}
-
-	public String registrarViaje() throws ParseException {
+	public String registrarViaje() throws Exception {
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 		String[] categorias = request.getParameterValues("viajediario");
 		diasSemana = new ArrayList<DiasSemana>();
@@ -413,7 +205,7 @@ public class ViajeAction extends ActionSupport {
 										horar = sdh.parse(this.getHoraRegreso());
 									}		
 									Viajero conductor = (Viajero) session.get("usrLogin");
-									Viaje v = new Viaje(fechai, fechaf, diasSemana, horap, horar, this.getAsientos(), this.getDireccionOrigen(), this.getDireccionDestino(), null, conductor);				
+									Viaje v = new Viaje();				
 									viaje.registrar(v);				
 									return SUCCESS;
 								}
@@ -449,13 +241,13 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String edicionViaje(){
+	public String edicionViaje() throws NumberFormatException, Exception{
 		if(this.validarSesion()){	
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			usrlogueado = (Viajero) session.get("usrLogin");
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));		
-			esPasajero = viaje.esPasajero(usrlogueado);
+			//esPasajero = viaje.esPasajero(usrlogueado);
 			return SUCCESS;
 		}else{
 			return "sinPermisos";
@@ -562,7 +354,7 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String asociacionEvento(){
+	public String asociacionEvento() throws NumberFormatException, Exception{
 		if(this.validarSesion()){
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			usrlogueado = (Viajero) session.get("usrLogin");
@@ -575,7 +367,7 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String asociarEvento(){
+	public String asociarEvento() throws Exception{
 		if(this.validarSesion()){		
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			usrlogueado = (Viajero) session.get("usrLogin");
@@ -583,10 +375,10 @@ public class ViajeAction extends ActionSupport {
 			EventoDAO eventodao = FactoryDAO.getEventoDAO();
 			Evento evento = (Evento) eventodao.encontrar(this.evento_id);		
 			//Actualizamos el viaje con los valores del evento
-			viaje.setEvento(evento);
-			viaje.setDiasSemana(null);
+			viaje.setEventoAsociado(evento);
+			//viaje.setDiasSemana(null);
 			viaje.setDireccionDestino(evento.getUbicacion());
-			viaje.setFechaInicio(evento.getFechaHora());
+			viaje.setFechaInicio(evento.getFecha());
 			viaje.setFechaFin(null);
 			viajeDAO.modificar(viaje);
 			return SUCCESS;
@@ -595,7 +387,7 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String cancelarViaje(){
+	public String cancelarViaje() throws NumberFormatException, Exception{
 		if(this.validarSesion()){		
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			usrlogueado = (Viajero) session.get("usrLogin");
@@ -604,7 +396,7 @@ public class ViajeAction extends ActionSupport {
 			viaje.setActivo(false);
 			viajeDAO.modificar(viaje);
 			NotificacionAction notificacion=new NotificacionAction();
-			for (Iterator<Viajero> i = viaje.getPasajeros().iterator(); i.hasNext(); ){
+			for (Iterator<Viajero> i = viaje.obtenerPasajeros().iterator(); i.hasNext(); ){
 				Viajero elViajero=i.next();			
 				notificacion.crearNotificacionModificacionViaje(elViajero, viaje);
 			}
@@ -614,13 +406,13 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String buscarViajePorEvento() {
+	public String buscarViajePorEvento() throws Exception {
 		if(this.validarSesion()){		
 			EventoDAO eventodao = FactoryDAO.getEventoDAO();
 			if (this.evento_id != 0){
 				Evento evento = (Evento) eventodao.encontrar(this.evento_id);
 				eventoLista = eventodao.listar();				
-				viajeLista = (List<Viaje>) evento.getViajes();
+				viajeLista = (List<Viaje>) evento.getViajesAsociados();
 			}
 			else{
 				addFieldError("loginError", "No existen eventos");			
@@ -631,7 +423,7 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String listarPorFecha() throws ParseException {
+	public String listarPorFecha() throws Exception {
 		if(this.validarSesion()){			
 			EventoDAO unEvento = FactoryDAO.getEventoDAO();
 			eventoLista = unEvento.listar();
@@ -650,7 +442,7 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 
-	public String listarPorDireccion() {
+	public String listarPorDireccion() throws Exception {
 		if(this.validarSesion()){			
 			EventoDAO unEvento = FactoryDAO.getEventoDAO();
 			eventoLista = unEvento.listar();
@@ -681,38 +473,9 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 
-	public String detalleViaje() {
-		if(this.validarSesion()){			
-			Map<String, Object> session = ActionContext.getContext().getSession();
-			usrlogueado = (Viajero) session.get("usrLogin");
-			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			if(request.getParameter("id")!=null){
-				viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
-			}
-			else{
-				System.out.println("viaje id de la sesion");
-				viaje = viajeDAO.encontrarPorId(Integer.parseInt(session.get("id").toString()));
-				
-			}		
-			esPasajero = viaje.esPasajero(usrlogueado);
-			if (!esPasajero){
-				esPasajero = viaje.esConductor(usrlogueado);
-			}
-			this.setTieneSolicitud(false);
-			if(new SolicitudViajeAction().tieneSolicitud(viaje,usrlogueado)){
-				this.setTieneSolicitud(true);
-			}
-			foroMensajes= (List<ForoMensajes>) viaje.getMensajes();
-			if(this.getNotif()!=""){
-				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
-			}		
-			return SUCCESS;
-		}else{
-			return "sinPermisos";
-		}
-	}
+	
 
-	public String listarTodosLosViajes() {
+	public String listarTodosLosViajes() throws Exception {
 		if(this.validarSesion()){		
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			Usuario user = (Usuario) session.get("usrLogin");
@@ -728,7 +491,7 @@ public class ViajeAction extends ActionSupport {
 	public boolean validarPertenece(int viajeId, Viajero receptor) {
 		if(this.validarSesion()){		
 			Viaje viaje=FactoryDAO.getViajeDAO().encontrarPorId(viajeId);
-			for(Viajero viajero :viaje.getPasajeros()){
+			for(Viajero viajero :viaje.obtenerPasajeros()){
 				if(viajero.getId()==receptor.getId()){
 					return true;
 				}
@@ -742,15 +505,15 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String cancelarSubscripcionViaje(){
+	public String cancelarSubscripcionViaje() throws Exception{
 		if(this.validarSesion()){
 			if(this.validarPertenece(this.getId(), (Viajero)this.getUsrlogueado())){
 				Viaje viaje =this.getViajeDAO().encontrarPorId(this.getId());
 				if(new SolicitudViajeAction().eliminarSolicitud(viaje,(Viajero)this.getUsrlogueado())){
-					List<Viajero> pasajeros=(List<Viajero>) viaje.getPasajeros();
+					List<Viajero> pasajeros=(List<Viajero>) viaje.obtenerPasajeros();
 					for(Viajero viajero :pasajeros){
 						if(viajero.getId()== ((Viajero)this.getUsrlogueado()).getId()){
-							viaje.getPasajeros().remove(viajero);
+							viaje.obtenerPasajeros().remove(viajero);
 						}
 					}
 					this.getViajeDAO().modificar(viaje);
@@ -772,5 +535,5 @@ public class ViajeAction extends ActionSupport {
 			return false;
 		}
 		return true;
-	}
+	}*/
 }

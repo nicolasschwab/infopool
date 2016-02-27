@@ -96,7 +96,7 @@ public class CalificacionAction extends ActionSupport {
 			Usuario user = (Usuario) session.get("usrLogin");			
 			ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
 			viaje = viajeDAO.encontrar(this.idViaje);
-			pasajeros=(List<Viajero>) viaje.getPasajeros();
+			pasajeros=(List<Viajero>) viaje.obtenerPasajeros();
 			pasajeros.add(viaje.getConductor());
 			Iterator<Viajero> viajerosIterator = pasajeros.iterator();
 			while(viajerosIterator.hasNext()) {
@@ -109,7 +109,7 @@ public class CalificacionAction extends ActionSupport {
 		return resul;
 	}	
 	
-	public String calificarViaje(){
+	public String calificarViaje() throws Exception{
 		String resul=this.validarSesion();
 		if(resul==SUCCESS){
 			Map<String, Object> session = ActionContext.getContext().getSession();
@@ -119,7 +119,8 @@ public class CalificacionAction extends ActionSupport {
 			viaje = FactoryDAO.getViajeDAO().encontrar(this.idViaje);
 			calificado = FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(request.getParameter("idPasajero")));
 			calificador = (Viajero) usrlogueado;
-			Calificacion calificacion = new Calificacion(calificador, calificado, this.calificacionnro, viaje);
+			//Calificacion calificacion = new Calificacion(calificador, calificado, this.calificacionnro, viaje);
+			Calificacion calificacion = new Calificacion();
 			calificacionDAO.registrar(calificacion);
 			NotificacionAction notificacion=new NotificacionAction();
 			notificacion.crearNotificacionCalificacion();

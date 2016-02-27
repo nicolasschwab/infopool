@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -108,21 +107,21 @@ public class NotificacionAction extends ActionSupport {
 	
 	//Metodo que llama AJAX para refrescar las notificaciones
 	public String misNotificaciones(){
-		if(this.validarLogin()){
-			this.setNotificacionesDelUsuario(notificacionDAO.ListarPorUsuario(this.getUsrLogueado()));
+		/*if(this.validarLogin()){
+			this.setNotificacionesDelUsuario(notificacionDAO.listarPorUsuario(this.getUsrLogueado()));
 			this.prepararRespuestaAjax();
 		}else{
 			return "sinPermisos";
-		}
+		}*/		
 		return SUCCESS;
 	}
 	
 	//metodo ajax llamado solo cuando clickean el icono de notificaciones
 	//este metodo ademas de listar las notificaciones actualiza su estado 
 	//a "visto"
-	public String misNotificacionesActualizar(){
+	/*public String misNotificacionesActualizar(){
 		if(this.validarLogin()){			
-			this.setNotificacionesDelUsuario(notificacionDAO.ListarPorUsuario(this.getUsrLogueado()));
+			this.setNotificacionesDelUsuario(notificacionDAO.listarPorUsuario(this.getUsrLogueado()));
 			for (Notificacion notificacion: this.getNotificacionesDelUsuario() ) {
 				if(notificacion.getEstado().getId()==1){
 					notificacion.setEstado(FactoryDAO.getEstadoNotificacionDAO().traerVisto());
@@ -134,12 +133,12 @@ public class NotificacionAction extends ActionSupport {
 			return "sinPermisos";
 		}
 		return SUCCESS;
-	}
+	}*/
 	
 	//Este metodo cambia el estado de una notificacion a Visitado
 	//Solo si existe la notificacion en la BBDD y si esa notificacion
 	//Le pertenece al ususario logueado
-	public void cambiarEstadoAVisitado(String idNoti){
+	public void cambiarEstadoAVisitado(String idNoti) throws Exception{
 		if(this.validarLogin()){
 			Notificacion notificacion=notificacionDAO.encontrarPorId(idNoti);
 			if(notificacion!=null){
@@ -155,7 +154,7 @@ public class NotificacionAction extends ActionSupport {
 	private void prepararRespuestaAjax(){
 		for (Notificacion notificacion: this.getNotificacionesDelUsuario()) {
 			//inner class (mas abajo)
-			NotifiacionVista unaNotificacion=new NotifiacionVista(notificacion.getEmisor().getId(),notificacion.getMensaje(),notificacion.getLink(),notificacion.getTipo(),notificacion.getHora().toString(),notificacion.getEstado().getTexto());
+			NotifiacionVista unaNotificacion=new NotifiacionVista(notificacion.getEmisor().getId(),notificacion.getMensaje(),notificacion.getLink(),notificacion.getTipo(),notificacion.getFechaHora().toString(),"Estado Notificacion");
 			//seteo la variable que es capturada en la vista
 			this.getValoresJson().add(unaNotificacion);
 		}	
@@ -173,7 +172,7 @@ public class NotificacionAction extends ActionSupport {
 	
 	//Mensajes para crear notificaciones
 	//El link debe apuntar a un viaje
-	public boolean crearNotificacionComentario(Usuario receptor,Viaje elViaje){
+	public boolean crearNotificacionComentario(Usuario receptor,Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();			
@@ -186,7 +185,7 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//El link debe apuntar a un viaje
-	public boolean crearNotificacionSalida(Usuario receptor,Viaje elViaje){
+	public boolean crearNotificacionSalida(Usuario receptor,Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();			
@@ -199,7 +198,7 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//El link debe apuntar a un viaje
-	public boolean crearNotificacionModificacionViaje(Usuario receptor,Viaje elViaje){
+	public boolean crearNotificacionModificacionViaje(Usuario receptor,Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();				
@@ -211,7 +210,7 @@ public class NotificacionAction extends ActionSupport {
 		}
 	}
 	
-	public boolean crearNotificacionCancelarViaje(Usuario receptor,Viaje elViaje){
+	public boolean crearNotificacionCancelarViaje(Usuario receptor,Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();				
@@ -224,7 +223,7 @@ public class NotificacionAction extends ActionSupport {
 		}
 	}
 
-	public boolean crearNotificacionCalificacion(){
+	public boolean crearNotificacionCalificacion() throws Exception{
 		//para no mostrar quien califico a quien, el usuario que se muestre
 		//en la notificacion sera un usuario que represente al sistema
 		if(this.validarLogin()){
@@ -240,7 +239,7 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//El link debe apuntar a un viaje
-	public boolean crearNotificacionSolicitudAceptar(Usuario receptor,Viaje elViaje){
+	public boolean crearNotificacionSolicitudAceptar(Usuario receptor,Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
@@ -254,7 +253,7 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//El link debe apuntar a un viaje
-	public boolean crearNotificacionRechazoSolicitud(Usuario receptor,Viaje elViaje){
+	public boolean crearNotificacionRechazoSolicitud(Usuario receptor,Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();			
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
@@ -269,7 +268,7 @@ public class NotificacionAction extends ActionSupport {
 	
 	//El link debe apuntar a un viaje
 	//tiene solo un parametro porque el receptor es el conductor del viaje
-	public boolean crearNotificacionSolicitudNueva(Viaje elViaje){
+	public boolean crearNotificacionSolicitudNueva(Viaje elViaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
@@ -283,7 +282,7 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//El link debe apuntar a un mensaje
-	public boolean crearNotificacionPrivado(Usuario receptor,int idMensaje){
+	public boolean crearNotificacionPrivado(Usuario receptor,int idMensaje) throws Exception{
 		if(this.validarLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.setMensaje(getText("notificacion.mensaje.privado",this.argumentos));
@@ -295,12 +294,12 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//Mensajes privados genericos para reusar codigo
-	private void crearRegistrarNotificacion(Usuario receptor, String link,String tipo){
+	private void crearRegistrarNotificacion(Usuario receptor, String link,String tipo) throws Exception{
 		Notificacion notificacion=this.crearNotificacion(receptor, link, tipo);
 		this.registrarNotificacion(notificacion);
 	}
 	
-	private void registrarNotificacion(Notificacion notificacion){
+	private void registrarNotificacion(Notificacion notificacion) throws Exception{
 		FactoryDAO.getUsuarioDAO().modificar(notificacion.getEmisor());
 		FactoryDAO.getUsuarioDAO().modificar(notificacion.getReceptor());
 		this.getNotificacionDAO().registrar(notificacion);
@@ -314,7 +313,7 @@ public class NotificacionAction extends ActionSupport {
 		notificacion.setReceptor(receptor);
 		notificacion.setTipo(elTipo);
 		notificacion.setLink((link+"&notif="+notificacion.getId()));
-		notificacion.setHora(new Date());
+		notificacion.setFechaHora(new Date());
 		notificacion.setMensaje(this.getMensaje());		
 		notificacion.setEstado(FactoryDAO.getEstadoNotificacionDAO().traerNoVisto());
 		return notificacion;

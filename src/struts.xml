@@ -4,47 +4,217 @@
 	<constant name="struts.custom.i18n.resources" value="i18n.i18n"></constant>
 	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />	
 	<constant name="struts.devMode" value="true" />
+	<constant name="struts.url.includeParams" value="none" />
 	<package name="default" namespace="" extends="struts-default">
 
-		<!-- Actions Usuarios -->
-		<action name="validarLogin" method="validarLogin" class="loginAction">
+		<!-- Actions Inicio -->
+		<action name="Inicio" method="Inicio" class="inicioAction">
 			<result name="success">/index.jsp</result>
-			<result name="input">/login.jsp</result>
-			<result name="conectado">/index.jsp</result>
 		</action>
-
-		<action name="registrarUsuario" method="registrarUsuario" class="loginAction">
+		
+		<!-- Actions Login/out -->		
+		<action name="iniciarSesion" method="iniciarSesion" class="loginAction">			
+			<result name="success" type="redirect">Inicio</result>
+			<result name="input">/login.jsp</result>
+			<result name="conectado" type="redirect">Inicio</result>
+		</action>
+		
+		<action name="cerrarSesion" method="cerrarSesion" class="loginAction">			
+			<result name="success" type="redirect">Inicio</result>
+			<result name="sinPermisos" type="redirect">iniciarSesion</result>
+		</action>
+		
+		<!-- Actions Usuario -->		
+		<action name="registrarUsuario" method="registrarUsuario" class="datosUsuarioAction">
 			<interceptor-ref name="fileUpload">
 				<param name="maximumSize">2097152</param>
 				<param name="allowedTypes">image/png,image/gif,image/jpeg,image/pjpeg</param>
 			</interceptor-ref>
 			<interceptor-ref name="defaultStack"></interceptor-ref>
-			<result name="success">/login.jsp</result>
-			<result name="input">/registro.jsp</result>
-			<result name="conectado">/index.jsp</result>
-		</action>
+			<result name="success" type="redirect">iniciarSesion</result>
+			<result name="input">/viajero/registrarViajero.jsp</result>
+			<result name="conectado" type="redirect">Inicio</result>
+		</action>	
 		
-		<action name="cerrarSesion" method="cerrarSesion" class="loginAction">			
-			<result name="success">/index.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="miPerfil" method="miPerfil" class="loginAction">			
-			<result name="success">/ver_detalle_viajero.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="edicionUsuario" method="edicionUsuario" class="loginAction">
-			<result name="success">/editar_usuario.jsp</result>
+		<action name="verPerfilViajero" method="verPerfilViajero" class="datosUsuarioAction">			
+			<result name="success">
+				<param name="location">/viajero/perfilViajero.jsp</param>
+				<param name="id">${id}</param>
+			</result>			
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="editarUsuario" method="editarUsuario" class="loginAction">			
+		<!-- FALTAN ESTOS DOS DE EDICION -->
+		<action name="edicionUsuario" method="edicionUsuario" class="datosUsuarioAction">
+			<result name="success">/viajero/editarUsuario.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="editarUsuario" method="editarUsuario" class="datosUsuarioAction">			
 			<result name="success" type="redirect">miPerfil</result>
 			<result name="input">/ver_detalle_viajero</result>
-			<result name="login">/index.jsp</result>
+			<result name="login" type="redirect">Inicio</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>	
 		</action>
+
+
+
+
+
+
+
+		<!-- Actions Viajeros -->
+		<action name="Viajes" method="Viajes" class="viajeroAction">
+			<result name="success">/viajero/viajes.jsp</result>
+			<result name="sinPermisos" type="redirect" >Inicio</result>
+		</action>
+		
+		<action name="ViajesPasajero" method="ViajesPasajero" class="viajeroAction">
+			<result name="success">/viajero/viajes.jsp</result>
+			<result name="sinPermisos" type="redirect">Inicio</result>
+		</action>
+		
+		<action name="HistorialViajes" method="HistorialViajes" class="viajeroAction">
+			<result name="success">/viajero/viajes.jsp</result>
+			<result name="sinPermisos" type="redirect">Inicio</result>
+		</action>
+		
+		<action name="Solicitudes" method="Solicitudes" class="viajeroAction">
+			<result name="success">/viajero/solicitudes.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+				
+		<!-- ESTOS 4 CORRESPONDEN AL ADMINISTRADOR Y FALTAN HACER -->
+		<action name="viajeros" method="viajeros" class="viajeroAction">
+			<result name="success">/viajeros.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="detalleViajero" method="detalleViajero" class="viajeroAction">
+			<result name="success">/detalle_viajero.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="desactivarViajero" method="desactivarViajero" class="viajeroAction">
+			<result name="success" type="redirect">viajeros</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="activarViajero" method="activarViajero" class="viajeroAction">
+			<result name="success" type="redirect">viajeros</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		
+		
+		
+		
+		<!-- Actions Viajes -->
+		<action name="RegistrarViaje" method="RegistrarViaje" class="datosViajeAction">
+			<result name="success" type="redirect">Viajes</result>
+			<result name="input" >/viajes/registrarViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="BusquedaViaje" method="BusquedaViaje" class="viajeAction">
+			<result name="success">/viajes/busquedaViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="DetalleViaje" method="DetalleViaje" class="viajeAction">
+			<result name="success">/viajes/detalleViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		
+		
+		
+		
+		
+		<!-- REVISAR ESTOS ULTIMOS 7 -->
+		<action name="listarViajes" method="listarViajes" class="viajeAction">
+			<result name="success">/viajero/viajes.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>		
+		
+		<action name="edicionViaje" method="edicionViaje" class="viajeAction">			
+			<result name="success">/editar_viaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+				
+		<action name="editarViaje" method="editarViaje" class="viajeAction">
+			<result name="success" type="redirect">listarViajes</result>
+			<result name="input">/editar_viaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="cancelarSubscripcionViaje" method="cancelarSubscripcionViaje" class="viajeAction">
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${id}</param>				
+			</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="asociacionEvento" method="asociacionEvento" class="viajeAction">
+			<result name="success">/asociar_evento.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="asociarEvento" method="asociarEvento" class="viajeAction">
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${id}</param>
+			</result>
+			<result name="input">/asociar_evento.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="cancelarViaje" method="cancelarViaje" class="viajeAction">
+			<result name="success" type="redirect">listarViajes</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>	
+		
+		<!-- Actions SolicitudesViaje -->
+		<action name="RegistroSolicitudViaje" method="RegistroSolicitudViaje" class="solicitudViajeAction">			
+			<result name="success" type="redirect">
+				<param name="location">DetalleViaje</param>
+				<param name="id">${idViaje}</param>				
+			</result>
+			<result name="input">/viajes/detalleViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="AceptarSolicitud" method="AceptarSolicitud" class="solicitudViajeAction">
+			<result name="success" type="redirect">Solicitudes</result>
+			<result name="input">/viajero/solicitudes.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+				
+				
+				
+				
+		<!-- FALTAN ESTOS 2 -->
+		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
+			<result name="success" type="redirect">
+				<param name="location">solicitudesViaje</param>
+				<param name="id">${idViaje}</param>	
+			</result>
+			<result name="input">/solicitudes.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>	
+				
+		<action name="cancelacionSolicitudViaje" method="cancelacionSolicitudViaje" class="solicitudViajeAction">
+			<result name="success" type="redirect">
+				<param name="location">detalleViaje</param>
+				<param name="id">${idViaje}</param>	
+			</result>
+			<result name="input">/solicitudes.jsp</result>						
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>	
+		
+				
+		<!-- REVISAR LOS DE ABAJO -->
 
 		<!-- Actions Eventos -->
 		<action name="paginaBuscarViajes" method="listarEventos" class="eventoAction">
@@ -95,27 +265,6 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 
-		<!-- Actions Viajeros -->
-		<action name="viajeros" method="viajeros" class="viajeroAction">
-			<result name="success">/viajeros.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="detalleViajero" method="detalleViajero" class="viajeroAction">
-			<result name="success">/detalle_viajero.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="desactivarViajero" method="desactivarViajero" class="viajeroAction">
-			<result name="success" type="redirect">viajeros</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="activarViajero" method="activarViajero" class="viajeroAction">
-			<result name="success" type="redirect">viajeros</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
 		<!-- Actions Denuncias -->
 		<action name="denuncias" method="denuncias" class="denunciaAction">
 			<result name="success">/denuncias.jsp</result>
@@ -137,139 +286,7 @@
 			<result name="login">/login.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
-
-		<!-- Actions Viajes -->
-		<action name="cancelarSubscripcionViaje" method="cancelarSubscripcionViaje" class="viajeAction">
-			<result name="success" type="redirect">
-				<param name="location">detalleViaje</param>
-				<param name="id">${id}</param>				
-			</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="listarViajes" method="listarViajes" class="viajeAction">
-			<result name="success">/viajes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="viajes" method="viajes" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="registroViaje" method="registroViaje" class="viajeAction">
-			<result name="success">/registrar_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="registrarViaje" method="registrarViaje" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
-			<result name="input" >/registrar_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="edicionViaje" method="edicionViaje" class="viajeAction">			
-			<result name="success">/editar_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-				
-		<action name="editarViaje" method="editarViaje" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
-			<result name="input">/editar_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="asociacionEvento" method="asociacionEvento" class="viajeAction">
-			<result name="success">/asociar_evento.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="asociarEvento" method="asociarEvento" class="viajeAction">
-			<result name="success" type="redirect">
-				<param name="location">detalleViaje</param>
-				<param name="id">${id}</param>
-			</result>
-			<result name="input">/asociar_evento.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="cancelarViaje" method="cancelarViaje" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="buscarViaje" method="buscarViaje" class="viajeAction">
-			<result name="success" type="redirect">paginaBuscarViajes</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="listarTodosLosViajes" method="listarTodosLosViajes" class="viajeAction">
-			<result name="success">/buscar_viajes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="buscarViajePorEvento" method="buscarViajePorEvento" class="viajeAction"> 
-			<result name="success">/buscar_viajes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="detalleViaje" method="detalleViaje" class="viajeAction">
-			<result name="success">/ver_detalle_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="listarPorFecha" method="listarPorFecha" class="viajeAction">
-			<result name="success">/buscar_viajes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
-		<action name="listarPorDireccion" method="listarPorDireccion" class="viajeAction">
-			<result name="success">/buscar_viajes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<!-- Actions SolicitudesViaje -->
-		<action name="solicitudesViaje" method="solicitudesViaje" class="solicitudViajeAction">
-			<result name="success">/solicitudes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="registroSolicitudViaje" method="registroSolicitudViaje" class="solicitudViajeAction">			
-			<result name="success" type="redirect">
-				<param name="location">detalleViaje</param>
-				<param name="id">${idViaje}</param>				
-			</result>
-			<result name="input">/ver_detalle_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>		
-
-		<action name="aceptarSolicitudViaje" method="aceptarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success" type="redirect">
-				<param name="location">solicitudesViaje</param>
-				<param name="id">${idViaje}</param>						
-			</result>
-			<result name="input">/solicitudes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-
-		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success" type="redirect">
-				<param name="location">solicitudesViaje</param>
-				<param name="id">${idViaje}</param>	
-			</result>
-			<result name="input">/solicitudes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>	
-				
-		<action name="cancelacionSolicitudViaje" method="cancelacionSolicitudViaje" class="solicitudViajeAction">
-			<result name="success" type="redirect">
-				<param name="location">detalleViaje</param>
-				<param name="id">${idViaje}</param>	
-			</result>
-			<result name="input">/solicitudes.jsp</result>						
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>	
-		
+	
 		<!-- Actions Mensajes -->
 		<action name="listarConversaciones" method="listarConversaciones" class="conversacionAction">
 			<result name="success">ver_detalle_conversacion.jsp</result>
@@ -337,7 +354,6 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<!-- Action Notificaciones -->
 	</package>
 	
 	<package name="image" namespace="/" extends="struts-default">
@@ -349,6 +365,7 @@
 			<result name="success" type="imageResult"></result>
 		</action>
 	</package>
+	
 	<package name="notificacionesJson" namespace="/" extends="json-default">		
 		<action name="misNotificaciones" method="misNotificaciones" class="actions.NotificacionAction">
 			<result type="json">
@@ -360,7 +377,7 @@
 			<result type="json">
         		<param name="root">valoresJson</param>
    			</result>
-   			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+   			<result name="sinPermisos" type="redirect" >inicio</result>
 		</action>
 	</package>
 </struts>

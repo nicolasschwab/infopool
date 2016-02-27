@@ -1,53 +1,59 @@
 package actions;
 
-import implementacionesDAO.FactoryDAO;
-import implementacionesDAO.SolicitudViajeDAOjpa;
+import implementacionesDAO.FrecuenciaViajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
-import implementacionesDAO.ViajeroDAOjpa;
-import interfacesDAO.EventoDAO;
+import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.SolicitudViajeDAO;
 import interfacesDAO.ViajeDAO;
 import interfacesDAO.ViajeroDAO;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import model.DiasSemana;
 import model.EstadoSolicitud;
+import model.FrecuenciaViaje;
 import model.SolicitudViaje;
-import model.Usuario;
 import model.Viaje;
 import model.Viajero;
 
 import org.apache.struts2.ServletActionContext;
+
+import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class SolicitudViajeAction extends ActionSupport{
 
-	private static final long serialVersionUID = 1L;
-	
+	private static final long serialVersionUID = 1L;	
 	private int id;
-	private Date fechaSolicitud;
-	private EstadoSolicitud estado;
-	private Viaje viaje;	
-	private Viajero viajero;
-	private SolicitudViaje solicitud;
-	private int idViaje;
-	private SolicitudViaje solicitudviaje;
-	private List<SolicitudViaje> solicitudesviaje = new ArrayList<SolicitudViaje>();	
-	private SolicitudViajeDAO solicitudViajeDAO= FactoryDAO.getSolicitudViajeDAO();	
-	private String notif="";	
 	
-	public String getNotif() {
-		return notif;
+	/* DATOS FORMULARIO */	
+	private int idViaje;
+	private int idFrecuenciaViaje;
+	
+	/* */
+	private Viaje viaje;
+	private Viajero viajero;
+	private FrecuenciaViaje frecuenciaViaje;
+	private SolicitudViaje solicitudViaje;
+	private ViajeDAO viajeDAO;
+	private ViajeroDAO viajeroDAO;
+	private FrecuenciaViajeDAO frecuenciaViajeDAO;
+	private SolicitudViajeDAO solicitudViajeDAO;
+	
+	/* DATOS VISTAS */
+	private List<SolicitudViaje> listaSolicitudes = null;	
+	private boolean tieneSolicitudPendiente;
+	
+	public int getId() {
+		return id;
 	}
-	public void setNotif(String notif) {
-		this.notif = notif;
+	public void setId(int id) {
+		this.id = id;
 	}
 	public int getIdViaje() {
 		return idViaje;
@@ -55,122 +61,90 @@ public class SolicitudViajeAction extends ActionSupport{
 	public void setIdViaje(int idViaje) {
 		this.idViaje = idViaje;
 	}
-	public SolicitudViaje getSolicitud() {
-		return solicitud;
+	public int getIdFrecuenciaViaje() {
+		return idFrecuenciaViaje;
 	}
-
-	public void setSolicitud(SolicitudViaje solicitud) {
-		this.solicitud = solicitud;
+	public void setIdFrecuenciaViaje(int idFrecuenciaViaje) {
+		this.idFrecuenciaViaje = idFrecuenciaViaje;
 	}
-
-
-	public int getId() {
-		return id;
-	}
-
 	
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getFechaSolicitud() {
-		return fechaSolicitud;
-	}
-
-	public void setFechaSolicitud(Date fechaSolicitud) {
-		this.fechaSolicitud = fechaSolicitud;
-	}
-
-	public EstadoSolicitud getEstado() {
-		return estado;
-	}
-
-	public void setEstado(EstadoSolicitud estado) {
-		this.estado = estado;
-	}
-
 	public Viaje getViaje() {
 		return viaje;
 	}
-
 	public void setViaje(Viaje viaje) {
 		this.viaje = viaje;
 	}
-	
 	public Viajero getViajero() {
 		return viajero;
 	}
-
 	public void setViajero(Viajero viajero) {
 		this.viajero = viajero;
 	}
-
-	public SolicitudViaje getSolicitudviaje() {
-		return solicitudviaje;
+	public FrecuenciaViaje getFrecuenciaViaje() {
+		return frecuenciaViaje;
 	}
-
-	public void setSolicitudviaje(SolicitudViaje solicitudviaje) {
-		this.solicitudviaje = solicitudviaje;
+	public void setFrecuenciaViaje(FrecuenciaViaje frecuenciaViaje) {
+		this.frecuenciaViaje = frecuenciaViaje;
 	}
-	
-	public List<SolicitudViaje> getSolicitudesviaje() {
-		return solicitudesviaje;
+	public SolicitudViaje getSolicitudViaje() {
+		return solicitudViaje;
 	}
-
-	public void setSolicitudesviaje(List<SolicitudViaje> solicitudesviaje) {
-		this.solicitudesviaje = solicitudesviaje;
+	public void setSolicitudViaje(SolicitudViaje solicitudViaje) {
+		this.solicitudViaje = solicitudViaje;
 	}
-
+	public ViajeDAO getViajeDAO() {
+		return viajeDAO;
+	}
+	public void setViajeDAO(ViajeDAO viajeDAO) {
+		this.viajeDAO = viajeDAO;
+	}
+	public ViajeroDAO getViajeroDAO() {
+		return viajeroDAO;
+	}
+	public void setViajeroDAO(ViajeroDAO viajeroDAO) {
+		this.viajeroDAO = viajeroDAO;
+	}
+	public FrecuenciaViajeDAO getFrecuenciaViajeDAO() {
+		return frecuenciaViajeDAO;
+	}
+	public void setFrecuenciaViajeDAO(FrecuenciaViajeDAO frecuenciaViajeDAO) {
+		this.frecuenciaViajeDAO = frecuenciaViajeDAO;
+	}
 	public SolicitudViajeDAO getSolicitudViajeDAO() {
 		return solicitudViajeDAO;
 	}
-
-	public void setSolicitudViajeDAO(SolicitudViajeDAO solicitudDAO) {
-		this.solicitudViajeDAO = solicitudDAO;
+	public void setSolicitudViajeDAO(SolicitudViajeDAO solicitudViajeDAO) {
+		this.solicitudViajeDAO = solicitudViajeDAO;
 	}
 	
-	
-	public String solicitudesViaje(){
-		String tienePermisos=this.validarSesion();
-		if(tienePermisos==SUCCESS){
+	public List<SolicitudViaje> getListaSolicitudes() {
+		return listaSolicitudes;
+	}
+	public void setListaSolicitudes(List<SolicitudViaje> listaSolicitudes) {
+		this.listaSolicitudes = listaSolicitudes;
+	}
+	public boolean getTieneSolicitudPendiente() {
+		return tieneSolicitudPendiente;
+	}
+	public void setTieneSolicitudPendiente(boolean tieneSolicitudPendiente) {
+		this.tieneSolicitudPendiente = tieneSolicitudPendiente;
+	}
+		
+	public String RegistroSolicitudViaje() throws Exception{		
+		if (SessionUtil.checkLogin()) {
+			viajero = (Viajero)SessionUtil.getUsuario();
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			ViajeDAO viajeDAO = FactoryDAO.getViajeDAO();
-			viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-			Map<String, Object> session = ActionContext.getContext().getSession();
-			Usuario user = (Usuario) session.get("usrLogin");
-			if(viaje.getConductor().getId()==user.getId()){
-				solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
-				if(this.getNotif()!=""){
-					new NotificacionAction().cambiarEstadoAVisitado(this.notif);
-				}
-				return SUCCESS;
-			}
-			return "sinPermisos";
-		}
-		return tienePermisos;
-	}
-	
-	public String registroSolicitudViaje(){		
-		ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
-		ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
-		if (user != null) {	
-			if (user.equals("viajero")) {
-				viajero = viajeroDAO.encontrar(((Usuario)session.get("usrLogin")).getId());
-				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-				idViaje=viaje.getId();				
-				List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
-				if(solicito.isEmpty()){
-					fechaSolicitud = new Date();				
-					estado = EstadoSolicitud.PENDIENTE;					
-					solicitudviaje = new SolicitudViaje(fechaSolicitud,estado,viaje,viajero);					
-					//solicitudViajeDAO = (SolicitudViajeDAOjpa) FactoryDAO.getSolicitudViajeDAO();
-					solicitudViajeDAO.registrar(solicitudviaje);
-					//registro una notificacion
-					NotificacionAction notificacionAction=new NotificacionAction();
-					notificacionAction.crearNotificacionSolicitudNueva(viaje);
+			idFrecuenciaViaje = Integer.parseInt(request.getParameter("idFrecuenciaViaje"));
+			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(idFrecuenciaViaje);
+			viaje = frecuenciaViaje.getViaje();			
+			if (!viaje.esConductor(viajero)){
+				idViaje = viaje.getId();
+				DiasSemana diaSemana = frecuenciaViaje.getDiaFrecuencia();
+				tieneSolicitudPendiente = solicitudViajeDAO.tieneSolicitudEstado(viajero,viaje,EstadoSolicitud.PENDIENTE,diaSemana);
+				if(!tieneSolicitudPendiente){
+					Date fechaInicioSolicitud = new Date();					
+					solicitudViaje = new SolicitudViaje(fechaInicioSolicitud,null,EstadoSolicitud.PENDIENTE,viaje,viajero,diaSemana,null);					
+					solicitudViajeDAO.registrar(solicitudViaje);					
 					return SUCCESS;				
 				}else{					
 					addFieldError("loginError", "Usted ya solicito participar en este viaje");
@@ -185,35 +159,37 @@ public class SolicitudViajeAction extends ActionSupport{
 			return "login";
 		}	
 	}
-		
-	public String aceptarSolicitudViaje(){
-		String tienePermisos=this.validarSesion();
-		if(tienePermisos==SUCCESS){
-			ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
-			ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-			viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
-			idViaje = viaje.getId();	
-			if (viaje.getAsientos() > viaje.getPasajeros().size()){
-				solicitud.setEstado(EstadoSolicitud.ACEPTADO);
-				solicitudViajeDAO.modificar(solicitud);
-				solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
-				viajero = solicitud.getViajero();
-				viajero.getMisViajesPasajero().add(viaje);		
-				viajeroDAO.modificar(viajero);
-				NotificacionAction notificacion=new NotificacionAction();
-				notificacion.crearNotificacionSolicitudAceptar(viajero, viaje);
+	
+	public String AceptarSolicitud() throws Exception{		
+		if(SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
+			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
+			viaje = ((ViajeDAOjpa)viajeDAO).encontrar(solicitudViaje.getViaje().getId());
+			idViaje = viaje.getId();
+			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).buscarFrecuenciaViajeDia(viaje,solicitudViaje.getDiaSolicitud());
+			if (frecuenciaViaje.getAsientosDisponibles() > 0){
+				solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
+				solicitudViaje.setFechaFinSolicitud(new Date());
+				//solicitudViajeDAO.modificar(solicitudViaje);
+				//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);				
+				viajero = solicitudViaje.getViajero();
+				/*viajero.getMisViajesPasajero().add(viaje);
+				viajero.getMisFrecuenciasPasajero().add(frecuenciaViaje);
+				viajeroDAO.modificar(viajero);*/
+				System.out.println("Pasajero "+viajero.getNombre()+" Solicitud "+solicitudViaje.getEstadoSolicitud()+" "+solicitudViaje.getFechaFinSolicitud()+" Frecuencia "+frecuenciaViaje.getDiaFrecuencia());
+				
 				return SUCCESS;
 			}
 			else{
-				solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+				//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
 				addFieldError("loginError", "Se completaron todos los asientos!");
 				return INPUT;
 			}
 		}
-		return tienePermisos;
+		return "sinPermisos";
 	}
+	
+	/*	
 	
 	public String rechazarSolicitudViaje(){
 		String tienePermisos=this.validarSesion();
@@ -251,7 +227,7 @@ public class SolicitudViajeAction extends ActionSupport{
 		return false;
 	}
 	
-	public String cancelacionSolicitudViaje(){		
+	public String cancelacionSolicitudViaje() throws Exception{		
 		String tienePermisos=this.validarSesion();
 		if(tienePermisos==SUCCESS){
 				ViajeroDAO viajeroDAO = FactoryDAO.getViajeroDAO();
@@ -267,7 +243,7 @@ public class SolicitudViajeAction extends ActionSupport{
 		return tienePermisos;
 	}
 	
-	public boolean eliminarSolicitud(Viaje viaje,Viajero viajeroId){
+	public boolean eliminarSolicitud(Viaje viaje,Viajero viajeroId) throws Exception{
 		List<SolicitudViaje> solicito= solicitudViajeDAO.yaSolicito(viaje, viajero);
 		if(!solicito.isEmpty()){									
 			for(SolicitudViaje solicitud : solicito){
@@ -293,5 +269,5 @@ public class SolicitudViajeAction extends ActionSupport{
 		else{
 			return "login";
 		}	
-	}
+	}*/
 }

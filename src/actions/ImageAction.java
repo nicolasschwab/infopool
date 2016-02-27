@@ -25,18 +25,17 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
 
 	private static final long serialVersionUID = 1L;
 	byte[] imageInByte = null;
-	String imageId;
+	String id;
 
 	private HttpServletRequest servletRequest;
 
-	public String getImageId() {
-		return imageId;
+	public String getId() {
+		return id;
 	}
-
-	public void setImageId(String imageId) {
-		this.imageId = imageId;
+	public void setId(String id) {
+		this.id = id;
 	}
-
+	
 	public ImageAction() {		
 	}
 
@@ -44,8 +43,7 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
 		return SUCCESS;
 	}
 
-	public byte[] getCustomImageInBytes() {
-
+	public byte[] getCustomImageInBytes() throws NumberFormatException, Exception {
 		try {
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 			UsuarioDAO udao = FactoryDAO.getUsuarioDAO();
@@ -66,10 +64,10 @@ public class ImageAction extends ActionSupport implements ServletRequestAware {
 		return imageInByte;
 	}
 
-	private File getImageFile(String imageId) {
+	private File getImageFile(String id) {
 		String filePath = servletRequest.getSession().getServletContext()
 				.getRealPath("/");
-		File file = new File(filePath + "/Image/", imageId);
+		File file = new File(filePath + "/Image/", id);
 		System.out.println(file.toString());
 		return file;
 	}

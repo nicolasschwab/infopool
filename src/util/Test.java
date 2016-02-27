@@ -4,15 +4,11 @@ import implementacionesDAO.FactoryDAO;
 import interfacesDAO.UsuarioDAO;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import model.Administrador;
-import model.Usuario;
-import model.Viajero;
 
 public class Test {
-	public static void main(String[] args) throws ParseException {
+	public static void main(String[] args) throws Exception {
 		
 		UsuarioDAO udao = FactoryDAO.getUsuarioDAO();
 		
