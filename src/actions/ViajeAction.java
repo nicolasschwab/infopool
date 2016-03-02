@@ -41,6 +41,8 @@ public class ViajeAction extends ActionSupport {
 	/* DATOS VISTAS */	
 	private List<Viaje> listaViajes = null;
 	private boolean soyViajero;
+	private boolean soyConductor;
+	private boolean soyPasajero;
 	
 	public int getId() {
 		return id;
@@ -128,7 +130,20 @@ public class ViajeAction extends ActionSupport {
 	}
 	public void setSoyViajero(boolean soyViajero) {
 		this.soyViajero = soyViajero;
+	}	
+	public boolean getSoyConductor() {
+		return soyConductor;
 	}
+	public void setSoyConductor(boolean soyConductor) {
+		this.soyConductor = soyConductor;
+	}
+	public boolean getSoyPasajero() {
+		return soyPasajero;
+	}
+	public void setSoyPasajero(boolean soyPasajero) {
+		this.soyPasajero = soyPasajero;
+	}
+	
 	public String BusquedaViaje() {
 		if (SessionUtil.checkLogin()){
 			listaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
@@ -151,10 +166,9 @@ public class ViajeAction extends ActionSupport {
 			/*if(this.getNotif()!=""){
 				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
 			}*/
-			boolean soyPasajero = viaje.esPasajero(viajero);
-			boolean soyConductor = viaje.esConductor(viajero);
-			soyViajero = (!soyPasajero || !soyConductor);
-			System.out.println(soyPasajero+"-"+soyConductor+"-"+soyViajero);
+			soyPasajero = viaje.esPasajero(viajero);
+			soyConductor = viaje.esConductor(viajero);
+			soyViajero = (!soyPasajero || !soyConductor);			
 			return SUCCESS;
 		}else{
 			return "sinPermisos";

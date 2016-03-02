@@ -18,14 +18,12 @@
 		<% if (session.getAttribute("usrLogin") == null){  %>
 			<li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 87) {%> class="active" <%}%>><a href='iniciarSesion'><s:text name="login.ingresar" /></a></li>
 			<li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 88) {%> class="active" <%}%>><a href='registrarUsuario'><s:text name="login.registrarse" /></a></li>
-		<% } else{ %>					
-			<li class="dropdown"><a href="#" class="dropdown-toggle"
-			data-toggle="dropdown" role="button" aria-haspopup="true"
-			aria-expanded="false"><s:text name="login.bienvenido" /> <%= ((Usuario)session.getAttribute("usrLogin")).getUsuario() %> <span class="caret"></span></a>
-				<ul class="dropdown-menu">												
-					<li><a href='cerrarSesion' class="salir"><s:text name="login.salir" /></a></li>
-				</ul>
-			</li>
-		<% } %>				
+		<% } else{ %>	
+			<% if  (((Usuario)session.getAttribute("usrLogin")).soyAdministrador()){ %>
+				<%@ include file="menuAdministradorLogin.jsp"%>
+			<% } else{%>
+				<%@ include file="menuViajeroLogin.jsp"%>
+			<% }
+		   } %>				
 	</ul>
 </div>

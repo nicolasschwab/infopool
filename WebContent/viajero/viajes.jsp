@@ -19,24 +19,24 @@
 					<p class="header-title">Viajes</p>
 					<div class="menu-seccion">
 						<div class="row">
-							<div class="col-sm-8">
-								<div class="input-group"> 
-									<input type="text" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Ciudad, Dirección, Evento, Facultad, Fecha, Conductor"> 
-									<div class="input-group-btn"> 
-										<button type="button" class="btn btn-default">Buscar</button> 
-										<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
-										 	Filtrar <span class="caret"></span>
-										</button> 
-										<ul class="dropdown-menu dropdown-menu-right"> 
-											<li><a href="#">mis viajes conductor</a></li> 
-											<li><a href="#">mis viajes pasajero</a></li> 
-											<li><a href="#">historial de viaje</a></li> 
-										</ul> 
-									</div> 
-								</div> 
-							</div>
-							<div class="col-sm-4">
-								<p class="resultado-filtro">10 viajes</p>
+							<div class="col-sm-12">																	
+								<form class="">									
+									<div class="form-group col-sm-3">											
+									  	<input type="text" class="form-control" placeholder="Dirección de Origen">
+									</div>
+									<div class="form-group col-sm-3">										  	
+									  	<input type="text" class="form-control" placeholder="Dirección de Destino">
+									</div>
+									<div class="form-group col-sm-2">										  	
+									  	<input type="text" class="form-control" placeholder="Fecha de Partida">
+									</div>
+									<div class="form-group col-sm-3">										  	
+									  	<input type="text" class="form-control" placeholder="Evento">
+									</div>
+									<div class="form-group col-sm-1">
+										<button type="submit" class="btn btn-default">Buscar</button>
+									</div>
+								</form>								
 							</div>
 						</div>					      					    						
 					</div>
@@ -45,8 +45,7 @@
 			<div class="main row">
 				<div class="col-sm-3 padding-both-zero">
 					<div class="panel-header-seccion">
-						<h3>Mis Viajes</h3>		      		      
-			      		<p class="descripcion-seccion">En esta sección usted podrá administrar sus viajes.</p>
+						<h3>Filtros</h3>
 					</div>
 					<div class="panel-menu-seccion shadow-box">			    		
 			      		<ul class="nav">
@@ -69,7 +68,7 @@
 				<div class="col-sm-9 padding-right-zero">
 					<div class="contenido-seccion shadow-box">
 						<h3 class="titulo-contenido">Últimos viajes registrados</h3>				
-						<table class="table" id="datatable">
+						<!-- <table class="table" id="datatable">
 							<thead>
 								<tr>
 									<th>Viaje</th>
@@ -101,7 +100,50 @@
 				                </tr> 
 				              </s:iterator>			              					
 							</tbody>
-						</table>
+						</table> -->
+						<div>
+							<s:iterator value="listaViajes">
+								<div class="media">	 
+									<div class="media-left">
+										<a href="#">									    	
+									    	<img class="media-object" src="<s:url action="ImageAction">
+												<s:param name="id" value="%{conductor.id}"></s:param>
+											</s:url>" alt="conductor" width="90" height="90">
+									    </a>
+									</div>
+									<div class="media-body">
+										<p><s:date name="fechaInicio" format="dd/MM/YYYY"></s:date></p>
+										<p><s:property value="direccionOrigen" /></p>
+										<p><s:property value="direccionDestino" /></p>
+									</div>
+									<div class="media-right">
+										<span class="fa fa-user" aria-hidden="true"></span> asientos<br>										
+										<span class="fa fa-retweet" aria-hidden="true"></span> tramo<br>						
+										<span class="fa fa-map-marker" aria-hidden="true"></span> km<br>
+										<span class="fa fa-calendar" aria-hidden="true"></span> tipo viaje								
+									</div>
+								</div>
+							</s:iterator>
+						</div>
+						<nav>
+						  <ul class="pagination">
+						    <li>
+						      <a href="#" aria-label="Previous">
+						        <span aria-hidden="true">&laquo;</span>
+						      </a>
+						    </li>
+						    <li><a href="#">1</a></li>
+						    <li><a href="#">2</a></li>
+						    <li><a href="#">3</a></li>
+						    <li><a href="#">4</a></li>
+						    <li><a href="#">5</a></li>
+						    <li>
+						      <a href="#" aria-label="Next">
+						        <span aria-hidden="true">&raquo;</span>
+						      </a>
+						    </li>
+						  </ul>
+						</nav>
 					</div>
 				</div>
 			</div>

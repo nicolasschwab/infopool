@@ -191,7 +191,10 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 				
-				
+		<action name="SolicitudesFrecuenciaViaje" method="SolicitudesFrecuenciaViaje" class="solicitudViajeAction">
+			<result name="success">/viajes/solicitudesFrecuenciaViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>		
 				
 				
 		<!-- FALTAN ESTOS 2 -->

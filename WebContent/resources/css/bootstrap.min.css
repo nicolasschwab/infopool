@@ -2106,7 +2106,7 @@ textarea.input-lg, select[multiple].input-lg {
 	.btn-default.active, .open .dropdown-toggle.btn-default {
 	color: #333;
 	background-color: #ebebeb;
-	border-color: #adadad
+	border-color: #ddd
 }
 
 .btn-default:active, .btn-default.active, .open .dropdown-toggle.btn-default
@@ -2158,8 +2158,8 @@ textarea.input-lg, select[multiple].input-lg {
 }
 
 .btn-primary .badge {
-	color: #a5d6a7;
-	background-color: #fff
+	color: #000;
+	background-color: #F1F1F1
 }
 
 .btn-success {
@@ -4263,12 +4263,11 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 }
 
 .navbar-default .navbar-brand {
-	color: #777
+	color: #81c784;
 }
 
-.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus
-	{
-	color: #5e5e5e;
+.navbar-default .navbar-brand:hover, .navbar-default .navbar-brand:focus{	
+	color: #81c784;
 	background-color: transparent
 }
 
@@ -4317,8 +4316,8 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:hover,
 	.navbar-default .navbar-nav>.open>a:focus {
-	background-color: #e7e7e7;
-	color: #555
+	background-color: #a5d6a7;
+	color: #000
 }
 
 @media ( max-width :767px) {
@@ -4454,25 +4453,25 @@ textarea.input-group-sm>.form-control, textarea.input-group-sm>.input-group-addo
 }
 
 .breadcrumb {
-	padding: 8px 15px;
-	margin-bottom: 20px;
-	list-style: none;
-	background-color: #f5f5f5;
-	border-radius: 0px
+	padding: 8px;
+	margin-bottom: 10px;
+	list-style: none;	
+	border-bottom:1px solid #f8f8f8;
 }
-
-.breadcrumb>li {
-	display: inline-block
+.breadcrumb>li, .breadcrumb>li a {	
+	display: inline-block;
+	color: #000;
 }
-
-.breadcrumb>li+li:before {
-	content: "/\00a0";
-	padding: 0 5px;
-	color: #ccc
+.breadcrumb>li a:hover{
+	color: #81c784;
+	text-decoration: none;
 }
-
+.breadcrumb>li:before {    
+	padding: 0;
+	color: #000
+}
 .breadcrumb>.active {
-	color: #999
+	color: #000
 }
 
 .pagination {
@@ -4992,6 +4991,9 @@ to {
 		rgba(255, 255, 255, .15) 75%, transparent 75%, transparent)
 }
 
+.media{
+	border: 1px solid #ddd;
+}
 .media, .media-body {
 	overflow: hidden;
 	zoom: 1
@@ -4999,6 +5001,17 @@ to {
 
 .media, .media .media {
 	margin-top: 15px
+}
+
+.media-left,.media-body, .media-right{
+	vertical-align: top;
+	display: table-cell
+}
+
+.media-body{
+	margin: 0 5px;
+	padding: 5px 10px;
+	width: 80%;
 }
 
 .media:first-child {

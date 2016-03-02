@@ -260,7 +260,10 @@ public class Viajero extends Usuario implements Serializable{
 	public boolean soyAdministrador(){
 		return false;
 	}
-
+	
+	public String obtenerNombre(){
+		return this.nombre + " "+ this.apellido;
+	}
 	public ByteArrayOutputStream getFotoIMG(){
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
 		InputStream in = new ByteArrayInputStream(this.fotoPerfil);

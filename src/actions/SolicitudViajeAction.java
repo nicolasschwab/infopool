@@ -1,6 +1,7 @@
 package actions;
 
 import implementacionesDAO.FrecuenciaViajeDAOjpa;
+import implementacionesDAO.SolicitudViajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
 import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.SolicitudViajeDAO;
@@ -189,6 +190,14 @@ public class SolicitudViajeAction extends ActionSupport{
 		return "sinPermisos";
 	}
 	
+	public String SolicitudesFrecuenciaViaje() throws Exception{
+		if(SessionUtil.checkLogin()){
+			frecuenciaViaje = frecuenciaViajeDAO.encontrar(this.idFrecuenciaViaje);
+			listaSolicitudes = ((SolicitudViajeDAOjpa)solicitudViajeDAO).buscarSolicitudesFrecuencia(frecuenciaViaje);
+			return SUCCESS;
+		}
+		return "sinPermisos";
+	}
 	/*	
 	
 	public String rechazarSolicitudViaje(){
@@ -253,21 +262,5 @@ public class SolicitudViajeAction extends ActionSupport{
 			}
 		}
 		return false;
-	}
-	
-	private String validarSesion(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
-		if (user != null) {	
-			if (user.equals("viajero")) {
-				return SUCCESS;
-			}
-			else{
-				return "sinPermisos";
-			}
-		}
-		else{
-			return "login";
-		}	
 	}*/
 }
