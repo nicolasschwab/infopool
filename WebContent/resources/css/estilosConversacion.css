@@ -10,8 +10,20 @@
 	padding-bottom: 5px;
     padding-top: 5px;
 }
+.imagenForo{
+	width:13%;
+}
+.mensajeForo{
+	width:87%;
+}
 .mediano{
 	font-size:15px;
+}
+.panel{
+	height:350px;
+}
+.ajustarWidth{
+	width:77%;
 }
 .subMenu{
 	padding-top:30px;

@@ -19,7 +19,7 @@
     		<div class="row subMenu">
     			<div class="col-md-12">
     				<div class="col-md-2 informacion">
-    					<s:url id="viaje" action="detalleViaje" encode="true">
+    					<s:url id="viaje" action="DetalleViaje" encode="true">
 							<s:param name="id" value="%{conversacion.viaje.id}"></s:param>
 						</s:url>
     					<s:a href="%{viaje}">    					
@@ -71,7 +71,7 @@
 	    						<div class="border">
 			    					<s:iterator value="conversacionVista">
 			    						<s:a href="http://localhost:8080/infopool/detalle?id=%{conversacion.id}">
-			    						<s:iterator value="conversacion.participantes">
+			    							<s:iterator value="conversacion.participantesConversacion">			    						
 			    								<s:if test="%{#parameters.id[0]==conversacion.id}">
 			    									<div class="mensajeLista seleccionado">
 			    								</s:if>	    							
@@ -81,7 +81,7 @@
 			    								
 					    							<div class="imagenLista">
 					    								<img src="<s:url action="ImageAction">
-															<s:param name="id" value="%{id}"></s:param>
+															<s:param name="id" value="%{user.id}"></s:param>
 														</s:url>" alt="foto conductor" class="img-responsive ">
 					    							</div>
 					    							<div class="datosMensaje">
@@ -108,7 +108,7 @@
     				</div>
     				<div class="col-md-8">
     					<div class="row">
-						<div class="col-md-12 paddingTop">
+						<div class="col-md-12 paddingTop ajustarWidth">
 							<div class="row chat-window" id="chat_window_1">
 								<div class="col-md-12">
 									<div class="panel panel-default" id="panel">																				
@@ -116,10 +116,10 @@
 											<div class="panel-body msg_container_base sinPaddingBot">
 												<div class="row msg_container base_sent">
 													<s:if test="%{user.id==emisor.id}">
-														<div class="col-md-1 avatar soyYoDetalle">
+														<div class="col-md-1 avatar soyYoDetalle imagenForo">
 													</s:if>
 													<s:if test="%{user.id!=emisor.id}">
-														<div class="col-md-1 avatar ">
+														<div class="col-md-1 avatar imagenForo">
 													</s:if>
 														<s:url id="detalleViajero" action="detalleViajero" encode="true">
 															<s:param name="id" value="%{emisor.id}"></s:param>
@@ -130,7 +130,7 @@
 															</s:url>" alt="foto conductor" class="img-responsive ">
 														</s:a>
 													</div>													
-													<div class="col-md-11 sinPadding">
+													<div class="col-md-11 sinPadding mensajeForo">
 														<div class="messages msg_sent">
 															<s:if test="%{user.id==emisor.id}">
 																<div class="nombre-mensaje soyYoDetalle">
@@ -155,7 +155,7 @@
 																<div class="fechaMensaje">
 															</s:if>															
 																<i class="fa fa-mobile"></i>
-																<time datetime=""><s:date name="fecha" format="dd/MM/YYYY H:m" /> </time>
+																<time datetime=""><s:date name="fechaPublicacion" format="dd/MM/YYYY H:m" /> </time>
 															</div>
 														</div>
 													</div>													

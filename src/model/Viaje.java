@@ -51,7 +51,6 @@ public class Viaje implements Serializable{
 	@ManyToOne(optional=true)
 	private Evento eventoAsociado;
 	
-	@OneToOne(optional=true)
 	private Conversacion foroViaje;
 	
 	@OneToMany(mappedBy="viaje")

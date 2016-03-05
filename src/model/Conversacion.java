@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -35,7 +36,7 @@ public class Conversacion implements Serializable{
 				inverseJoinColumns={@JoinColumn(name="usuario_id", nullable=false)})  
 	private Collection<Viajero> participantesConversacion = new ArrayList<Viajero>();
 	
-	@OneToOne(mappedBy="foroViaje")
+	@ManyToOne
 	private Viaje viaje;
 	
 	@Column(nullable=false)

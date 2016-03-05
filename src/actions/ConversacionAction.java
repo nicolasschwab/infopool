@@ -219,13 +219,13 @@ public class ConversacionAction  extends ActionSupport{
 			return "login";
 		}
 	}
-	/*public String responderMensaje() throws Exception{
+	public String responderMensaje() throws Exception{
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
 			this.setConversacion(conversacionDAO.encontrarPorId(this.getId()));
 			for(Viajero viajero :conversacion.getParticipantesConversacion()){
 				if(viajero.getId()==user.getId()){
-					this.setMensaje(new MensajeAction().crearMensaje(this.getDetalle())); // creo y persisto el mensaje
+					this.setMensaje(new MensajeAction().crearMensaje(this.getDetalle(),this.getConversacion())); // creo y persisto el mensaje
 					this.getConversacion().getMensajes().add(this.getMensaje());
 					FactoryDAO.getViajeDAO().modificar(user);
 					FactoryDAO.getViajeDAO().modificar(viajero);
@@ -240,7 +240,7 @@ public class ConversacionAction  extends ActionSupport{
 			}
 		}
 		return estaLogueado;		
-	}*/
+	}
 
 	public class conversacionVista{
 		Conversacion conversacion;

@@ -14,6 +14,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import model.Conversacion;
 import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
@@ -181,16 +182,16 @@ public class MensajeAction extends ActionSupport {
 		}
 		return resul;
 	}
-	/*public Mensaje crearMensaje(String detalleMensaje) throws Exception {
+	public Mensaje crearMensaje(String detalleMensaje,Conversacion conversacion) throws Exception {
 		String permisos=this.validarSesion();
 		if(permisos==SUCCESS){
 			this.fecha=new Date();
 			this.emisor=user;
 			this.estado="pendiente";
-			Mensaje nuevoMensaje= new Mensaje(this.fecha, detalleMensaje,this.estado,this.emisor);
+			Mensaje nuevoMensaje= new Mensaje(this.fecha, detalleMensaje,this.estado,this.emisor,conversacion);
 			FactoryDAO.getMensajeDAO().registrar(nuevoMensaje);
 			return nuevoMensaje;
 		}
 		return null;
-	}*/
+	}
 }
