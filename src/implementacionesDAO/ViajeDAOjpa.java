@@ -224,6 +224,28 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 		return resultado;
 	}
 	
+	//Obtengo los ultimos 10 viajes creados
+	public <T> List<Viaje> obtenerUltimosViajes() {
+		List<Viaje> listadoViajes = null;		
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{
+			String qstr = "select e from "+ this.persistentClass.getSimpleName() +" e where e.activo = true ORDER BY e.fechaPublicacion ";
+			Query q = em.createQuery(qstr);
+			q.setMaxResults(10);
+			listadoViajes = (List<Viaje>) q.getResultList();
+			for(Viaje v : listadoViajes){
+				for(FrecuenciaViaje f : v.getFrecuencias()){
+					f.getPasajeros();
+				}
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}		
+		return listadoViajes;
+	}
+	
 	
 	
 	

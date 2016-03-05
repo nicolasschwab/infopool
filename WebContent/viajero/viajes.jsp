@@ -22,10 +22,10 @@
 							<div class="col-sm-12">																	
 								<form class="">									
 									<div class="form-group col-sm-3">											
-									  	<input type="text" class="form-control" placeholder="Dirección de Origen">
+									  	<input id="dirOrigen" name="direccionOrigen" class="form-control" placeholder="Dirección de Origen">
 									</div>
 									<div class="form-group col-sm-3">										  	
-									  	<input type="text" class="form-control" placeholder="Dirección de Destino">
+									  	<input  class="form-control" id="dirDestino" name="direccionDestino" placeholder="Dirección de Destino">
 									</div>
 									<div class="form-group col-sm-2">										  	
 									  	<input type="text" class="form-control" placeholder="Fecha de Partida">
@@ -67,7 +67,13 @@
 			    </div>
 				<div class="col-sm-9 padding-right-zero">
 					<div class="contenido-seccion shadow-box">
-						<h3 class="titulo-contenido">Últimos viajes registrados</h3>				
+						<div class="boxViajes">
+						<div class="tiposListadoViajes" id="ultimo" style="background-color: green"><h3 class="titulo-contenido" onclick="javascript:mostarUltimosViajes()">Ultimos Viajes</h3></div>
+						<div class="borde"></div>				
+						<div class="tiposListadoViajes" id="conductor"><h3 class="titulo-contenido" onclick="javascript:mostarViajesConductor()">Viajes como Conductor</h3></div>
+						<div class="borde"></div>
+						<div class="tiposListadoViajes" id="pasajero"><h3 class="titulo-contenido" onclick="javascript:mostarViajesPasajero()">Viajes como pasajero</h3></div>
+						</div>
 						<!-- <table class="table" id="datatable">
 							<thead>
 								<tr>
@@ -101,29 +107,35 @@
 				              </s:iterator>			              					
 							</tbody>
 						</table> -->
-						<div>
-							<s:iterator value="listaViajes">
-								<div class="media">	 
-									<div class="media-left">
-										<a href="#">									    	
-									    	<img class="media-object" src="<s:url action="ImageAction">
-												<s:param name="id" value="%{conductor.id}"></s:param>
-											</s:url>" alt="conductor" width="90" height="90">
-									    </a>
-									</div>
-									<div class="media-body">
-										<p><s:date name="fechaInicio" format="dd/MM/YYYY"></s:date></p>
-										<p><s:property value="direccionOrigen" /></p>
-										<p><s:property value="direccionDestino" /></p>
-									</div>
-									<div class="media-right">
-										<span class="fa fa-user" aria-hidden="true"></span> asientos<br>										
-										<span class="fa fa-retweet" aria-hidden="true"></span> tramo<br>						
-										<span class="fa fa-map-marker" aria-hidden="true"></span> km<br>
-										<span class="fa fa-calendar" aria-hidden="true"></span> tipo viaje								
-									</div>
-								</div>
-							</s:iterator>
+						<div class="listaUltimosViajes" >
+							<s:if test="%{listaUltimosViajes.isEmpty()}">							
+								<div>No hay Viajes para mostrar</div>
+							</s:if>
+							<s:else>
+								<s:iterator value="listaUltimosViajes">
+									<jsp:include page="datosUnViaje.jsp" />
+								</s:iterator>
+							</s:else>
+						</div>
+						<div class="listaViajesConductor" style="display:none">
+							<s:if test="%{listaViajesConductor.isEmpty()}">							
+								<div>No hay Viajes para mostrar</div>
+							</s:if>
+							<s:else>
+								<s:iterator value="listaViajesConductor">
+									<jsp:include page="datosUnViaje.jsp" />
+								</s:iterator>
+							</s:else>
+						</div>
+						<div class="listaViajesPasajero" style="display:none">
+							<s:if test="%{listaViajesPasajero.isEmpty()}">							
+								<div>No hay Viajes para mostrar</div>
+							</s:if>
+							<s:else>
+								<s:iterator value="listaViajesPasajero">
+									<jsp:include page="datosUnViaje.jsp" />
+								</s:iterator>
+							</s:else>
 						</div>
 						<nav>
 						  <ul class="pagination">

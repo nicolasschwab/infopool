@@ -32,7 +32,9 @@ public class ViajeroAction extends ActionSupport{
 	
 	/* Listados utilizados en la vista */
 	private List<Viajero> listaViajeros = null;	
-	private List<Viaje> listaViajes = null;
+	private List<Viaje> listaViajesConductor = null;
+	private List<Viaje> listaViajesPasajero = null;
+	private List<Viaje> listaUltimosViajes = null;
 	private List<SolicitudViaje> listaSolicitudesViajes = null;
 	
 	
@@ -72,12 +74,24 @@ public class ViajeroAction extends ActionSupport{
 	public void setListaViajeros(List<Viajero> listaViajeros) {
 		this.listaViajeros = listaViajeros;
 	}
-	public List<Viaje> getListaViajes() {
-		return listaViajes;
+	public List<Viaje> getListaViajesConductor() {
+		return listaViajesConductor;
 	}
-	public void setListaViajes(List<Viaje> listaViajes) {
-		this.listaViajes = listaViajes;
-	}	
+	public void setListaViajesConductor(List<Viaje> listaViajes) {
+		this.listaViajesConductor = listaViajes;
+	}
+	public List<Viaje> getListaViajesPasajero() {
+		return listaViajesPasajero;
+	}
+	public void setListaViajesPasajero(List<Viaje> listaViajesPasajero) {
+		this.listaViajesPasajero = listaViajesPasajero;
+	}
+	public List<Viaje> getListaUltimosViajes() {
+		return listaUltimosViajes;
+	}
+	public void setListaUltimosViajes(List<Viaje> listaUltimosViajes) {
+		this.listaUltimosViajes = listaUltimosViajes;
+	}
 	public List<SolicitudViaje> getListaSolicitudesViajes() {
 		return listaSolicitudesViajes;
 	}
@@ -111,7 +125,9 @@ public class ViajeroAction extends ActionSupport{
 	public String Viajes() throws Exception{		
 		if (SessionUtil.checkLogin()){			
 			viajero = (Viajero)SessionUtil.getUsuario();			
-			listaViajes = viajeDAO.obtenerViajesConductorEstado(viajero, true);			
+			listaViajesConductor = viajeDAO.obtenerViajesConductorEstado(viajero, true);
+			listaViajesPasajero = viajeDAO.obtenerViajesPasajeroEstado(viajero, true);	
+			listaUltimosViajes = viajeDAO.obtenerUltimosViajes();	
 			return SUCCESS;
 		}
 		return "sinPermisos";
@@ -120,7 +136,7 @@ public class ViajeroAction extends ActionSupport{
 	public String ViajesPasajero() throws Exception{		
 		if (SessionUtil.checkLogin()){			
 			viajero = (Viajero)SessionUtil.getUsuario();			
-			listaViajes = viajeDAO.obtenerViajesPasajeroEstado(viajero, true);			
+			listaViajesConductor = viajeDAO.obtenerViajesPasajeroEstado(viajero, true);			
 			return SUCCESS;
 		}
 		return "sinPermisos";
@@ -129,7 +145,7 @@ public class ViajeroAction extends ActionSupport{
 	public String HistorialViajes() throws Exception{
 		if (SessionUtil.checkLogin()){			
 			viajero = (Viajero)SessionUtil.getUsuario();			
-			listaViajes = viajeDAO.obtenerHistorialViajesEstado(viajero);			
+			listaViajesConductor = viajeDAO.obtenerHistorialViajesEstado(viajero);			
 			return SUCCESS;
 		}
 		return "sinPermisos";

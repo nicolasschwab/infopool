@@ -27,7 +27,7 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 		Conversacion conver=null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
-			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where :emisor IN elements(u.participantes) and :receptor IN elements(u.participantes) and u.viaje.id= :viajeId ";
+			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where :emisor IN elements(u.participantesConversacion) and :receptor IN elements(u.participantes) and u.viaje.id= :viajeId ";
 			Query consulta = em.createQuery(qString);
 			consulta.setParameter("emisor",emisor);
 			consulta.setParameter("receptor",receptor);
@@ -55,7 +55,7 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 		List<Conversacion> resultado = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
-			Query consulta = em.createQuery("select e from " + persistentClass.getSimpleName() + " e where :user in elements(e.participantes) ORDER BY fechaUltimaModificacion DESC");		
+			Query consulta = em.createQuery("select e from " + persistentClass.getSimpleName() + " e where :user in elements(e.participantesConversacion) ORDER BY fechaUltimaModificacion DESC");		
 			consulta.setParameter("user",  user );
 			resultado = (List<Conversacion>) consulta.getResultList();
 			if (resultado.size() > 0){

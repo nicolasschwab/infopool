@@ -9,8 +9,8 @@
 </head>
 <body> 
     
-    <%@ include file="views/header.jsp" %>
-    <jsp:include page="views/menu.jsp">
+    
+    <jsp:include page="views/header.jsp">
     	<jsp:param name="itemActivo" value="4"/>
     </jsp:include>
     

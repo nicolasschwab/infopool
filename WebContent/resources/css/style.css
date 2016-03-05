@@ -230,12 +230,22 @@ body {
 	font-weight: 200;
 }
 .titulo-contenido{
+	display: inline-block;
 	font-size: 18px;
 	color: #333;	
-	text-align: left;	
-	margin-top: 0;	
+	text-align: left;
+	cursor:pointer;
+}
+.borde{
+	border-left: 1px solid #ccc; 
+	width: 5px;
+    height: 20px;
+    display: inline-block; 
+}
+.boxViajes{
+		margin-top: 0;	
 	margin-bottom: 1em;
-	border-bottom: 1px solid #eee;	
+	border-bottom: 1px solid #eee;
 }
 .panel-header-seccion{	
 	background-color: #81c784;
@@ -297,7 +307,7 @@ body {
 }
 .contenido-seccion{
 	background-color: #fff;
-	padding: 15px 10px 30px 10px;
+	padding: 0px 10px 30px 10px;
 }
 
 /* start header */
@@ -616,4 +626,16 @@ footer p{
 	.images_1_of_4 h4 a {
 		font-size: 1em;
 	}
+}
+.aViaje{
+	color:black;	
+}
+.aViaje:hover{
+	color:black;
+	cursor:pointer;
+	text-decoration:none;
+}
+.tiposListadoViajes{
+	display:inline;
+	padding: 20px
 }
