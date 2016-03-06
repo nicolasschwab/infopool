@@ -15,12 +15,7 @@
 	
 	<div class="main_bg">
 		<div class="container">
-			<div class="col-sm-12 menu-seccion">					
-				<jsp:include page="../viajero/menuSeccionViaje.jsp">
-					<jsp:param name="subitemActivo" value="1"/>				
-				</jsp:include>
-			</div>
-			<div class="main row">
+			<div class="row">
 				<div class="col-sm-12 encabezado-seccion">
 			    	<h1 class="titulo-seccion">Registro de Viaje</h1>		      		      
 			      	<p class="descripcion-seccion">En 3 pasos usted podrá registrar su viaje.</p>

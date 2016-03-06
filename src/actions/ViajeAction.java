@@ -146,6 +146,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String BusquedaViaje() {
 		if (SessionUtil.checkLogin()){
+			viajero = (Viajero) SessionUtil.getUsuario();
 			listaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
 			return SUCCESS;
 		}

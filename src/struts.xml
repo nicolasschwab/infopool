@@ -57,15 +57,9 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>	
 		</action>
 
-
-
-
-
-
-
 		<!-- Actions Viajeros -->
 		<action name="Viajes" method="Viajes" class="viajeroAction">
-			<result name="success">/viajero/viajes.jsp</result>
+			<result name="success">/viajes/viajes.jsp</result>
 			<result name="sinPermisos" type="redirect" >Inicio</result>
 		</action>
 		
@@ -106,9 +100,6 @@
 		</action>
 		
 		
-		
-		
-		
 		<!-- Actions Viajes -->
 		<action name="RegistrarViaje" method="RegistrarViaje" class="datosViajeAction">
 			<result name="success" type="redirect">Viajes</result>
@@ -117,7 +108,7 @@
 		</action>
 		
 		<action name="BusquedaViaje" method="BusquedaViaje" class="viajeAction">
-			<result name="success">/viajes/busquedaViaje.jsp</result>
+			<result name="success">/viajes/viajes.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		

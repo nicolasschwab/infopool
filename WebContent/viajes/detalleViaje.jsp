@@ -18,8 +18,15 @@
 	<div class="main_bg">		
 		<div class="container">
 			<div class="row">
+				<!-- PROBAR CON ESTA OPCION SI SE NECESITAN MANDAR PARAMS				 
+				<s:form action="actionName">
+				    <input type="hidden" value="<s:property value="someProperty"/>" name="someProperty"/>
+				    <input type="hidden" value="<s:property value="someProperty2"/>" name="someProperty2"/>
+				    <s:submit value="Back" />
+				</s:form> 
+				-->
 				<ol class="breadcrumb">
-  					<li><a href="#">< Regresar</a></li>
+  					<li><a href="#" onclick="window.history.back();return false;">&lt; Regresar</a></li>
   				</ol>
 				<div class="col-sm-12">					
 					<s:fielderror />

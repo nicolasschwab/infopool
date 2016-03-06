@@ -19,7 +19,7 @@
 		<div class="container">
 			<div class="row">
 				<ol class="breadcrumb">
-  					<li><a href="#">< Regresar</a></li>
+  					<li><a href="#" onclick="window.history.back();return false;">&lt; Regresar</a></li>
   				</ol>
 				<div class="col-sm-12">
 					<h2>Solicitudes de la Frecuencia</h2>
