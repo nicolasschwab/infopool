@@ -43,10 +43,7 @@ public class Viaje implements Serializable{
 	
 	@Column
 	private Date fechaFin;		
-	
-	@OneToMany(mappedBy="viaje")
-	private Collection<SolicitudViaje> solicitudesViaje = new ArrayList<SolicitudViaje>();	
-	
+		
 	@ManyToOne(optional=true)
 	private Evento eventoAsociado;
 	
@@ -146,13 +143,7 @@ public class Viaje implements Serializable{
 	}
 	public void setFechaFin(Date fechaFin) {
 		this.fechaFin = fechaFin;
-	}
-	public Collection<SolicitudViaje> getSolicitudesViaje() {
-		return solicitudesViaje;
-	}
-	public void setSolicitudesViaje(Collection<SolicitudViaje> solicitudesViaje) {
-		this.solicitudesViaje = solicitudesViaje;
-	}
+	}	
 	public Evento getEventoAsociado() {
 		return eventoAsociado;
 	}

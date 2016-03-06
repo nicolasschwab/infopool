@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class FrecuenciaViaje implements Serializable{
@@ -45,6 +46,9 @@ public class FrecuenciaViaje implements Serializable{
 	
 	@ManyToOne(optional=false)
 	private Viaje viaje;
+	
+	@OneToMany(mappedBy="frecuenciaViaje")
+	private Collection<SolicitudViaje> solicitudesViaje = new ArrayList<SolicitudViaje>();
 	
 	public FrecuenciaViaje(){
 		super();
@@ -113,6 +117,12 @@ public class FrecuenciaViaje implements Serializable{
 	}
 	public void setViaje(Viaje viaje) {
 		this.viaje = viaje;
+	}
+	public Collection<SolicitudViaje> getSolicitudesViaje() {
+		return solicitudesViaje;
+	}
+	public void setSolicitudesViaje(Collection<SolicitudViaje> solicitudesViaje) {
+		this.solicitudesViaje = solicitudesViaje;
 	}
 	
 	public boolean esPasajero(Usuario usuario){

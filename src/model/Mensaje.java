@@ -28,21 +28,17 @@ public class Mensaje implements Serializable{
 	
 	@ManyToOne(optional=false)
 	private Usuario emisor;
-	
-	@ManyToOne(optional=false)
-	private Conversacion conversacion;
-	
+		
 	public Mensaje() {
 		super();
 	}
 	
-	public Mensaje( Date fechaPublicacion, String detalle, String estado, Usuario emisor, Conversacion conversacion) {
+	public Mensaje( Date fechaPublicacion, String detalle, String estado, Usuario emisor) {
 		super();
 		this.fechaPublicacion = fechaPublicacion;
 		this.detalle = detalle;
 		this.estado = estado;
 		this.emisor = emisor;
-		this.conversacion = conversacion;
 	}
 
 	public int getId() {
@@ -74,11 +70,5 @@ public class Mensaje implements Serializable{
 	}
 	public void setEmisor(Usuario emisor) {
 		this.emisor = emisor;
-	}
-	public Conversacion getConversacion() {
-		return conversacion;
-	}
-	public void setConversacion(Conversacion conversacion) {
-		this.conversacion = conversacion;
 	}	
 }

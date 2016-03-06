@@ -26,7 +26,7 @@ public class Conversacion implements Serializable{
 	@Column(name="conversacion_id")
 	private int id;
 	
-	@OneToMany(mappedBy="conversacion")
+	@OneToMany
 	private Collection<Mensaje> mensajes = new ArrayList<Mensaje>();
 	
 	@ManyToMany

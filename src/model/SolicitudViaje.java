@@ -31,13 +31,10 @@ public class SolicitudViaje implements Serializable{
 	private EstadoSolicitud estadoSolicitud;	
 	
 	@ManyToOne(optional=false)
-	private Viaje viaje;
+	private FrecuenciaViaje frecuenciaViaje;
 	
 	@ManyToOne(optional=false)
 	private Viajero viajero;
-	
-	@Enumerated(EnumType.STRING)
-	private DiasSemana diaSolicitud;
 	
 	@Column
 	@Type(type="text")
@@ -47,15 +44,14 @@ public class SolicitudViaje implements Serializable{
 		super();
 	}
 	public SolicitudViaje(Date fechaInicioSolicitud, Date fechaFinSolicitud,
-			EstadoSolicitud estadoSolicitud, Viaje viaje, Viajero viajero,
-			DiasSemana diaSolicitud, String puntoEncuentro) {
+			EstadoSolicitud estadoSolicitud, Viajero viajero,
+			FrecuenciaViaje frecuenciaViaje, String puntoEncuentro) {
 		super();
 		this.fechaInicioSolicitud = fechaInicioSolicitud;
 		this.fechaFinSolicitud = fechaFinSolicitud;
 		this.estadoSolicitud = estadoSolicitud;
-		this.viaje = viaje;
-		this.viajero = viajero;
-		this.diaSolicitud = diaSolicitud;
+		this.frecuenciaViaje = frecuenciaViaje;
+		this.viajero = viajero;		
 		this.puntoEncuentro = puntoEncuentro;
 	}
 	
@@ -82,30 +78,24 @@ public class SolicitudViaje implements Serializable{
 	}
 	public void setEstadoSolicitud(EstadoSolicitud estadoSolicitud) {
 		this.estadoSolicitud = estadoSolicitud;
-	}
-	public Viaje getViaje() {
-		return viaje;
-	}
-	public void setViaje(Viaje viaje) {
-		this.viaje = viaje;
-	}
+	}	
 	public Viajero getViajero() {
 		return viajero;
 	}
 	public void setViajero(Viajero viajero) {
 		this.viajero = viajero;
-	}
-	public DiasSemana getDiaSolicitud() {
-		return diaSolicitud;
-	}
-	public void setDiaSolicitud(DiasSemana diaSolicitud) {
-		this.diaSolicitud = diaSolicitud;
-	}
+	}	
 	public String getPuntoEncuentro() {
 		return puntoEncuentro;
 	}
 	public void setPuntoEncuentro(String puntoEncuentro) {
 		this.puntoEncuentro = puntoEncuentro;
+	}
+	public FrecuenciaViaje getFrecuenciaViaje() {
+		return frecuenciaViaje;
+	}
+	public void setFrecuenciaViaje(FrecuenciaViaje frecuenciaViaje) {
+		this.frecuenciaViaje = frecuenciaViaje;
 	}
 	
 }
