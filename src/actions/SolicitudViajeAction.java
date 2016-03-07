@@ -144,7 +144,7 @@ public class SolicitudViajeAction extends ActionSupport{
 				tieneSolicitudPendiente = solicitudViajeDAO.tieneSolicitudEstado(viajero,viaje,EstadoSolicitud.PENDIENTE,diaSemana);
 				if(!tieneSolicitudPendiente){
 					Date fechaInicioSolicitud = new Date();					
-					solicitudViaje = new SolicitudViaje(fechaInicioSolicitud,null,EstadoSolicitud.PENDIENTE,viaje,viajero,diaSemana,null);					
+					solicitudViaje = new SolicitudViaje(fechaInicioSolicitud,null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,null);					
 					solicitudViajeDAO.registrar(solicitudViaje);					
 					return SUCCESS;				
 				}else{					
@@ -165,20 +165,23 @@ public class SolicitudViajeAction extends ActionSupport{
 		if(SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
 			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
-			viaje = ((ViajeDAOjpa)viajeDAO).encontrar(solicitudViaje.getViaje().getId());
+			frecuenciaViaje = solicitudViaje.getFrecuenciaViaje();
+			viaje = frecuenciaViaje.getViaje();
 			idViaje = viaje.getId();
-			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).buscarFrecuenciaViajeDia(viaje,solicitudViaje.getDiaSolicitud());
+			 
 			if (frecuenciaViaje.getAsientosDisponibles() > 0){
+				
 				solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
 				solicitudViaje.setFechaFinSolicitud(new Date());
-				//solicitudViajeDAO.modificar(solicitudViaje);
-				//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);				
+				solicitudViajeDAO.modificar(solicitudViaje);								
+												
+				//ESTOS METODOS DEBERIAMOS IMPLEMENTARNOS EN LA CLASE VIAJERO
 				viajero = solicitudViaje.getViajero();
-				/*viajero.getMisViajesPasajero().add(viaje);
+				viajero.getMisViajesPasajero().add(viaje);
 				viajero.getMisFrecuenciasPasajero().add(frecuenciaViaje);
-				viajeroDAO.modificar(viajero);*/
-				System.out.println("Pasajero "+viajero.getNombre()+" Solicitud "+solicitudViaje.getEstadoSolicitud()+" "+solicitudViaje.getFechaFinSolicitud()+" Frecuencia "+frecuenciaViaje.getDiaFrecuencia());
+				viajeroDAO.modificar(viajero);			
 				
+				//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
 				return SUCCESS;
 			}
 			else{

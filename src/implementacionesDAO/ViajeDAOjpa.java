@@ -138,12 +138,12 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			viaje = (Viaje) em.find(this.persistentClass, id);			
 			for (Viajero pasajero : viaje.obtenerPasajeros()){				
 				pasajero.getId();				
-			}
-			for (SolicitudViaje solicitud : viaje.getSolicitudesViaje()) {
-				solicitud.getEstadoSolicitud();
-			}	
+			}				
 			for(FrecuenciaViaje f : viaje.getFrecuencias()){
 				f.getPasajeros();
+				for (SolicitudViaje solicitud : f.getSolicitudesViaje()) {
+					solicitud.getEstadoSolicitud();
+				}
 			}
 		}catch(HibernateException e){
 			e.printStackTrace();

@@ -188,7 +188,7 @@ public class MensajeAction extends ActionSupport {
 			this.fecha=new Date();
 			this.emisor=user;
 			this.estado="pendiente";
-			Mensaje nuevoMensaje= new Mensaje(this.fecha, detalleMensaje,this.estado,this.emisor,conversacion);
+			Mensaje nuevoMensaje= new Mensaje(this.fecha, detalleMensaje,this.estado,this.emisor);
 			FactoryDAO.getMensajeDAO().registrar(nuevoMensaje);
 			return nuevoMensaje;
 		}
