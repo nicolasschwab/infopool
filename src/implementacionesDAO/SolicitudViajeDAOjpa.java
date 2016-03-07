@@ -21,16 +21,15 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 		super(SolicitudViaje.class);
 	}	
 	
-	public <T> boolean tieneSolicitudEstado(T viajero, T viaje, T estadoSolicitud, T diaSemana){		
+	public <T> boolean tieneSolicitudEstado(T viajero, T frecuenciaViaje, T estadoSolicitud){		
 		boolean tieneSolicitud = false;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
 		try{
-			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where s.viaje = :viaje and s.viajero = :viajero and estadoSolicitud = :estadoSolicitud and diaSolicitud = :diaSemana";
+			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where s.frecuenciaViaje = :frecuenciaViaje and s.viajero = :viajero and estadoSolicitud = :estadoSolicitud";
 			Query q = em.createQuery(qstr);
 			q.setParameter("viajero", viajero);
-			q.setParameter("viaje", viaje);
-			q.setParameter("estadoSolicitud", estadoSolicitud);
-			q.setParameter("diaSemana", diaSemana);
+			q.setParameter("frecuenciaViaje", frecuenciaViaje);
+			q.setParameter("estadoSolicitud", estadoSolicitud);			
 			tieneSolicitud = (!q.getResultList().isEmpty());			
 		}catch(HibernateException e){
 			e.printStackTrace();
@@ -44,7 +43,7 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 		List<SolicitudViaje> listadoSolicitudes = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
 		try{
-			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where s.viajero = :viajero or s.viaje.conductor = :viajero";
+			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where s.viajero = :viajero or s.frecuenciaViaje.viaje.conductor = :viajero";
 			Query q = em.createQuery(qstr);
 			q.setParameter("viajero", viajero);
 			listadoSolicitudes = (List<SolicitudViaje>) q.getResultList();

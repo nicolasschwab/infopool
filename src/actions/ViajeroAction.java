@@ -122,7 +122,7 @@ public class ViajeroAction extends ActionSupport{
 		return tienePermisosAdmin;
 	}
 	
-	public String Viajes() throws Exception{		
+	public String misViajes() throws Exception{		
 		if (SessionUtil.checkLogin()){			
 			viajero = (Viajero)SessionUtil.getUsuario();			
 			listaViajesConductor = viajeDAO.obtenerViajesConductorEstado(viajero, true);

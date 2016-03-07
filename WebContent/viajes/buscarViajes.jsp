@@ -28,7 +28,7 @@
 								<div>No hay Viajes para mostrar</div>
 							</s:if>
 							<s:else>
-								<s:iterator value="listaViajesConductor">
+								<s:iterator value="listaBusquedaViajes">
 									<jsp:include page="datosUnViaje.jsp" />
 								</s:iterator>
 							</s:else>

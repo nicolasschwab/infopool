@@ -139,9 +139,8 @@ public class SolicitudViajeAction extends ActionSupport{
 			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(idFrecuenciaViaje);
 			viaje = frecuenciaViaje.getViaje();			
 			if (!viaje.esConductor(viajero)){
-				idViaje = viaje.getId();
-				DiasSemana diaSemana = frecuenciaViaje.getDiaFrecuencia();
-				tieneSolicitudPendiente = solicitudViajeDAO.tieneSolicitudEstado(viajero,viaje,EstadoSolicitud.PENDIENTE,diaSemana);
+				idViaje = viaje.getId();				
+				tieneSolicitudPendiente = solicitudViajeDAO.tieneSolicitudEstado(viajero,frecuenciaViaje,EstadoSolicitud.PENDIENTE);
 				if(!tieneSolicitudPendiente){
 					Date fechaInicioSolicitud = new Date();					
 					solicitudViaje = new SolicitudViaje(fechaInicioSolicitud,null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,null);					

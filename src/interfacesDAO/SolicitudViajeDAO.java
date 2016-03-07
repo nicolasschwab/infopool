@@ -8,7 +8,7 @@ import model.Viajero;
 
 public interface SolicitudViajeDAO extends GenericDAO<SolicitudViaje>{
 	
-	public <T> boolean tieneSolicitudEstado(T viajero, T viaje, T estadoSolicitud, T diaSemana);
+	public <T> boolean tieneSolicitudEstado(T viajero, T frecuenciaViaje, T estadoSolicitud);
 	public <T> List<SolicitudViaje> obtenerUltimasSolicitudes(T viajero);
 	
 	/* Revisar estos metodos */
