@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -58,7 +59,7 @@ public class Viaje implements Serializable{
 	@ManyToOne(optional=false)
 	private Viajero conductor;
 	
-	@ManyToMany(mappedBy="misViajesPasajero")
+	@ManyToMany(mappedBy="misViajesPasajero",fetch=FetchType.EAGER)
 	private Collection<Viajero> pasajeros;
 		
 	@Enumerated(EnumType.STRING)

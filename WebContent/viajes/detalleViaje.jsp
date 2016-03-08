@@ -52,6 +52,10 @@
 					  				<s:hidden name="id" value="%{viaje.id}"/> 
 					  				<s:submit  value="Enviar Mensaje" cssClass="btn btn-primary"/>
 					  			</s:form>
+					  			<s:form role="form" theme="simple" action="calificaciones" method="post">
+					  				<s:hidden name="idViaje" value="%{viaje.id}"/> 
+					  				<s:submit  value="Calificar" cssClass="btn btn-primary"/>
+					  			</s:form>
 							</div>							
 						</div>
 						<div class="col-sm-7">

@@ -4,6 +4,7 @@ import implementacionesDAO.CalificacionDAOjpa;
 import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.ViajeDAOjpa;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class CalificacionAction extends ActionSupport {
 	
 	private List<Viajero> pasajeros;
 	private int idCalificacion;
-	private int idViaje;	
-	private int idPasajero;
+	private String idViaje;	
+	private String idPasajero;
 	private int calificacionnro;
 	private Viajero calificador;
 	private Viajero calificado;	
@@ -35,10 +36,10 @@ public class CalificacionAction extends ActionSupport {
 	
 	public CalificacionDAOjpa calificacionDAO;
 	
-	public int getIdViaje() {
+	public String getIdViaje() {
 		return idViaje;
 	}
-	public void setIdViaje(int idViaje) {
+	public void setIdViaje(String idViaje) {
 		this.idViaje = idViaje;
 	}
 	public List<Viajero> getPasajeros() {
@@ -59,10 +60,10 @@ public class CalificacionAction extends ActionSupport {
 	public void setIdCalificacion(int idCalificacion) {
 		this.idCalificacion = idCalificacion;
 	}
-	public int getIdPasajero() {
+	public String getIdPasajero() {
 		return idPasajero;
 	}
-	public void setIdPasajero(int idPasajero) {
+	public void setIdPasajero(String idPasajero) {
 		this.idPasajero = idPasajero;
 	}
 	public int getCalificacionnro() {
@@ -95,7 +96,7 @@ public class CalificacionAction extends ActionSupport {
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			Usuario user = (Usuario) session.get("usrLogin");			
 			ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-			viaje = viajeDAO.encontrar(this.idViaje);
+			viaje = viajeDAO.encontrar(Integer.parseInt(this.idViaje));
 			pasajeros=(List<Viajero>) viaje.obtenerPasajeros();
 			pasajeros.add(viaje.getConductor());
 			Iterator<Viajero> viajerosIterator = pasajeros.iterator();
@@ -114,21 +115,35 @@ public class CalificacionAction extends ActionSupport {
 		if(resul==SUCCESS){
 			Map<String, Object> session = ActionContext.getContext().getSession();
 			Usuario usrlogueado = (Usuario) session.get("usrLogin");
-			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			this.idViaje = Integer.parseInt(request.getParameter("idViaje"));
-			viaje = FactoryDAO.getViajeDAO().encontrar(this.idViaje);
-			calificado = FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(request.getParameter("idPasajero")));
+			viaje = FactoryDAO.getViajeDAO().encontrar(Integer.parseInt(this.idViaje));
+			calificado = FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(this.getIdPasajero()));
 			calificador = (Viajero) usrlogueado;
-			//Calificacion calificacion = new Calificacion(calificador, calificado, this.calificacionnro, viaje);
-			Calificacion calificacion = new Calificacion();
-			calificacionDAO.registrar(calificacion);
-			NotificacionAction notificacion=new NotificacionAction();
-			notificacion.crearNotificacionCalificacion();
+			Calificacion calificacionAntigua=calificacionDAO.encontrarCalificacion(calificador,calificado,viaje);
+			if(calificacionAntigua==null){//reviso si el usr loguado ya habia calificado a este usuario en este viaje				
+				Calificacion calificacion = new Calificacion(calificador, calificado, this.calificacionnro,new Date(), viaje);
+				calificacionDAO.registrar(calificacion);
+				/*NotificacionAction notificacion=new NotificacionAction();
+				notificacion.crearNotificacionCalificacion();*/
+			}else{ //si ya lo habia calificado modifico la calificacion
+				calificacionAntigua.setCalificacion(this.calificacionnro);
+				calificacionDAO.modificar(calificacionAntigua);
+			}
+			this.actualizarCalificacion(calificado);
 			return SUCCESS;
 		}
 		return resul;
 	}
 	
+	private void actualizarCalificacion(Viajero calificado) throws Exception{
+		List<Calificacion> calificaciones=calificacionDAO.listarCalificaciones(calificado.getId());
+		int cant=calificaciones.size();
+		int valor=0;
+		for(Calificacion c: calificaciones){
+			valor+=c.getCalificacion();
+		}
+		calificado.setCalificacion((valor/cant));
+		FactoryDAO.getViajeroDAO().modificar(calificado);
+	}
 	private String validarSesion(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		Usuario user = (Usuario) session.get("usrLogin");

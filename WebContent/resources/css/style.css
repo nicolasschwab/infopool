@@ -639,3 +639,19 @@ footer p{
 	display:inline;
 	padding: 20px
 }
+.calificacion {
+  direction: rtl;
+  unicode-bidi: bidi-override;
+}
+
+label:hover,
+label:hover ~ label {
+  color: orange;
+}
+
+input[type="radio"]:checked ~ label {
+  color: orange;
+}
+input[type="radio"] {
+  display: none;
+}
