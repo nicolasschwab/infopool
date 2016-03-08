@@ -117,11 +117,11 @@ public class ViajeAction extends ActionSupport {
 	public void setUser(Usuario user) {
 		this.user = user;
 	}	
-	public List<Viaje> getListaViajes() {
+	public List<Viaje> getListaBusquedaViajes() {
 		return listaBusquedaViajes;
 	}
-	public void setListaViajes(List<Viaje> listaViajes) {
-		this.listaBusquedaViajes = listaViajes;
+	public void setListaBusquedaViajes(List<Viaje> listaBusquedaViajes) {
+		this.listaBusquedaViajes = listaBusquedaViajes;
 	}	
 	
 	

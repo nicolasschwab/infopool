@@ -117,9 +117,11 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			Query q = em.createQuery(qstr);
 			q.setFirstResult(0);
 			q.setMaxResults(10);
-			listadoViajes = (List<Viaje>) q.getResultList();
+			listadoViajes = (List<Viaje>) q.getResultList();			
 			for(Viaje v : listadoViajes){
+				System.out.println("viaje "+v.getDireccionOrigen());
 				for(FrecuenciaViaje f : v.getFrecuencias()){
+					System.out.println("frecuencia "+f.getDiaFrecuencia());
 					f.getPasajeros();
 				}
 			}

@@ -176,34 +176,30 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="AceptarSolicitud" method="AceptarSolicitud" class="solicitudViajeAction">
-			<result name="success" type="redirect">Solicitudes</result>
-			<result name="input">/viajero/solicitudes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-				
 		<action name="SolicitudesFrecuenciaViaje" method="SolicitudesFrecuenciaViaje" class="solicitudViajeAction">
 			<result name="success">/viajes/solicitudesFrecuenciaViaje.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>		
-				
-				
-		<!-- FALTAN ESTOS 2 -->
-		<action name="rechazarSolicitudViaje" method="rechazarSolicitudViaje" class="solicitudViajeAction">
+		</action>
+		
+		<action name="AceptarSolicitud" method="AceptarSolicitud" class="solicitudViajeAction">
+			<result name="success" type="redirect">SolicitudesFrecuenciaViaje</result>
+			<result name="input" type="redirect">SolicitudesFrecuenciaViaje</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+
+		<action name="RechazarSolicitudViaje" method="RechazarSolicitudViaje" class="solicitudViajeAction">
 			<result name="success" type="redirect">
-				<param name="location">solicitudesViaje</param>
-				<param name="id">${idViaje}</param>	
-			</result>
-			<result name="input">/solicitudes.jsp</result>
+				<param name="location">SolicitudesFrecuenciaViaje</param>
+				<param name="idFrecuenciaViaje">${idFrecuenciaViaje}</param>
+			</result>			
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>	
 				
-		<action name="cancelacionSolicitudViaje" method="cancelacionSolicitudViaje" class="solicitudViajeAction">
+		<action name="CancelarSolicitudViaje" method="CancelarSolicitudViaje" class="solicitudViajeAction">
 			<result name="success" type="redirect">
-				<param name="location">detalleViaje</param>
-				<param name="id">${idViaje}</param>	
+				<param name="location">SolicitudesFrecuenciaViaje</param>
+				<param name="idFrecuenciaViaje">${idFrecuenciaViaje}</param>
 			</result>
-			<result name="input">/solicitudes.jsp</result>						
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>	
 		

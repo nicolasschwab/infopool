@@ -2,7 +2,6 @@ package actions;
 
 import implementacionesDAO.FrecuenciaViajeDAOjpa;
 import implementacionesDAO.SolicitudViajeDAOjpa;
-import implementacionesDAO.ViajeDAOjpa;
 import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.SolicitudViajeDAO;
 import interfacesDAO.ViajeDAO;
@@ -13,7 +12,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.DiasSemana;
 import model.EstadoSolicitud;
 import model.FrecuenciaViaje;
 import model.SolicitudViaje;
@@ -192,39 +190,33 @@ public class SolicitudViajeAction extends ActionSupport{
 		return "sinPermisos";
 	}
 	
+	public String RechazarSolicitudViaje() throws Exception{
+		if (SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
+			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			
+			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.RECHAZADA);
+			solicitudViaje.setFechaFinSolicitud(new Date());
+			solicitudViajeDAO.modificar(solicitudViaje);	
+			
+			idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();			
+			/*NotificacionAction notificacion=new NotificacionAction();
+			notificacion.crearNotificacionRechazoSolicitud(viajeroSolicitud, viaje);*/			
+			return SUCCESS;
+		} else{
+			return "sinPermisos";
+		}
+	}
+	
 	public String SolicitudesFrecuenciaViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
-			frecuenciaViaje = frecuenciaViajeDAO.encontrar(this.idFrecuenciaViaje);
-			listaSolicitudes = ((SolicitudViajeDAOjpa)solicitudViajeDAO).buscarSolicitudesFrecuencia(frecuenciaViaje);
+			frecuenciaViaje = frecuenciaViajeDAO.encontrar(this.idFrecuenciaViaje);			
+			listaSolicitudes = ((SolicitudViajeDAOjpa)solicitudViajeDAO).buscarSolicitudesFrecuencia(frecuenciaViaje);			
 			return SUCCESS;
 		}
 		return "sinPermisos";
 	}
 	/*	
-	
-	public String rechazarSolicitudViaje(){
-		String tienePermisos=this.validarSesion();
-		if(tienePermisos==SUCCESS){
-			ViajeroDAOjpa viajeroDAO = new ViajeroDAOjpa();
-			ViajeDAOjpa viajeDAO = new ViajeDAOjpa();
-			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			solicitud = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-			solicitud.setEstado(EstadoSolicitud.RECHAZADO);
-			solicitudViajeDAO.modificar(solicitud);		
-			viaje = viajeDAO.encontrar(solicitud.getViaje().getId());
-			Viajero viajeroSolicitud = solicitud.getViajero();		
-			if (viaje.esPasajero(viajeroSolicitud)){			
-				viajeroSolicitud.getMisViajesPasajero().remove(viaje);		
-				viajeroDAO.modificar(viajeroSolicitud);		
-			}		
-			solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(solicitud.getViaje());
-			idViaje = viaje.getId();	
-			NotificacionAction notificacion=new NotificacionAction();
-			notificacion.crearNotificacionRechazoSolicitud(viajeroSolicitud, viaje);
-		}
-		return tienePermisos;
-	}
-	
 	public boolean tieneSolicitud(Viaje viaje,Usuario viajero){
 		String tienePermisos=this.validarSesion();
 		if(tienePermisos==SUCCESS){

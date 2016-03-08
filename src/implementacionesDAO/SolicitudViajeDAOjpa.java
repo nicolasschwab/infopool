@@ -59,7 +59,7 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 		List<SolicitudViaje> listadoSolicitudes = null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
 		try{
-			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where :frecuenciaViaje in elements(s.viaje.frecuencias)";
+			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where s.frecuenciaViaje = :frecuenciaViaje";
 			Query q = em.createQuery(qstr);
 			q.setParameter("frecuenciaViaje", frecuenciaViaje);
 			listadoSolicitudes = (List<SolicitudViaje>) q.getResultList();
