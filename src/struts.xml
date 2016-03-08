@@ -181,7 +181,7 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="AceptarSolicitud" method="AceptarSolicitud" class="solicitudViajeAction">
+		<action name="AceptarSolicitudViaje" method="AceptarSolicitudViaje" class="solicitudViajeAction">
 			<result name="success" type="redirect">SolicitudesFrecuenciaViaje</result>
 			<result name="input" type="redirect">SolicitudesFrecuenciaViaje</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>

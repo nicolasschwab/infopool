@@ -29,7 +29,7 @@
 							<s:property value="viajero.obtenerNombre()"/> 
 							<s:date name="fechaInicioSolicitud" format="dd/MM/YYYY"/> 
 							<s:property value="estadoSolicitud" />							
-							<s:url id="aceptarSolicitud" action="AceptarSolicitud">
+							<s:url id="aceptarSolicitud" action="AceptarSolicitudViaje">
 								<s:param name="id" value="%{id}"></s:param>
 							</s:url>
 							<s:url id="rechazarSolicitud" action="RechazarSolicitudViaje">

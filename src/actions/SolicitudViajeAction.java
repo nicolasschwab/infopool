@@ -158,7 +158,7 @@ public class SolicitudViajeAction extends ActionSupport{
 		}	
 	}
 	
-	public String AceptarSolicitud() throws Exception{		
+	public String AceptarSolicitudViaje() throws Exception{		
 		if(SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
 			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
@@ -208,6 +208,39 @@ public class SolicitudViajeAction extends ActionSupport{
 		}
 	}
 	
+	public String CancelarSolicitudViaje() throws Exception{
+		if(SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
+			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
+			frecuenciaViaje = solicitudViaje.getFrecuenciaViaje();
+			viaje = frecuenciaViaje.getViaje();
+							
+			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.CANCELADA);
+			solicitudViaje.setFechaFinSolicitud(new Date());
+			solicitudViajeDAO.modificar(solicitudViaje);								
+			
+			viajero = solicitudViaje.getViajero();
+			viajero.getMisViajesPasajero().remove(viaje);
+			viajero.getMisFrecuenciasPasajero().remove(frecuenciaViaje);
+			viajero.getMiHistorialFrecuencias().add(frecuenciaViaje);
+			viajeroDAO.modificar(viajero);			
+			
+			frecuenciaViaje.getPasajeros().remove(viajero);
+			frecuenciaViaje.getPasajerosHistorial().add(viajero);
+			frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()+1);
+			frecuenciaViajeDAO.modificar(frecuenciaViaje);
+			
+			viaje.getPasajeros().remove(viajero);
+			viajeDAO.modificar(viaje);
+			
+			idFrecuenciaViaje = frecuenciaViaje.getId();
+			//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+			return SUCCESS;
+			
+		}
+		return "sinPermisos";
+	}
+	
 	public String SolicitudesFrecuenciaViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
 			frecuenciaViaje = frecuenciaViajeDAO.encontrar(this.idFrecuenciaViaje);			
@@ -228,22 +261,6 @@ public class SolicitudViajeAction extends ActionSupport{
 			}
 		}
 		return false;
-	}
-	
-	public String cancelacionSolicitudViaje() throws Exception{		
-		String tienePermisos=this.validarSesion();
-		if(tienePermisos==SUCCESS){
-				ViajeroDAO viajeroDAO = FactoryDAO.getViajeroDAO();
-				ViajeDAO viajeDAO = FactoryDAO.getViajeDAO();
-				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);				
-				viajero = viajeroDAO.encontrar(((Usuario)ActionContext.getContext().getSession().get("usrLogin")).getId());				
-				viaje = viajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-				this.setIdViaje(viaje.getId());
-				if(!this.eliminarSolicitud(viaje, viajero)){
-					addFieldError("loginError", "Usted no forma parte de este viaje");
-				}
-		}
-		return tienePermisos;
 	}
 	
 	public boolean eliminarSolicitud(Viaje viaje,Viajero viajeroId) throws Exception{
