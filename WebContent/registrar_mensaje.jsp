@@ -10,8 +10,8 @@
 </head>
 <body >
 
-	<%@ include file="views/header.jsp"%>
-	<jsp:include page="views/menu.jsp">
+
+	<jsp:include page="views/header.jsp">
 		<jsp:param name="itemActivo" value="4" />
 	</jsp:include>
 
@@ -20,7 +20,7 @@
 			<div class="col-md-12">
 				<h3 class="tituloSeccion"><s:text name="mensaje.titulo"></s:text></h3>
 				<s:fielderror />
-				<s:form role="form" theme="simple" cssClass="form-signin" action="enviarMensaje">
+				<s:form role="form" theme="simple" cssClass="form-signin" action="crearConversacion">
 					<div class="form-group">
 						<div class="row">
 							<div class="col-md-12">

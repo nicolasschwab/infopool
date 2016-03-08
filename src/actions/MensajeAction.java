@@ -182,7 +182,7 @@ public class MensajeAction extends ActionSupport {
 		}
 		return resul;
 	}
-	public Mensaje crearMensaje(String detalleMensaje,Conversacion conversacion) throws Exception {
+	public Mensaje crearMensaje(String detalleMensaje) throws Exception {
 		String permisos=this.validarSesion();
 		if(permisos==SUCCESS){
 			this.fecha=new Date();

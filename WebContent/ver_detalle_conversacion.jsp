@@ -81,7 +81,7 @@
 			    								
 					    							<div class="imagenLista">
 					    								<img src="<s:url action="ImageAction">
-															<s:param name="id" value="%{user.id}"></s:param>
+															<s:param name="id" value="%{id}"></s:param>
 														</s:url>" alt="foto conductor" class="img-responsive ">
 					    							</div>
 					    							<div class="datosMensaje">

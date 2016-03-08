@@ -48,7 +48,10 @@
 						  			<p><strong><s:text name="viajero.calificacion" />:</strong> <s:property value="viaje.conductor.calificacion" />/5</p>
 						  			<p><strong><s:text name="viajero.preferencias" />:</strong> <!--<s:property value="viaje.conductor.preferenciasViaje" />--></p>					  			
 					  			</div>
-					  			<button type="button" class="btn btn-primary">Enviar Mensaje</button>
+					  			<s:form role="form" theme="simple" action="nuevoMensaje" method="post">
+					  				<s:hidden name="id" value="%{viaje.id}"/> 
+					  				<s:submit  value="Enviar Mensaje" cssClass="btn btn-primary"/>
+					  			</s:form>
 							</div>							
 						</div>
 						<div class="col-sm-7">

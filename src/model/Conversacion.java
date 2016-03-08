@@ -48,7 +48,8 @@ public class Conversacion implements Serializable{
 	private TipoConversacion tipoConversacion;
 			
 	public Conversacion(){
-		super();		
+		super();
+		this.fechaUltimaModificacion=new Date();
 	}
 			
 	public Conversacion(Collection<Mensaje> mensajes,

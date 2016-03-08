@@ -127,7 +127,7 @@ public class ViajeroAction extends ActionSupport{
 			viajero = (Viajero)SessionUtil.getUsuario();			
 			listaViajesConductor = viajeDAO.obtenerViajesConductorEstado(viajero, true);
 			listaViajesPasajero = viajeDAO.obtenerViajesPasajeroEstado(viajero, true);	
-			listaUltimosViajes = viajeDAO.obtenerUltimosViajes();	
+			//HISTORIAL DE VIAJES!!	
 			return SUCCESS;
 		}
 		return "sinPermisos";

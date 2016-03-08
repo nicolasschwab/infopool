@@ -27,7 +27,7 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 		Conversacion conver=null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
-			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where :emisor IN elements(u.participantesConversacion) and :receptor IN elements(u.participantes) and u.viaje.id= :viajeId ";
+			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where :emisor IN elements(u.participantesConversacion) and :receptor IN elements(u.participantesConversacion) and u.viaje.id= :viajeId ";
 			Query consulta = em.createQuery(qString);
 			consulta.setParameter("emisor",emisor);
 			consulta.setParameter("receptor",receptor);

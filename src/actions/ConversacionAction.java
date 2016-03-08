@@ -113,12 +113,12 @@ public class ConversacionAction  extends ActionSupport{
 		this.fechaUltimaModificacion = fechaUltimaModificacion;
 	}
 	
-	/*public String crearConversacion(){
+	public String crearConversacion() throws NumberFormatException, Exception{
 		String estaLogueado=this.validarSesion(); 
 		if(estaLogueado==SUCCESS){
 			ViajeAction viajeAction=new ViajeAction();
 			Viajero receptor=FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(receptorID));
-			if(viajeAction.validarPertenece(viajeId,receptor)){				
+			//if(viajeAction.validarPertenece(viajeId,receptor)){				
 				Conversacion laConversacion=this.getConversacionDAO().encontrarPorViajeEIntegrantes(viajeId,user,receptor);
 				MensajeAction mensajeAction=new MensajeAction();
 				this.setMensaje(mensajeAction.crearMensaje(this.getDetalle()));// creo y persisto el mensaje
@@ -130,16 +130,12 @@ public class ConversacionAction  extends ActionSupport{
 					Collection<Viajero> participantes = new ArrayList();
 					participantes.add(user);
 					participantes.add(receptor);
-					laConversacion.setParticipantes(participantes);
+					laConversacion.setParticipantesConversacion(participantes);
 					Collection<Mensaje> mensajes= new ArrayList<Mensaje>();
 					mensajes.add(this.getMensaje());
 					laConversacion.setMensajes(mensajes);
-					usuarioDAO.modificar(user);
-					usuarioDAO.modificar(receptor);
 					conversacionDAO.registrar(laConversacion); // persisto la nueva conversacion
 				}else{ //ya existe una conversacion entre estos usuario para este viaje, se agrega el mensaje a la conversacion
-					usuarioDAO.modificar(user);
-					usuarioDAO.modificar(receptor);
 					Collection<Mensaje> mensajes=laConversacion.getMensajes();
 					mensajes.add(this.getMensaje());
 					laConversacion.setMensajes(mensajes);
@@ -148,9 +144,9 @@ public class ConversacionAction  extends ActionSupport{
 				}
 			}
 			
-		}
+		//}
 		return estaLogueado;
-	}*/
+	}
 	
 	public String listarConversaciones(){
 		String estaLogueado=this.validarSesion();
@@ -200,7 +196,7 @@ public class ConversacionAction  extends ActionSupport{
 			if(this.getConversacion()==null){
 				if(this.getMensajeLista().size()>0){
 					this.setConversacion(this.getMensajeLista().get(0));
-				}				
+				}
 			}
 		}
 		return estaLogueado;
@@ -225,17 +221,12 @@ public class ConversacionAction  extends ActionSupport{
 			this.setConversacion(conversacionDAO.encontrarPorId(this.getId()));
 			for(Viajero viajero :conversacion.getParticipantesConversacion()){
 				if(viajero.getId()==user.getId()){
-					this.setMensaje(new MensajeAction().crearMensaje(this.getDetalle(),this.getConversacion())); // creo y persisto el mensaje
+					this.setMensaje(new MensajeAction().crearMensaje(this.getDetalle())); // creo y persisto el mensaje
 					this.getConversacion().getMensajes().add(this.getMensaje());
 					FactoryDAO.getViajeDAO().modificar(user);
 					FactoryDAO.getViajeDAO().modificar(viajero);
 					this.getConversacion().setFechaUltimaModificacion(new Date());
 					conversacionDAO.modificar(this.getConversacion());
-					this.listarConversaciones();
-					for(Conversacion conversacion : this.getMensajeLista()){
-						Mensaje ultimoMensaje=(Mensaje) conversacion.getMensajes().toArray()[conversacion.getMensajes().size()-1];
-						this.getConversacionVista().add(new conversacionVista(conversacion,ultimoMensaje));
-					}
 				}
 			}
 		}

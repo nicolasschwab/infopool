@@ -282,14 +282,9 @@
 		</action>
 	
 		<!-- Actions Mensajes -->
-		<action name="listarConversaciones" method="listarConversaciones" class="conversacionAction">
-			<result name="success">ver_detalle_conversacion.jsp</result>
-			<result name="login" >/login.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
 		
 		<action name="responderMensaje" method="responderMensaje" class="conversacionAction">
-			<result name="success">/ver_detalle_conversacion.jsp</result>
+			<result name="success"  type="redirect">detalle</result>
 			<result name="login" >/login.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
@@ -299,8 +294,8 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="enviarMensaje" method="crearConversacion" class="conversacionAction">
-			<result name="success"  type="redirect">listarConversaciones</result>
+		<action name="crearConversacion" method="crearConversacion" class="conversacionAction">
+			<result name="success"  type="redirect">detalle</result>
 			<result name="input">/registrar_mensaje.jsp</result>
 			<result name="login" >/login.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
