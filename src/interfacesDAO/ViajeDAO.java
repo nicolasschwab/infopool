@@ -14,10 +14,9 @@ public interface ViajeDAO extends GenericDAO<Viaje>{
 	public <T> List<Viaje> obtenerUltimosViajesBusqueda();
 	public Viaje encontrarPorId(int viajeId);
 	public <T> List<Viaje> obtenerUltimosViajes();
+	public <T> List<Viaje> obtenerViajesBusquedaParametrizada(T dirOrigen, T dirDestino, T fechaViaje);
 	
 	/* Metodos a revisar */	
-	public <T> List<Viaje> buscarPorDireccion(T dirOrigen, T dirDestino);
-	public <T> List<Viaje> buscarPorFecha(T id);
 	public <T> List<Viaje> listarViajesConductor(T id);
 	public <T> List<Viaje> listarViajesPasajero(T id);
 	public <T> List<Viaje> listarViajesNoAsociados(T id,Evento evento);

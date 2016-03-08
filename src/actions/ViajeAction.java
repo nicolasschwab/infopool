@@ -4,6 +4,8 @@ import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.ViajeDAO;
 import interfacesDAO.ViajeroDAO;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -174,6 +176,28 @@ public class ViajeAction extends ActionSupport {
 		}else{
 			return "sinPermisos";
 		}
+	}
+	
+	public String BusquedaParametrizadaViaje() throws Exception{		
+		if (SessionUtil.checkLogin()){
+			viajero = (Viajero) SessionUtil.getUsuario();
+			if (this.direccionOrigen != null && !this.direccionOrigen.equals("")) {
+				if (this.direccionDestino != null && !this.direccionDestino.equals("")) {
+					if((this.fechaViaje == null) || (this.fechaViaje.equals(""))){
+						fechaViaje = "2016-01-01";
+					}
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					Date fecha = sdf.parse(this.getFechaViaje());
+					listaBusquedaViajes = viajeDAO.obtenerViajesBusquedaParametrizada(this.direccionOrigen,this.direccionDestino,fecha);
+				} else {
+					addFieldError("loginError", "Por favor ingrese la direccion destino");
+				}
+			} else {
+				addFieldError("loginError", "Por favor ingrese la direccion origen");
+			}						
+			return SUCCESS;
+		}		
+		return "sinPermisos";
 	}
 	
 	/*
@@ -421,88 +445,6 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 	
-	public String buscarViajePorEvento() throws Exception {
-		if(this.validarSesion()){		
-			EventoDAO eventodao = FactoryDAO.getEventoDAO();
-			if (this.evento_id != 0){
-				Evento evento = (Evento) eventodao.encontrar(this.evento_id);
-				eventoLista = eventodao.listar();				
-				viajeLista = (List<Viaje>) evento.getViajesAsociados();
-			}
-			else{
-				addFieldError("loginError", "No existen eventos");			
-			}
-			return SUCCESS;
-		}else{
-			return "sinPermisos";
-		}
-	}
-	
-	public String listarPorFecha() throws Exception {
-		if(this.validarSesion()){			
-			EventoDAO unEvento = FactoryDAO.getEventoDAO();
-			eventoLista = unEvento.listar();
-			if (this.getFecha() != null && !this.getFecha().equals("")) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-				Date fecha = sdf.parse(this.getFecha());
-				ViajeDAO unViaje = FactoryDAO.getViajeDAO();
-				viajeLista = unViaje.buscarPorFecha(fecha);
-				return SUCCESS;
-			} else {
-				addFieldError("loginError", "Por favor seleccione una fecha");
-				return SUCCESS;
-			}
-		}else{
-			return "sinPermisos";
-		}
-	}
-
-	public String listarPorDireccion() throws Exception {
-		if(this.validarSesion()){			
-			EventoDAO unEvento = FactoryDAO.getEventoDAO();
-			eventoLista = unEvento.listar();
-			if (this.direccionOrigen != null && !this.direccionOrigen.equals("")) {
-				if (this.direccionDestino != null && !this.direccionDestino.equals("")) {
-					viajeLista = this.viajeDAO.buscarPorDireccion(this.getDireccionOrigen(), this.getDireccionDestino());
-				} else {
-					addFieldError("loginError", "Por favor ingrese la direccion destino");
-				}
-			} else {
-				addFieldError("loginError", "Por favor ingrese la direccion origen");
-			}
-			return SUCCESS;
-		}else{
-			return "sinPermisos";
-		}
-	}
-
-	public String listarViajes() {
-		if(this.validarSesion()){		
-			Map<String, Object> session = ActionContext.getContext().getSession();
-			Usuario user = (Usuario) session.get("usrLogin");
-			viajeListaConductor = viajeDAO.listarViajesConductor(user);
-			viajeListaPasajero = viajeDAO.listarViajesPasajero(user);
-			return SUCCESS;
-		}else{
-			return "sinPermisos";
-		}
-	}
-
-	
-
-	public String listarTodosLosViajes() throws Exception {
-		if(this.validarSesion()){		
-			Map<String, Object> session = ActionContext.getContext().getSession();
-			Usuario user = (Usuario) session.get("usrLogin");
-			EventoDAO unEvento = FactoryDAO.getEventoDAO();
-			eventoLista = unEvento.listar();
-			viajeLista = viajeDAO.listarViajesNoAsociados(user,unEvento.encontrar(this.valor));
-			return SUCCESS;
-		}else{
-			return "sinPermisos";
-		}
-	}
-
 	public boolean validarPertenece(int viajeId, Viajero receptor) {
 		if(this.validarSesion()){		
 			Viaje viaje=FactoryDAO.getViajeDAO().encontrarPorId(viajeId);
@@ -542,13 +484,5 @@ public class ViajeAction extends ActionSupport {
 		}
 	}
 
-	private boolean validarSesion(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		this.setUsrlogueado(null);
-		this.setUsrlogueado((Usuario) session.get("usrLogin"));
-		if(this.getUsrlogueado()==null){
-			return false;
-		}
-		return true;
-	}*/
+	*/
 }

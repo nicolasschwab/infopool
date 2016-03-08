@@ -117,8 +117,11 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		
-		
+		<action name="BusquedaParametrizadaViaje" method="BusquedaParametrizadaViaje" class="viajeAction">
+			<result name="success">/viajes/buscarViajes.jsp</result>
+			<result name="input">/viajes/buscarViajes.jsp</result>
+			<result name="sinPermisos" type="redirect">cerrarSesion</result>
+		</action>	
 		
 		
 		

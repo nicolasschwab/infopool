@@ -118,10 +118,8 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			q.setFirstResult(0);
 			q.setMaxResults(10);
 			listadoViajes = (List<Viaje>) q.getResultList();			
-			for(Viaje v : listadoViajes){
-				System.out.println("viaje "+v.getDireccionOrigen());
-				for(FrecuenciaViaje f : v.getFrecuencias()){
-					System.out.println("frecuencia "+f.getDiaFrecuencia());
+			for(Viaje v : listadoViajes){				
+				for(FrecuenciaViaje f : v.getFrecuencias()){					
 					f.getPasajeros();
 				}
 			}
@@ -154,30 +152,31 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 		}
 		return viaje;
 	}
-	
-	/* --- METODOS PARA REVISAR --- */
-	public <T> List<Viaje> buscarPorDireccion(T dirOrigen, T dirDestino){
-		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.direccionOrigen like :origen and e.direccionDestino like :destino and e.fechaInicio >= CURRENT_DATE and e.activo = 1";
-		List<Viaje> resultado=null;
+		
+	public <T> List<Viaje> obtenerViajesBusquedaParametrizada(T dirOrigen, T dirDestino, T fechaViaje){
+		List<Viaje> listadoViajes = null;		
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
-		try{			
-			Query consulta = em.createQuery(qString);
-			consulta.setParameter("origen", "%" + dirOrigen + "%");
-			consulta.setParameter("destino", "%" + dirDestino + "%");
-			resultado = (List<Viaje>) consulta.getResultList();			
+		try{
+			String qstr = "select e from "+ this.persistentClass.getSimpleName() +" e where e.direccionOrigen like :origen and e.direccionDestino like :destino and DATE(e.fechaInicio) >= DATE(:fecha) and e.activo = 1";
+			Query q = em.createQuery(qstr);
+			q.setParameter("origen", "%" + dirOrigen + "%");
+			q.setParameter("destino", "%" + dirDestino + "%");
+			q.setParameter("fecha", fechaViaje);
+			listadoViajes = (List<Viaje>) q.getResultList();			
+			for(Viaje v : listadoViajes){
+				for(FrecuenciaViaje f : v.getFrecuencias()){					
+					f.getPasajeros();
+				}
+			}
 		}catch(HibernateException e){
 			e.printStackTrace();			
 		}finally{
 			em.close();
-		}
-		return resultado;		
-	}
-		
-	public <T> List<Viaje> buscarPorFecha(T id){
-		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where DATE(e.fechaInicio) = DATE(:id) and e.fechaInicio >= CURRENT_DATE  and e.activo = 1";
-		return listadoGenerico(qString,id);
+		}		
+		return listadoViajes;
 	}
 	
+	/* --- METODOS PARA REVISAR --- */
 	public <T> List<Viaje> listarViajesConductor(T id){
 		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.conductor = :id ";
 		return listadoGenerico(qString,id);
