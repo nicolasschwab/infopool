@@ -58,8 +58,8 @@
 		</action>
 
 		<!-- Actions Viajeros -->
-		<action name="Viajes" method="Viajes" class="viajeroAction">
-			<result name="success">/viajes/viajes.jsp</result>
+		<action name="misViajes" method="misViajes" class="viajeroAction">
+			<result name="success">/viajes/misViajes.jsp</result>
 			<result name="sinPermisos" type="redirect" >Inicio</result>
 		</action>
 		
@@ -107,8 +107,8 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="BusquedaViaje" method="BusquedaViaje" class="viajeAction">
-			<result name="success">/viajes/viajes.jsp</result>
+		<action name="busquedaViaje" method="busquedaViaje" class="viajeAction">
+			<result name="success">/viajes/buscar_viajes.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		

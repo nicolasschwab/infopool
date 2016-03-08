@@ -19,7 +19,7 @@
 			<s:a href="%{verPerfilViajero}"><span class="fa fa-user" aria-hidden="true"> </span> <s:text name="menuviajero.perfil" /></s:a>
 		</li>
 		<li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 3) {%> class="active" <%}%>>
-			<a href="Viajes"><span class="fa fa-road" aria-hidden="true"> </span> <s:text name="menuviajero.viajes" /></a>
+			<a href="misViajes"><span class="fa fa-road" aria-hidden="true"> </span> <s:text name="menuviajero.viajes" /></a>
 		</li>
 		<li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 4) {%> class="active" <%}%>>
 			<a href="detalle"><span class="fa fa-comment" aria-hidden="true"> </span> <s:text name="menuviajero.mensajes" /></a>

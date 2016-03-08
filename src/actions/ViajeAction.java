@@ -39,7 +39,7 @@ public class ViajeAction extends ActionSupport {
 	public Usuario user;
 	
 	/* DATOS VISTAS */	
-	private List<Viaje> listaViajes = null;
+	private List<Viaje> listaBusquedaViajes = null;
 	private boolean soyViajero;
 	private boolean soyConductor;
 	private boolean soyPasajero;
@@ -118,10 +118,10 @@ public class ViajeAction extends ActionSupport {
 		this.user = user;
 	}	
 	public List<Viaje> getListaViajes() {
-		return listaViajes;
+		return listaBusquedaViajes;
 	}
 	public void setListaViajes(List<Viaje> listaViajes) {
-		this.listaViajes = listaViajes;
+		this.listaBusquedaViajes = listaViajes;
 	}	
 	
 	
@@ -144,10 +144,10 @@ public class ViajeAction extends ActionSupport {
 		this.soyPasajero = soyPasajero;
 	}
 	
-	public String BusquedaViaje() {
+	public String busquedaViaje() {
 		if (SessionUtil.checkLogin()){
 			viajero = (Viajero) SessionUtil.getUsuario();
-			listaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
+			listaBusquedaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
 			return SUCCESS;
 		}
 		return "sinPermisos";
