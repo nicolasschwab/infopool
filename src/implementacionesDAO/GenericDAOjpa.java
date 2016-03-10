@@ -32,7 +32,7 @@ public class GenericDAOjpa<T> implements GenericDAO<T> {
 			em.flush();
 			etx.commit();
 		}catch(PersistenceException e){
-			System.out.println("Error al registrar el objeto");
+			System.out.println("Error al registrar el objeto e:" + e);
 			etx.rollback();
 		}finally{
 			em.close();

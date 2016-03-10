@@ -22,6 +22,8 @@ public class ViajeroDAOjpa extends GenericDAOjpa<Viajero> implements ViajeroDAO 
 		try{			
 			resultado = (Viajero) em.find(this.persistentClass, id);
 			resultado.getPerfil();			
+			resultado.getMisViajesPasajero().size();
+			resultado.getMisFrecuenciasPasajero().size();
 		}catch(HibernateException e){
 			e.printStackTrace();
 		}finally{

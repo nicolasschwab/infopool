@@ -2,6 +2,7 @@ package actions;
 
 import implementacionesDAO.FrecuenciaViajeDAOjpa;
 import implementacionesDAO.SolicitudViajeDAOjpa;
+import implementacionesDAO.ViajeroDAOjpa;
 import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.SolicitudViajeDAO;
 import interfacesDAO.ViajeDAO;
@@ -162,7 +163,7 @@ public class SolicitudViajeAction extends ActionSupport{
 		if(SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
 			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
-			frecuenciaViaje = solicitudViaje.getFrecuenciaViaje();
+			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
 			viaje = frecuenciaViaje.getViaje();
 			idViaje = viaje.getId();
 			 
@@ -170,15 +171,18 @@ public class SolicitudViajeAction extends ActionSupport{
 				
 				solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
 				solicitudViaje.setFechaFinSolicitud(new Date());
-				solicitudViajeDAO.modificar(solicitudViaje);								
 												
-				//ESTOS METODOS DEBERIAMOS IMPLEMENTARNOS EN LA CLASE VIAJERO
-				viajero = solicitudViaje.getViajero();
-				viajero.getMisViajesPasajero().add(viaje);
-				viajero.getMisFrecuenciasPasajero().add(frecuenciaViaje);
-				viajeroDAO.modificar(viajero);			
+				viajero = ((ViajeroDAOjpa)viajeroDAO).encontrar(solicitudViaje.getViajero().getId());
+				viajero.agregarViajePasajero(viaje);
+				viajero.agregarFrecuenciaPasajero(frecuenciaViaje);
 				
-				//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+				frecuenciaViaje.agregarViajeroFrecuencia(viajero);				
+				frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()-1);
+								
+				viajeroDAO.modificar(viajero);
+				solicitudViajeDAO.modificar(solicitudViaje);
+				frecuenciaViajeDAO.modificar(frecuenciaViaje);
+
 				return SUCCESS;
 			}
 			else{
@@ -211,26 +215,25 @@ public class SolicitudViajeAction extends ActionSupport{
 	public String CancelarSolicitudViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
-			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
-			frecuenciaViaje = solicitudViaje.getFrecuenciaViaje();
+			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
 			viaje = frecuenciaViaje.getViaje();
 							
 			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.CANCELADA);
 			solicitudViaje.setFechaFinSolicitud(new Date());
-			solicitudViajeDAO.modificar(solicitudViaje);								
 			
-			viajero = solicitudViaje.getViajero();
-			viajero.getMisViajesPasajero().remove(viaje);
-			viajero.getMisFrecuenciasPasajero().remove(frecuenciaViaje);
-			viajero.getMiHistorialFrecuencias().add(frecuenciaViaje);
-			viajeroDAO.modificar(viajero);			
+			viajero = ((ViajeroDAOjpa)viajeroDAO).encontrar(solicitudViaje.getViajero().getId());
+			viajero.quitarViajePasajero(viaje);
+			viajero.quitarFrecuenciaPasajero(frecuenciaViaje);			
 			
-			frecuenciaViaje.getPasajeros().remove(viajero);
-			frecuenciaViaje.getPasajerosHistorial().add(viajero);
+			frecuenciaViaje.agregarPasajeroHistorial(viajero);
 			frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()+1);
-			frecuenciaViajeDAO.modificar(frecuenciaViaje);
 			
-			viaje.getPasajeros().remove(viajero);
+			viaje.quitarPasajero(viajero);
+									
+			solicitudViajeDAO.modificar(solicitudViaje);
+			viajeroDAO.modificar(viajero);
+			frecuenciaViajeDAO.modificar(frecuenciaViaje);
 			viajeDAO.modificar(viaje);
 			
 			idFrecuenciaViaje = frecuenciaViaje.getId();

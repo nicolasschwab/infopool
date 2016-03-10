@@ -12,11 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
@@ -279,5 +281,18 @@ public class Viajero extends Usuario implements Serializable{
 			e.printStackTrace();
 		}
 		return out;
+	}
+	public void agregarViajePasajero(Viaje viaje){
+		this.misViajesPasajero.add(viaje);
 	}	
+	public void quitarViajePasajero(Viaje viaje){
+		this.misViajesPasajero.remove(viaje);
+	}
+	public void agregarFrecuenciaPasajero(FrecuenciaViaje frecuenciaViaje){
+		this.misFrecuenciasPasajero.add(frecuenciaViaje);
+	}
+	public void quitarFrecuenciaPasajero(FrecuenciaViaje frecuenciaViaje){
+		this.misFrecuenciasPasajero.remove(frecuenciaViaje);
+		this.miHistorialFrecuencias.add(frecuenciaViaje);
+	}
 }

@@ -234,5 +234,8 @@ public class Viaje implements Serializable{
 			}
 		}
 		return disponible;
+	}	
+	public void quitarPasajero(Viajero viajero){
+		this.pasajeros.remove(viajero);
 	}
 }

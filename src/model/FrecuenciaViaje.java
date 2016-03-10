@@ -134,5 +134,13 @@ public class FrecuenciaViaje implements Serializable{
 		}
 		return esPasajero;
 	}
+	public void agregarViajeroFrecuencia(Viajero viajero){
+		this.pasajeros.add(viajero);
+	}
+	public void agregarPasajeroHistorial(Viajero viajero){
+		this.pasajeros.remove(viajero);
+		this.pasajerosHistorial.add(viajero);
+	}
+	
 
 }

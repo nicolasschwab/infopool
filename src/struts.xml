@@ -102,7 +102,7 @@
 		
 		<!-- Actions Viajes -->
 		<action name="RegistrarViaje" method="RegistrarViaje" class="datosViajeAction">
-			<result name="success" type="redirect">Viajes</result>
+			<result name="success" type="redirect">misViajes</result>
 			<result name="input" >/viajes/registrarViaje.jsp</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
@@ -175,7 +175,10 @@
 				<param name="location">DetalleViaje</param>
 				<param name="id">${idViaje}</param>				
 			</result>
-			<result name="input">/viajes/detalleViaje.jsp</result>
+			<result name="input" type="redirect">
+				<param name="location">DetalleViaje</param>
+				<param name="id">${idViaje}</param>
+			</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
