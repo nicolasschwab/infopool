@@ -50,16 +50,16 @@
 									<form action="calificarViaje" method="post">
 										<div class="form-group">
 											<div class="col-md-6 calificacion">											
-												<input id="radio1" type="radio" name="calificacionnro" value="5">
-											    <label for="radio1">★</label>
-											    <input id="radio2" type="radio" name="calificacionnro" value="4">
-											    <label for="radio2">★</label>
-											    <input id="radio3" type="radio" name="calificacionnro" value="3">
-											    <label for="radio3">★</label>
-											    <input id="radio4" type="radio" name="calificacionnro" value="2">
-											    <label for="radio4">★</label>
-											    <input id="radio5" type="radio" name="calificacionnro" value="1">
-											    <label for="radio5">★</label>
+												<input class="radioCalificacion" id="radio1" type="radio" name="calificacionnro" value="5">
+											    <label class="labelCalificacion" for="radio1">★</label>
+											    <input class="radioCalificacion" id="radio2" type="radio" name="calificacionnro" value="4">
+											    <label class="labelCalificacion" for="radio2">★</label>
+											    <input class="radioCalificacion" id="radio3" type="radio" name="calificacionnro" value="3">
+											    <label class="labelCalificacion" for="radio3">★</label>
+											    <input class="radioCalificacion" id="radio4" type="radio" name="calificacionnro" value="2">
+											    <label class="labelCalificacion" for="radio4">★</label>
+											    <input class="radioCalificacion" id="radio5" type="radio" name="calificacionnro" value="1">
+											    <label class="labelCalificacion" for="radio5">★</label>
 												<input type="hidden" name="idPasajero" value="<s:property value='id' />" />
 												<input type="hidden" name="idViaje" value="<s:property value='viaje.id' />" />
 											</div>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Type;
 
@@ -48,12 +50,13 @@ public class Viaje implements Serializable{
 	@ManyToOne(optional=true)
 	private Evento eventoAsociado;
 	
+	@OneToOne(cascade = {CascadeType.ALL})
 	private Conversacion foroViaje;
 	
-	@OneToMany(mappedBy="viaje")
+	@OneToMany(mappedBy="viaje",cascade = {CascadeType.ALL})
 	private Collection<Calificacion> calificaciones = new ArrayList<Calificacion>();
 	
-	@OneToMany(mappedBy="viaje")
+	@OneToMany(mappedBy="viaje",cascade = {CascadeType.ALL})
 	private Collection<FrecuenciaViaje> frecuencias = new ArrayList<FrecuenciaViaje>();
 	
 	@ManyToOne(optional=false)

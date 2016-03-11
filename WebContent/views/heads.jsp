@@ -15,6 +15,8 @@
 
 <!-- Estilos de voy.con.vos -->
 <link href="resources/css/style.css" rel='stylesheet' type='text/css' />
+<link href="resources/css/foro.css" rel='stylesheet' type='text/css' />
+<link href="resources/css/estilosEditarPerfil.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/estilosNotificaciones.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/estilosConversacion.css" rel='stylesheet' type='text/css' />
 
@@ -35,6 +37,9 @@
 
 <!-- start plugins -->
 <script type="text/javascript" src="resources/js/jquery.min.js"></script>
+<script type="text/javascript" src="resources/js/foro.js"></script>
+<script type="text/javascript" src="resources/js/editarUsuario.js"></script>
+<script type="text/javascript" src="resources/js/funcionesEditarUsuario.js"></script>
 <script type="text/javascript" src="resources/js/viajes.js"></script>
 <script type="text/javascript" src="resources/js/conversaciones.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>

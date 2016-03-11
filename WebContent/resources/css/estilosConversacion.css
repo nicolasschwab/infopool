@@ -22,6 +22,7 @@
 .panel{
 	overflow: scroll;
 	height:350px;
+	background: #e5e5e5;
 }
 .ajustarWidth{
 	width:77%;
@@ -55,7 +56,7 @@
 }
 .mensajeLista{
 	list-style:none;
-	height:60px;
+	height:70px;
 }
 .nombreLista{
 	color:black;
@@ -93,4 +94,20 @@
 }
 .seleccionado{
 	background: lightblue;
+}
+.ultimoMensaje{
+	overflow: hidden;
+    width: 200px;
+    color: #050558;    
+}
+.mensajeConver{
+	background:none;
+	border-radius:0px;
+	box-shadow:0 0px;
+}
+.pConver{
+	margin:0px;
+}
+.imgConver{
+	height:35px;
 }

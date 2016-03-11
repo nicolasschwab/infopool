@@ -8,6 +8,7 @@ import interfacesDAO.SolicitudViajeDAO;
 import interfacesDAO.ViajeDAO;
 import interfacesDAO.ViajeroDAO;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -168,7 +169,7 @@ public class SolicitudViajeAction extends ActionSupport{
 			idViaje = viaje.getId();
 			 
 			if (frecuenciaViaje.getAsientosDisponibles() > 0){
-				
+				ViajeAction.agregarUsuarioAForo(idViaje,solicitudViaje.getViajero().getId());
 				solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
 				solicitudViaje.setFechaFinSolicitud(new Date());
 												

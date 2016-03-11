@@ -70,37 +70,38 @@
 	    					<div class="col-md-12 paddingTop paddingLeft">
 	    						<div class="border">
 			    					<s:iterator value="conversacionVista">
-			    						<s:a href="http://localhost:8080/infopool/detalle?id=%{conversacion.id}">
-			    							<s:iterator value="conversacion.participantesConversacion">			    						
-			    								<s:if test="%{#parameters.id[0]==conversacion.id}">
-			    									<div class="mensajeLista seleccionado">
-			    								</s:if>	    							
-					    						<s:else>
-					    							<div class="mensajeLista">
-			    								</s:else>
-			    								
-					    							<div class="imagenLista">
-					    								<img src="<s:url action="ImageAction">
-															<s:param name="id" value="%{id}"></s:param>
-														</s:url>" alt="foto conductor" class="img-responsive ">
-					    							</div>
-					    							<div class="datosMensaje">
-						    							<div class="nombreLista">			    						
-								    							<s:property value="nombre"/>
-								    							<s:property value="apellido"/>			    						
+			    						<s:if test="!conversacion.mensajes.isEmpty()">
+				    						<s:a href="http://localhost:8080/infopool/detalle?id=%{conversacion.id}">
+				    							<s:iterator value="conversacion.participantesConversacion">			    						
+				    								<s:if test="%{#parameters.id[0]==conversacion.id}">
+				    									<div class="mensajeLista seleccionado">
+				    								</s:if>	    							
+						    						<s:else>
+						    							<div class="mensajeLista">
+				    								</s:else>
+				    								
+						    							<div class="imagenLista">
+						    								<img src="<s:url action="ImageAction">
+																<s:param name="id" value="%{id}"></s:param>
+															</s:url>" alt="foto conductor" class="img-responsive ">
+						    							</div>
+						    							<div class="datosMensaje">
+							    							<div class="nombreLista">			    						
+									    							<s:property value="usuario"/>			    						
+								    						</div>
+								    						<div class="ultimoMensaje">
+								    							<s:property value="ultimoMensaje.detalle"/>
+								    						</div>
 							    						</div>
-							    						<div class="ultimoMensaje">
-							    							<s:property value="ultimoMensaje.detalle"/>
+							    						<div class="ultimaFecha">
+							    							<i class="fa fa-mobile"></i>
+							    							<time datetime=""><s:date name="ultimoMensaje.fechaPublicacion" format="dd/MM/YYYY" /> </time>
 							    						</div>
-						    						</div>
-						    						<div class="ultimaFecha">
-						    							<i class="fa fa-mobile"></i>
-						    							<time datetime=""><s:date name="ultimoMensaje.fecha" format="dd/MM/YYYY" /> </time>
-						    						</div>
-					    						</div>				    						
-			    							</s:iterator>
-			    						</s:a>
-			    						<hr>
+						    						</div>				    						
+				    							</s:iterator>
+				    						</s:a>
+				    						<hr>
+			    						</s:if>
 			    					</s:iterator>
 		    					</div>
 	    					</div>
@@ -111,57 +112,50 @@
 						<div class="col-md-12 paddingTop ajustarWidth">
 							<div class="row chat-window" id="chat_window_1">
 								<div class="col-md-12">
-									<div class="panel panel-default" id="panel">																				
-										<s:iterator value="conversacion.mensajes" >
+									<div class="panel panel-default" id="panel">
+									<s:set var="idAnterior" value="-1"/>																				
+										<s:iterator value="conversacion.mensajes" status="prueba">
 											<div class="panel-body msg_container_base sinPaddingBot">
 												<div class="row msg_container base_sent">
-													<s:if test="%{user.id==emisor.id}">
-														<div class="col-md-1 avatar soyYoDetalle imagenForo">
-													</s:if>
-													<s:if test="%{user.id!=emisor.id}">
-														<div class="col-md-1 avatar imagenForo">
-													</s:if>
-														<s:url id="detalleViajero" action="detalleViajero" encode="true">
-															<s:param name="id" value="%{emisor.id}"></s:param>
-														</s:url>
-														<s:a href="%{detalleViajero}">
-															<img src="<s:url action="ImageAction">
+													<div class="col-md-1 avatar imagenForo">												
+														<s:if test="%{#idAnterior!=emisor.id}">
+															<s:url id="detalleViajero" action="detalleViajero" encode="true">
 																<s:param name="id" value="%{emisor.id}"></s:param>
-															</s:url>" alt="foto conductor" class="img-responsive ">
-														</s:a>
+															</s:url>
+															<s:a href="%{detalleViajero}">
+																<img src="<s:url action="ImageAction">
+																	<s:param name="id" value="%{emisor.id}"></s:param>
+																</s:url>" alt="foto conductor" class="img-responsive imgConver">
+															</s:a>
+														</s:if>
 													</div>													
 													<div class="col-md-11 sinPadding mensajeForo">
-														<div class="messages msg_sent">
-															<s:if test="%{user.id==emisor.id}">
-																<div class="nombre-mensaje soyYoDetalle">
-															</s:if>
-															<s:if test="%{user.id!=emisor.id}">
-																<div class="nombre-mensaje">
-															</s:if>
-																<s:a href="%{detalleViajero}">
-																	<p class="nombreMensaje">
-																		<s:property value="emisor.nombre" />
-																		<s:property value="emisor.apellido"/>
-																	</p>
-																</s:a>
-																<div class="detalleMensaje">
-																	<p><s:property value="detalle" /></p>
-																</div>																
-															</div>
-															<s:if test="%{user.id==emisor.id}">
-																<div class="fechaMensaje soyYoDatos">
-															</s:if>
-															<s:if test="%{user.id!=emisor.id}">
+														<div class="messages msg_sent mensajeConver">
+																<div class="nombre-mensaje textoForo">
+																	<s:if test="%{#idAnterior!=emisor.id}">
+																		<s:a href="%{detalleViajero}">
+																			<p class="nombreMensaje pConver ">
+																				<s:property value="emisor.nombre" />
+																				<s:property value="emisor.apellido"/>
+																			</p>
+																		</s:a>
+																	</s:if>
+																	<div class="detalleMensaje pConver">
+																		<s:property value="detalle" />
+																	</div>																
+																</div>
 																<div class="fechaMensaje">
-															</s:if>															
-																<i class="fa fa-mobile"></i>
-																<time datetime=""><s:date name="fechaPublicacion" format="dd/MM/YYYY H:m" /> </time>
+																<s:if test="%{#idAnterior!=emisor.id}">							
+																	<i class="fa fa-mobile"></i>
+																	<time datetime=""><s:date name="fechaPublicacion" format="dd/MM/YYYY H:m" /> </time>
+																</s:if>
 															</div>
 														</div>
 													</div>													
 												</div>	
 											</div>
 											<div class="clearfix"></div>
+											<s:set var="idAnterior" value="emisor.id"/>
 										</s:iterator>
 									</div>
 									<s:if test="%{conversacion!=null}">

@@ -29,3 +29,8 @@ $(document).on('click', '.icon_close', function (e) {
     //$(this).parent().parent().parent().parent().remove();
     $( "#chat_window_1" ).remove();
 });
+$(document).ready(function(){
+	$( ".panel" ).scrollTop( 3000000);
+	$( document ).tooltip();
+})
+

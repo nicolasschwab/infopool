@@ -136,16 +136,7 @@ public class MensajeAction extends ActionSupport {
 						
 		}
 	}	
-	public String nuevoMensajeForo(){
-		String resul=this.validarSesion();
-		if(resul.equals(SUCCESS)){
-				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-				String[] elId= request.getParameterValues("id");
-				this.setViajeId(Integer.parseInt(elId[0]));		
-		}
-		return resul;
-			
-	}
+
 	private String validarSesion(){
 		Map<String, Object> session = ActionContext.getContext().getSession();
 		user = (Usuario) session.get("usrLogin");
@@ -161,27 +152,6 @@ public class MensajeAction extends ActionSupport {
 		}
 	}
 	
-	public String enviarMensajeForo() throws ParseException{
-		String resul=this.validarSesion();
-		if(resul.equals(SUCCESS)){
-			if (!this.detalle.equals("")){
-				Map<String, Object> session = ActionContext.getContext().getSession();
-				Usuario user = (Usuario) session.get("usrLogin");
-				Viaje viaje=viajeDAO.encontrar(this.viajeId);				
-				Collection<Viajero> lista=viaje.obtenerPasajeros();
-				session.put("id",this.viajeId);
-				lista.add(viaje.getConductor());
-				for (Iterator<Viajero> i = lista.iterator(); i.hasNext(); ){
-					Viajero elViajero=i.next();
-					if(elViajero.getId()!=user.getId()){
-						//Mensaje Mensaje= new Mensaje(new Date(),"Nuevo Mensaje en el foro","Hola compañero, eh publicado un mensaje el foro del viaje que compartimos a "+viaje.getDireccionDestino()+" el "+viaje.getFechaInicio(),"pendiente",user,true);
-						//this.mensajeDAO.registrar(Mensaje);
-					}				
-				}
-			}
-		}
-		return resul;
-	}
 	public Mensaje crearMensaje(String detalleMensaje) throws Exception {
 		String permisos=this.validarSesion();
 		if(permisos==SUCCESS){

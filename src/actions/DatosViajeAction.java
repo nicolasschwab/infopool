@@ -1,5 +1,6 @@
 package actions;
 
+import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.ViajeDAOjpa;
 import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.ViajeDAO;
@@ -13,6 +14,7 @@ import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
+import model.Conversacion;
 import model.DiasSemana;
 import model.EstadoFrecuencia;
 import model.FrecuenciaViaje;
@@ -49,9 +51,9 @@ public class DatosViajeAction extends ActionSupport{
 	private String tipoViaje;
 	private String[] diaPeriodico;	
 
-	private ViajeDAO viajeDAO;
-	private ViajeroDAO viajeroDAO;
-	private FrecuenciaViajeDAO frecuenciaViajeDAO;
+	private ViajeDAO viajeDAO=FactoryDAO.getViajeDAO();
+	private ViajeroDAO viajeroDAO=FactoryDAO.getViajeroDAO();
+	private FrecuenciaViajeDAO frecuenciaViajeDAO=FactoryDAO.getFrecuenciaViajeDAO();
 	private Viaje viaje;	
 	public Usuario user;
 	private Collection<FrecuenciaViaje> frecuencias;
@@ -227,8 +229,10 @@ public class DatosViajeAction extends ActionSupport{
 			viaje.setTramoViaje(TramoViaje.valueOf(this.getTramoViaje()));
 			viaje.setTipoViaje(TipoViaje.valueOf(this.getTipoViaje()));
 			viaje.setActivo(true);
+			//creo el foro de pasajeros, cuando se acepte una solicitud el ususario debe ser agregado a este foro			
+			viaje.setForoViaje(ConversacionAction.crearForo("Foro de pasajeros", viaje, conductor));
 			
-			((ViajeDAOjpa)viajeDAO).registrar(viaje);			
+			((ViajeDAOjpa)viajeDAO).modificar(viaje);			
 			
 			return SUCCESS;			
 		}

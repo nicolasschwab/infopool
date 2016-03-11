@@ -644,14 +644,14 @@ footer p{
   unicode-bidi: bidi-override;
 }
 
-label:hover,
-label:hover ~ label {
+.labelCalificacion:hover,
+.labelCalificacion:hover ~ label {
   color: orange;
 }
 
-input[type="radio"]:checked ~ label {
+.radioCalificacion:checked ~ label {
   color: orange;
 }
-input[type="radio"] {
+.radioCalificacion {
   display: none;
 }

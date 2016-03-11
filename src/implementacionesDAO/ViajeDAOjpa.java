@@ -9,8 +9,10 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
+import model.Conversacion;
 import model.Evento;
 import model.FrecuenciaViaje;
+import model.Mensaje;
 import model.SolicitudViaje;
 import model.Viaje;
 import model.Viajero;
@@ -138,7 +140,13 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			viaje = (Viaje) em.find(this.persistentClass, id);			
 			for (Viajero pasajero : viaje.obtenerPasajeros()){				
 				pasajero.getId();				
-			}				
+			}
+			for(Viajero usr: viaje.getForoViaje().getParticipantesConversacion()){
+				usr.getApellido();
+			}
+			for(Mensaje men: viaje.getForoViaje().getMensajes()){
+				men.getDetalle();
+			}
 			for(FrecuenciaViaje f : viaje.getFrecuencias()){
 				f.getPasajeros();
 				for (SolicitudViaje solicitud : f.getSolicitudesViaje()) {

@@ -14,6 +14,7 @@ import interfacesDAO.ConversacionDAO;
 import interfacesDAO.UsuarioDAO;
 import model.Conversacion;
 import model.Mensaje;
+import model.Viaje;
 import model.Viajero;
 
 public class ConversacionAction  extends ActionSupport{
@@ -173,6 +174,17 @@ public class ConversacionAction  extends ActionSupport{
 		return estaLogueado;
 	}
 	
+	public static Conversacion crearForo(String asunto,Viaje viaje,Viajero conductor) throws Exception{
+		Conversacion foro=new Conversacion();
+		foro.setAsunto(asunto);
+		foro.setViaje(viaje);
+		List<Viajero> participantes= new ArrayList<Viajero>();
+		participantes.add(conductor);
+		foro.setParticipantesConversacion(participantes);
+		FactoryDAO.getConversacionDAO().registrar(foro);
+		return foro;
+	}
+	
 	public String detalle(){
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
@@ -190,7 +202,10 @@ public class ConversacionAction  extends ActionSupport{
 			}			
 			this.listarConversaciones();				
 			for(Conversacion conversacion : this.getMensajeLista()){
-				Mensaje ultimoMensaje=(Mensaje) conversacion.getMensajes().toArray()[conversacion.getMensajes().size()-1];
+				Mensaje ultimoMensaje=null;
+				if(conversacion.getMensajes().size()>0){
+					ultimoMensaje=(Mensaje) conversacion.getMensajes().toArray()[conversacion.getMensajes().size()-1];	
+				}				
 				this.getConversacionVista().add(new conversacionVista(conversacion,ultimoMensaje));
 			}
 			if(this.getConversacion()==null){

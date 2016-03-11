@@ -5,6 +5,9 @@ import interfacesDAO.ViajeDAO;
 import interfacesDAO.ViajeroDAO;
 
 import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.struts2.ServletActionContext;
 
+import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
@@ -20,10 +24,13 @@ import util.SessionUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
+import implementacionesDAO.FactoryDAO;
+
 public class ViajeAction extends ActionSupport {
 	
 	private static final long serialVersionUID = 1L;
 	private int id;
+	private int viajeId;
 	
 	/* DATOS FORMULARIO */
 	private String direccionOrigen;
@@ -51,6 +58,12 @@ public class ViajeAction extends ActionSupport {
 	}
 	public void setId(int id) {
 		this.id = id;
+	}
+	public int getViajeId() {
+		return viajeId;
+	}
+	public void setViajeId(int viajeId) {
+		this.viajeId = viajeId;
 	}
 	public String getDireccionOrigen() {
 		return direccionOrigen;
@@ -161,6 +174,13 @@ public class ViajeAction extends ActionSupport {
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 			if(request.getParameter("id") != null){
 				viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
+				//Ordena los mensajes por fecha
+				Collections.sort((List)viaje.getForoViaje().getMensajes(), new Comparator<Mensaje>() {
+				    public int compare(Mensaje o1, Mensaje o2) {
+				        return o1.getFechaPublicacion().compareTo(o2.getFechaPublicacion());
+				    }
+				});
+				
 			}
 			else{
 				System.out.println("viaje id de la sesion");
@@ -199,7 +219,38 @@ public class ViajeAction extends ActionSupport {
 		}		
 		return "sinPermisos";
 	}
+	public static void agregarUsuarioAForo(int idViaje, int idViajero) throws Exception {
+		Viaje viaje=FactoryDAO.getViajeDAO().encontrarPorId(idViaje);		
+		viaje.getForoViaje().getParticipantesConversacion().add(FactoryDAO.getViajeroDAO().encontrar(idViajero));
+		FactoryDAO.getViajeDAO().modificar(viaje);
+	}
 	
+	
+	public String enviarMensajeForo() throws Exception{
+		if (SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			this.setViajeId(Integer.parseInt(request.getParameter("viajeId")));
+			Viaje viaje=viajeDAO.encontrarPorId(this.getViajeId());			
+			Collection<Viajero> lista=viaje.obtenerPasajeros();
+			lista.add(viaje.getConductor());
+			boolean pertenece=false;
+			for(Viajero v: lista){
+				if(v.getId()==SessionUtil.getUsuario().getId()){
+					pertenece=true;
+				}
+			}
+			if(pertenece){
+				Mensaje mensaje=new MensajeAction().crearMensaje(request.getParameter("detalle"));
+				viaje.getForoViaje().getMensajes().add(mensaje);
+				FactoryDAO.getViajeDAO().modificar(viaje);
+				return SUCCESS;	
+			}else{
+				return "sinPermisos";
+			}
+			
+		}
+		return "sinPermisos";
+	}
 	/*
 	public String registrarViaje() throws Exception {
 		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
@@ -486,3 +537,4 @@ public class ViajeAction extends ActionSupport {
 
 	*/
 }
+

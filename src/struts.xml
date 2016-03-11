@@ -321,9 +321,9 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="enviarMensajeForo" method="enviarMensajeForo" class="mensajeAction">
+		<action name="enviarMensajeForo" method="enviarMensajeForo" class="viajeAction">
 			<result name="success" type="redirect">				
-				<param name="location">detalleViaje</param>
+				<param name="location">DetalleViaje</param>
 				<param name="id">${viajeId}</param>
 			</result>
 			<result name="login" >/login.jsp</result>
