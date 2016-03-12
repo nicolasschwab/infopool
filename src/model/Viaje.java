@@ -225,8 +225,7 @@ public class Viaje implements Serializable{
 		}
 		return esConductor;
 	}
-	public boolean esPasajero(Usuario usuario){
-		System.out.println("si esta en la lista de pasajeros del viaje: "+this.pasajeros.contains(usuario.getUsuario()));
+	public boolean esPasajero(Usuario usuario){		
 		return this.pasajeros.contains(usuario.getUsuario());
 	}
 	public boolean tieneDisponibleFrecuencia(DiasSemana diaSolicitud) {
@@ -239,6 +238,12 @@ public class Viaje implements Serializable{
 		return disponible;
 	}	
 	public void quitarPasajero(Viajero viajero){
-		this.pasajeros.remove(viajero);
+		for(Viajero v : pasajeros){
+			if(v.getId()==viajero.getId()){
+				this.pasajeros.remove(v);
+				this.getForoViaje().getParticipantesConversacion().remove(v);
+				break;
+			}
+		}
 	}
 }

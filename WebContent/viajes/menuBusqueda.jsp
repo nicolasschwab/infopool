@@ -5,7 +5,7 @@
 		<div class="menu-seccion">
 			<div class="row">
 				<div class="col-sm-12">
-					<s:form action="BusquedaParametrizadaViaje">									
+					<s:form action="BusquedaParametrizadaViaje" role="form" theme="simple" cssClass="form-datos">									
 						<div class="form-group col-sm-3">
 						  	<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" placeholder="Direccion de Origen"/>
 						</div>

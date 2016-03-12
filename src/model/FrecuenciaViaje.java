@@ -5,6 +5,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -38,10 +39,10 @@ public class FrecuenciaViaje implements Serializable{
 	@Column(nullable = false)
 	private int asientosDisponibles;
 	
-	@ManyToMany(mappedBy="misFrecuenciasPasajero")
+	@ManyToMany(mappedBy="misFrecuenciasPasajero",cascade = {CascadeType.ALL})
 	private Collection<Viajero> pasajeros = new ArrayList<Viajero>();
 	
-	@ManyToMany(mappedBy="miHistorialFrecuencias")
+	@ManyToMany(mappedBy="miHistorialFrecuencias",cascade = {CascadeType.ALL})
     private Collection<Viajero> pasajerosHistorial = new ArrayList<Viajero>();
 	
 	@ManyToOne(optional=false)
@@ -127,7 +128,7 @@ public class FrecuenciaViaje implements Serializable{
 	
 	public boolean esPasajero(Usuario usuario){
 		boolean esPasajero = false;
-		for (Viajero v : pasajeros){
+		for (Viajero v : this.pasajeros){
 			if (v.getUsuario().equals(usuario.getUsuario())){
 				esPasajero = true;
 			}			
@@ -137,10 +138,12 @@ public class FrecuenciaViaje implements Serializable{
 	public void agregarViajeroFrecuencia(Viajero viajero){
 		this.pasajeros.add(viajero);
 	}
-	public void agregarPasajeroHistorial(Viajero viajero){
-		this.pasajeros.remove(viajero);
-		this.pasajerosHistorial.add(viajero);
-	}
-	
-
+	public void agregarPasajeroHistorial(Viajero viajero){		
+		for (Viajero v : this.pasajeros) {			
+			if(v.getId()==viajero.getId()){				
+				this.pasajeros.remove(v);
+				break;
+			}					
+		}
+	}	
 }

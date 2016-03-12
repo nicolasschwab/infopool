@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import model.FrecuenciaViaje;
+import model.Viaje;
 import model.Viajero;
 
 import org.hibernate.HibernateException;
@@ -49,5 +50,22 @@ public class FrecuenciaViajeDAOjpa extends GenericDAOjpa<FrecuenciaViaje> implem
 			em.close();
 		}
 		return resultado;
+	}
+	
+	public <T> int cantidadFrecuenciasEnViaje(T viajero, T viaje) {
+		int unicaFrecuencia = 0;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
+		try{			
+			String qstr = "select f from "+ this.persistentClass.getSimpleName() +" f where f.viaje = :viaje and :viajero in elements(f.pasajeros)";
+			Query q = em.createQuery(qstr);
+			q.setParameter("viaje", viaje);
+			q.setParameter("viajero", viajero);
+			unicaFrecuencia = q.getResultList().size();
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return unicaFrecuencia;
 	}
 }
