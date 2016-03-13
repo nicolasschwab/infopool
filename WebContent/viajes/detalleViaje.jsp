@@ -85,11 +85,16 @@
 											<div class="col-sm-4 box-frecuencia-acciones">
 												<s:if test="%{soyViajero}">
 													<s:if test="%{!soyConductor}">
-														<s:if test="%{!soyPasajero}">											
-															<s:url id="registroSolicitudURL" action="RegistroSolicitudViaje">
-																<s:param name="idFrecuenciaViaje" value="%{id}"></s:param>
-															</s:url>
-															<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-sm" role="button">Unirme</s:a>
+														<s:if test="%{!soyPasajero}">
+															<s:if test="%{asientosDisponibles>0}">																									
+																<s:url id="registroSolicitudURL" action="RegistroSolicitudViaje">
+																	<s:param name="idFrecuenciaViaje" value="%{id}"></s:param>
+																</s:url>
+																<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-sm" role="button">Unirme</s:a>
+															</s:if>
+															<s:else>
+																asientos ocupados
+															</s:else>
 														</s:if>
 														<s:else>
 															operaciones pasajero
@@ -99,7 +104,7 @@
 														<s:url id="solicitudesFrecuenciaURL" action="SolicitudesFrecuenciaViaje">
 															<s:param name="idFrecuenciaViaje" value="%{id}"></s:param>
 														</s:url>
-														<s:a href="%{solicitudesFrecuenciaURL}" cssClass="btn btn-primary btn-sm" role="button">Solicitudes <span class="badge">3</span></s:a>
+														<s:a href="%{solicitudesFrecuenciaURL}" cssClass="btn btn-primary btn-sm" role="button">Solicitudes</s:a>
 													</s:else>
 												</s:if>		
 												<s:else>

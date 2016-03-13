@@ -43,10 +43,10 @@
 								<s:a href="%{aceptarSolicitud}" cssClass="btn btn-default btn-xs btn-success"><s:text name="solicitud.aceptar" /></s:a>
 								<s:a href="%{rechazarSolicitud}" cssClass="btn btn-default btn-xs btn-danger"><s:text name="solicitud.rechazar" /></s:a>
 							</s:if>
-							<s:elseif test="%{estadoSolicitud.name()=='ACEPTADO'}">
+							<s:elseif test="%{estadoSolicitud.name()=='ACEPTADA'}">
 								<s:a href="%{cancelarSolicitud}" cssClass="btn btn-default btn-xs btn-danger">Cancelar</s:a>
 							</s:elseif>
-							<s:elseif test="%{estadoSolicitud.name()=='RECHAZADO'}">
+							<s:elseif test="%{estadoSolicitud.name()=='RECHAZADA'}">
 								<s:text name="solicitud.rechazada" />
 							</s:elseif>
 						</s:iterator>	

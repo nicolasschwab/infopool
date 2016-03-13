@@ -285,14 +285,24 @@ public class Viajero extends Usuario implements Serializable{
 	public void agregarViajePasajero(Viaje viaje){
 		this.misViajesPasajero.add(viaje);
 	}	
-	public void quitarViajePasajero(Viaje viaje){
-		this.misViajesPasajero.remove(viaje);
+	public void quitarViajePasajero(Viaje viaje){		
+		for (Viaje v : misViajesPasajero) {
+			if (v.getId()==viaje.getId()){				
+				this.misViajesPasajero.remove(v);
+				break;
+			}
+		}
 	}
 	public void agregarFrecuenciaPasajero(FrecuenciaViaje frecuenciaViaje){
 		this.misFrecuenciasPasajero.add(frecuenciaViaje);
 	}
 	public void quitarFrecuenciaPasajero(FrecuenciaViaje frecuenciaViaje){
-		this.misFrecuenciasPasajero.remove(frecuenciaViaje);
-		this.miHistorialFrecuencias.add(frecuenciaViaje);
+		for (FrecuenciaViaje f : this.misFrecuenciasPasajero) {
+			if (f.getId()==frecuenciaViaje.getId()){				
+				this.misFrecuenciasPasajero.remove(f);
+				this.miHistorialFrecuencias.add(frecuenciaViaje);
+				break;
+			}
+		}
 	}
 }
