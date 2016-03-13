@@ -5,6 +5,7 @@ import implementacionesDAO.FactoryDAO;
 import interfacesDAO.EventoDAO;
 import interfacesDAO.ViajeDAO;
 
+import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,7 +16,9 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Evento;
+import model.Usuario;
 import model.Viaje;
+import util.SessionUtil;
 
 import org.apache.struts2.ServletActionContext;
 
@@ -29,6 +32,9 @@ public class EventoAction extends ActionSupport {
 	public String fechaHora;
 	public String web;
 	public String ubicacion;
+	public String horaComienzo;
+	public String horaFin;
+	public String descripcion;
 	private EventoDAOjpa eventoDAO;
 	private List<Evento> eventoLista = new ArrayList<Evento>();
 	private Evento evnt;
@@ -80,13 +86,30 @@ public class EventoAction extends ActionSupport {
 	}
 	public void setEvnt(Evento evnt) {
 		this.evnt = evnt;
+	}	
+	public String getHoraComienzo() {
+		return horaComienzo;
 	}
-	
+	public void setHoraComienzo(String horaComienzo) {
+		this.horaComienzo = horaComienzo;
+	}
+	public String getHoraFin() {
+		return horaFin;
+	}
+	public void setHoraFin(String horaFin) {
+		this.horaFin = horaFin;
+	}
+	public String getDescripcion() {
+		return descripcion;
+	}
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
 	public String registroEvento(){
 		return tienePermisosAdmin();
 	}
 	
-	/*public String registrarEvento() throws Exception{
+	public String registrarEvento() throws Exception{
 		String tienePermisoDeAdmin=this.tienePermisosAdmin();
 		if(tienePermisoDeAdmin==SUCCESS){
 				if ((this.nombre.length() > 0) && (this.fechaHora.length() > 0) && (this.ubicacion.length() > 0)){
@@ -94,7 +117,7 @@ public class EventoAction extends ActionSupport {
 						EventoDAO evento = FactoryDAO.getEventoDAO();				
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 						Date fechaeve = sdf.parse(this.getFechaHora());
-						Evento eve = new Evento(this.getNombre(),fechaeve,this.getWeb(),this.getUbicacion());				
+						Evento eve = new Evento(this.getNombre(),fechaeve,Time.valueOf(this.getHoraComienzo()+":00"),Time.valueOf(this.getHoraFin()+":00"),this.getWeb(),this.getUbicacion(),this.getDescripcion(),true);				
 						evento.registrar(eve);
 						return SUCCESS;										
 					}else{
@@ -108,7 +131,7 @@ public class EventoAction extends ActionSupport {
 				}
 			}
 		return tienePermisoDeAdmin;
-	}*/
+	}
 	
 	public String listarEventos(){
 		eventoLista = eventoDAO.listar();
@@ -131,8 +154,7 @@ public class EventoAction extends ActionSupport {
 	public String edicionEvento(){
 		String tienePermisoDeAdmin=this.tienePermisosAdmin();
 		if(tienePermisoDeAdmin==SUCCESS){
-			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
+			evnt = eventoDAO.encontrar(this.getId());
 		}
 		return tienePermisoDeAdmin;
 	}
@@ -145,12 +167,25 @@ public class EventoAction extends ActionSupport {
 					evnt = eventoDAO.encontrar(Integer.parseInt(request.getParameter("id")));
 					if (!eventoDAO.existeNombreEvento(this.getNombre(),evnt.getId())){
 						EventoDAO evento = FactoryDAO.getEventoDAO();				
-						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
-						Date fechaeve = sdf.parse(this.getFechaHora());
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+						Date fechaeve = sdf.parse(this.getFechaHora().split(" ")[0].replace('/','-'));
 						evnt.setNombre(this.getNombre());
 						evnt.setFecha(fechaeve);
 						evnt.setWeb(this.getWeb());
 						evnt.setUbicacion(this.getUbicacion());
+						if(this.getHoraFin().split(":").length==3){
+							evnt.setHoraFin(Time.valueOf(this.getHoraFin()));
+						}
+						else{
+							evnt.setHoraFin(Time.valueOf(this.getHoraFin()+":00"));
+						}
+						if(this.getHoraComienzo().split(":").length==3){
+							evnt.setHoraInicio(Time.valueOf(this.getHoraComienzo()));
+						}
+						else{
+							evnt.setHoraInicio(Time.valueOf(this.getHoraComienzo()+":00"));
+						}
+						evnt.setDescripcion(this.getDescripcion());
 						evento.modificar(evnt);
 						//FALTA AVISAR A LOS VIAJES REGISTRADOS
 						return SUCCESS;
@@ -190,10 +225,9 @@ public class EventoAction extends ActionSupport {
 	}
 	
 	private String tienePermisosAdmin(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
+		Usuario user=SessionUtil.getUsuario();
 		if (user != null) {	
-			if (user.equals("administrador")) {
+			if (user.soyAdministrador()) {
 				return SUCCESS;
 			}else{
 				return "sinPermisos";
@@ -203,9 +237,8 @@ public class EventoAction extends ActionSupport {
 			return "sinPermisos";
 		}
 	}
-	private String tienePermisos(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
+	private String tienePermisos(){		
+		Usuario user = SessionUtil.getUsuario();
 		if (user != null) {	
 			return SUCCESS;
 		}

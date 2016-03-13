@@ -8,8 +8,8 @@
 	<%@ taglib prefix="s" uri="/struts-tags"%>
 </head>
 <body onload="calcularUbicacion('<s:property value="evnt.ubicacion" />')">
-	<%@ include file="views/header.jsp"%>
-	<jsp:include page="views/menu.jsp">
+	
+	<jsp:include page="views/header.jsp">
 		<jsp:param name="itemActivo" value="2" />
 	</jsp:include>
 
@@ -30,11 +30,12 @@
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<strong><s:text name="evento.fecha" /></strong>
-									<s:date name="evnt.fechaHora" format="dd/MM/yyyy" />
+									<strong><s:text name="evento.fecha" />:</strong>
+									<s:date name="evnt.fecha" format="dd/MM/yyyy" />
 									a las
-									<s:date name="evnt.fechaHora" format="HH:mm" />
+									<s:date name="evnt.horaInicio" format="HH:mm" />
 									Hs.
+									<s:date name="evnt.horaFin" format="HH:mm" />
 								</p>
 							</div>
 						</div>
@@ -54,6 +55,16 @@
 								</p>
 							</div>
 						</div>
+						<s:if test="evnt.descripcion!=''">
+							<div class="row">
+								<div class="col-md-12">
+									<p>
+										<strong><s:text name="evento.descripcion" />:</strong>
+										<s:property value="evnt.descripcion"></s:property>
+									</p>
+								</div>
+							</div>
+						</s:if>
 					</div>
 					<div class="col-md-3">
 						<br>

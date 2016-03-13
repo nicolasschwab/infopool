@@ -8,8 +8,8 @@
 	<%@ taglib prefix="s" uri="/struts-tags"%>
 </head>
 <body>
-	<%@ include file="views/header.jsp"%>
-	<jsp:include page="views/menu.jsp">
+	
+	<jsp:include page="views/header.jsp">
 		<jsp:param name="itemActivo" value="2" />
 	</jsp:include>
 
