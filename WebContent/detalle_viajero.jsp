@@ -9,9 +9,7 @@
 </head>
 <body>
 
-	<%@ include file="views/header.jsp"%>
-
-	<jsp:include page="views/menu.jsp">
+	<jsp:include page="views/header.jsp">
 		<jsp:param name="itemActivo" value="3" />
 	</jsp:include>
 
@@ -50,7 +48,7 @@
 								<s:date name="viajero.fechaIngresoSistema" format="dd/MM/YYYY" />
 							</p>
 							<p>
-								<strong><s:text name="viajero.calificacion" />:</strong> <s:property value="viajero.calificacionActual()"/>/5 (<s:property value="viajero.misCalificacionesRecibidas.size()" /> <s:text name="viajero.calificaciones" />)
+								<strong><s:text name="viajero.calificacion" />:</strong> <s:property value="viajero.calificacion"/>/5 (<s:property value="viajero.misCalificacionesRecibidas.size()" /> <s:text name="viajero.calificaciones" />)
 							</p>
 							<p>
 								<strong><s:text name="viajero.estado" />:</strong>

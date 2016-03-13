@@ -8,8 +8,7 @@
 	<%@ taglib prefix="s" uri="/struts-tags"%>
 </head>
 <body>
-	<%@ include file="views/header.jsp"%>
-	<jsp:include page="views/menu.jsp">
+	<jsp:include page="views/header.jsp">
 		<jsp:param name="itemActivo" value="3" />
 	</jsp:include>
 	
@@ -28,7 +27,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<s:iterator value="viajeroLista">
+						<s:iterator value="listaViajeros">
 							<tr>
 								<td><s:property value="nombre"/> <s:property value="apellido"/></td>
 								<td><s:property value="telefono" /></td>

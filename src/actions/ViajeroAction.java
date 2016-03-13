@@ -103,7 +103,7 @@ public class ViajeroAction extends ActionSupport{
 	
 	private String validarSesionAdmin(){		
 		if (SessionUtil.checkLogin()) {	
-			if (user.soyAdministrador()) {
+			if (SessionUtil.getUsuario().soyAdministrador()) {
 				return SUCCESS;
 			}else{
 				return "sinPermisos";
@@ -114,7 +114,7 @@ public class ViajeroAction extends ActionSupport{
 		}
 	}
 	
-	public String Viajeros() throws Exception{
+	public String viajeros() throws Exception{
 		String tienePermisosAdmin = validarSesionAdmin();
 		if(tienePermisosAdmin == SUCCESS){
 			listaViajeros = viajeroDAO.listar();
