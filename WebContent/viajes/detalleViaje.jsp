@@ -50,10 +50,12 @@
 					  				<s:hidden name="id" value="%{viaje.id}"/> 
 					  				<s:submit  value="Enviar Mensaje" cssClass="btn btn-primary"/>
 					  			</s:form>
-					  			<s:form role="form" theme="simple" action="calificaciones" method="post">
-					  				<s:hidden name="idViaje" value="%{viaje.id}"/> 
-					  				<s:submit  value="Calificar" cssClass="btn btn-primary"/>
-					  			</s:form>
+					  			<s:if test="%{soyPasajero | soyConductor}">
+						  			<s:form role="form" theme="simple" action="calificaciones" method="post">
+						  				<s:hidden name="idViaje" value="%{viaje.id}"/> 
+						  				<s:submit  value="Calificar" cssClass="btn btn-primary"/>
+						  			</s:form>
+					  			</s:if>
 							</div>							
 						</div>
 						<div class="col-sm-7">
@@ -118,53 +120,55 @@
 						</div>
 						<div class="col-sm-5">
 							<div class="box-detail-divider"></div>
-							<h2>Foro de pasajeros</h2>
-							<div class="row">
-								<div class="col-md-10">
-									<div class="row chat-window" id="chat_window_1">
-										<div class="col-md-12">
-											<div class=" panel-default">
-												<div class="panel-heading top-bar">
-													<div class="col-md-8">
-														<h3 class="panel-title">
-														<s:iterator value="viaje.foroViaje.participantesConversacion">
-															<s:property value="nombre" />,
+							<s:if test="%{soyPasajero | soyConductor}">
+								<h2>Foro de pasajeros</h2>
+								<div class="row">
+									<div class="col-md-10">
+										<div class="row chat-window" id="chat_window_1">
+											<div class="col-md-12">
+												<div class=" panel-default">
+													<div class="panel-heading top-bar">
+														<div class="col-md-8">
+															<h3 class="panel-title">
+															<s:iterator value="viaje.foroViaje.participantesConversacion">
+																<s:property value="nombre" />,
+															</s:iterator>
+															</h3>
+														</div>
+													</div>
+													<div class="panel">										
+														<s:iterator value="viaje.foroViaje.mensajes" >
+															<div class="panel-body msg_container_base">
+																<div class="row msg_container base_sent">
+																	<div class="textoForo">
+																			<div class="messages msg_sent">												
+																		<p><s:property value="detalle" /></p>																																			
+																	</div>
+																</div>
+																	<div class="col-md-2 avatar " id="fotoForo">									
+																	<img title="${emisor.nombre}, <s:date name="fechaPublicacion" format="dd/MM/YYYY H:m" />" src="<s:url action="ImageAction">
+																		<s:param name="id" value="%{emisor.id}"></s:param>
+																	</s:url>" alt="foto conductor" class=" img-responsive ">
+																</div>																
+															</div>	
+															</div>
 														</s:iterator>
-														</h3>
 													</div>
 												</div>
-												<div class="panel">										
-													<s:iterator value="viaje.foroViaje.mensajes" >
-														<div class="panel-body msg_container_base">
-															<div class="row msg_container base_sent">
-																<div class="textoForo">
-																		<div class="messages msg_sent">												
-																	<p><s:property value="detalle" /></p>																																			
-																</div>
-															</div>
-																<div class="col-md-2 avatar " id="fotoForo">									
-																<img title="${emisor.nombre}, <s:date name="fechaPublicacion" format="dd/MM/YYYY H:m" />" src="<s:url action="ImageAction">
-																	<s:param name="id" value="%{emisor.id}"></s:param>
-																</s:url>" alt="foto conductor" class=" img-responsive ">
-															</div>																
-														</div>	
-														</div>
-													</s:iterator>
-												</div>
-											</div>
-											<div class="panel-footer">
-												<div>
-													<s:form role="form" action="enviarMensajeForo">
-														<s:hidden  name="viajeId" value="%{viaje.id}"> </s:hidden>
-														<input id="btn-input" name="detalle" type="text" class="form-control input-sm chat_input" placeholder="<s:text name='viaje.chatmsg' />" /> 
-														<span class="input-group-btn"><s:submit cssClass="btn btn-primary" value="%{getText('global.enviar')}"/></span>
-													</s:form>
+												<div class="panel-footer">
+													<div>
+														<s:form role="form" action="enviarMensajeForo">
+															<s:hidden  name="viajeId" value="%{viaje.id}"> </s:hidden>
+															<input id="btn-input" name="detalle" type="text" class="form-control input-sm chat_input" placeholder="<s:text name='viaje.chatmsg' />" /> 
+															<span class="input-group-btn"><s:submit cssClass="btn btn-primary" value="%{getText('global.enviar')}"/></span>
+														</s:form>
+													</div>
 												</div>
 											</div>
 										</div>
 									</div>
 								</div>
-							</div>
+							</s:if>
 						</div>																	
 					</div>
 				</div>
