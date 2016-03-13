@@ -3,6 +3,7 @@ package model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -24,7 +25,7 @@ public class Notificacion implements Serializable{
 	@ManyToOne
 	private Usuario emisor;
 	
-	@ManyToOne(optional=false)
+	@ManyToOne
 	private Usuario receptor;
 	
 	@Column(nullable=false)

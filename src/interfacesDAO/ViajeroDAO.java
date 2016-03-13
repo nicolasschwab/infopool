@@ -7,4 +7,5 @@ import model.Viajero;
 
 public interface ViajeroDAO extends GenericDAO<Viajero>{
 
+	public Viajero encontrarUsuarioSistema();
 }

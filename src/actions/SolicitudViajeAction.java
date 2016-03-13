@@ -144,7 +144,8 @@ public class SolicitudViajeAction extends ActionSupport{
 				if(!tieneSolicitudPendiente){
 					Date fechaInicioSolicitud = new Date();					
 					solicitudViaje = new SolicitudViaje(fechaInicioSolicitud,null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,null);					
-					solicitudViajeDAO.registrar(solicitudViaje);					
+					solicitudViajeDAO.registrar(solicitudViaje);
+					new NotificacionAction().crearNotificacionSolicitudNueva(viaje);
 					return SUCCESS;				
 				}else{					
 					addFieldError("loginError", "Usted ya solicito participar en este viaje");
@@ -184,6 +185,7 @@ public class SolicitudViajeAction extends ActionSupport{
 				solicitudViajeDAO.modificar(solicitudViaje);
 				frecuenciaViajeDAO.modificar(frecuenciaViaje);
 
+				new NotificacionAction().crearNotificacionSolicitudAceptar(viajero, viaje);
 				return SUCCESS;
 			}
 			else{
@@ -205,8 +207,8 @@ public class SolicitudViajeAction extends ActionSupport{
 			solicitudViajeDAO.modificar(solicitudViaje);	
 			
 			idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();			
-			/*NotificacionAction notificacion=new NotificacionAction();
-			notificacion.crearNotificacionRechazoSolicitud(viajeroSolicitud, viaje);*/			
+			
+			new NotificacionAction().crearNotificacionRechazoSolicitud(solicitudViaje.getViajero(), viaje);
 			return SUCCESS;
 		} else{
 			return "sinPermisos";
@@ -239,6 +241,7 @@ public class SolicitudViajeAction extends ActionSupport{
 			
 			idFrecuenciaViaje = frecuenciaViaje.getId();
 			//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
+			new NotificacionAction().crearNotificacionSolicitudCancelada(viaje);
 			return SUCCESS;
 			
 		}

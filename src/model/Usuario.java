@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,10 +27,10 @@ public abstract class Usuario {
 	@Column(nullable=false)
 	private String clave;		
 	
-	@ManyToMany(mappedBy="participantesConversacion")
+	@ManyToMany(mappedBy="participantesConversacion", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Conversacion> misConversaciones = new ArrayList<Conversacion>();
 	
-	@OneToMany(mappedBy="receptor")
+	@OneToMany(mappedBy="receptor", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Notificacion> misNotificaciones = new ArrayList<Notificacion>();
 	
 	public Usuario(){	

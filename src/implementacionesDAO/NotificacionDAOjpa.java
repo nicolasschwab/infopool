@@ -21,12 +21,12 @@ public class NotificacionDAOjpa extends GenericDAOjpa<Notificacion> implements N
 	}	
 	
 	public List<Notificacion> listarPorUsuario(Usuario usr){
-		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.receptor= :usr ";
+		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.receptor.id= :usr ";
 		List<Notificacion> resultados=null;
 		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
 		try{			
 			Query consulta = em.createQuery(qString);
-			consulta.setParameter("usr", usr );
+			consulta.setParameter("usr", usr.getId() );
 			resultados = (List<Notificacion>) consulta.getResultList();
 			for(Notificacion notificacion: resultados){
 				notificacion.getEmisor().getId();

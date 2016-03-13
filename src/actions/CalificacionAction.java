@@ -129,6 +129,7 @@ public class CalificacionAction extends ActionSupport {
 				calificacionDAO.modificar(calificacionAntigua);
 			}
 			this.actualizarCalificacion(calificado);
+			new NotificacionAction().crearNotificacionCalificacion(calificado);
 			return SUCCESS;
 		}
 		return resul;

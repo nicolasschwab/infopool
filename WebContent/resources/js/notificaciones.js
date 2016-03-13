@@ -31,7 +31,7 @@ function actualizarNotificaciones(){
 			$('#bodyNotificaciones').html("");
 			var noVistas=parseInt(0);			
 			$.each($.makeArray(response).reverse(),function(k,v){
-				if(v.estado=='no visto'){
+				if(v.estado=='NOVISTO'){
 					noVistas +=parseInt(1);
 				}				
 				elHtml(v);			

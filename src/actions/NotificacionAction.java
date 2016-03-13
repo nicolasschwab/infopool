@@ -15,17 +15,20 @@ import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.NotificacionDAOjpa;
 import interfacesDAO.NotificacionDAO;
 import interfacesDAO.UsuarioDAO;
+import interfacesDAO.ViajeroDAO;
+import model.EstadoNotificacion;
 import model.Notificacion;
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
+import util.SessionUtil;
 
 public class NotificacionAction extends ActionSupport {
 
 	private static final long serialVersionUID = 1L;
 	private int id;
 	private String mensaje;	
-	private Viajero emisor;	
+	private Viajero emisor=(Viajero)SessionUtil.getUsuario();	
 	private Viajero receptor;
 	private Collection<Notificacion> notificacionesDelUsuario;
 	private List<NotifiacionVista> valoresJson= new ArrayList<NotifiacionVista>();
@@ -107,24 +110,24 @@ public class NotificacionAction extends ActionSupport {
 	
 	//Metodo que llama AJAX para refrescar las notificaciones
 	public String misNotificaciones(){
-		/*if(this.validarLogin()){
-			this.setNotificacionesDelUsuario(notificacionDAO.listarPorUsuario(this.getUsrLogueado()));
+		if(SessionUtil.checkLogin()){
+			this.setNotificacionesDelUsuario(notificacionDAO.listarPorUsuario(SessionUtil.getUsuario()));
 			this.prepararRespuestaAjax();
 		}else{
 			return "sinPermisos";
-		}*/		
+		}		
 		return SUCCESS;
 	}
 	
 	//metodo ajax llamado solo cuando clickean el icono de notificaciones
 	//este metodo ademas de listar las notificaciones actualiza su estado 
 	//a "visto"
-	/*public String misNotificacionesActualizar(){
-		if(this.validarLogin()){			
-			this.setNotificacionesDelUsuario(notificacionDAO.listarPorUsuario(this.getUsrLogueado()));
+	public String misNotificacionesActualizar() throws Exception{
+		if(SessionUtil.checkLogin()){			
+			this.setNotificacionesDelUsuario(notificacionDAO.listarPorUsuario(SessionUtil.getUsuario()));
 			for (Notificacion notificacion: this.getNotificacionesDelUsuario() ) {
-				if(notificacion.getEstado().getId()==1){
-					notificacion.setEstado(FactoryDAO.getEstadoNotificacionDAO().traerVisto());
+				if(notificacion.getEstado()==EstadoNotificacion.NOVISTO){
+					notificacion.setEstado(EstadoNotificacion.VISTO);
 					notificacionDAO.modificar(notificacion);
 				}
 			}
@@ -133,17 +136,17 @@ public class NotificacionAction extends ActionSupport {
 			return "sinPermisos";
 		}
 		return SUCCESS;
-	}*/
+	}
 	
 	//Este metodo cambia el estado de una notificacion a Visitado
 	//Solo si existe la notificacion en la BBDD y si esa notificacion
 	//Le pertenece al ususario logueado
 	public void cambiarEstadoAVisitado(String idNoti) throws Exception{
-		if(this.validarLogin()){
+		if(SessionUtil.checkLogin()){
 			Notificacion notificacion=notificacionDAO.encontrarPorId(idNoti);
 			if(notificacion!=null){
-				if(notificacion.getReceptor().getId()==this.usrLogueado.getId()){
-					notificacion.setEstado(FactoryDAO.getEstadoNotificacionDAO().traerVisitado());
+				if(notificacion.getReceptor().getId()==SessionUtil.getUsuario().getId()){
+					notificacion.setEstado(EstadoNotificacion.VISITADO);
 					notificacionDAO.modificar(notificacion);
 				}
 			}
@@ -154,27 +157,17 @@ public class NotificacionAction extends ActionSupport {
 	private void prepararRespuestaAjax(){
 		for (Notificacion notificacion: this.getNotificacionesDelUsuario()) {
 			//inner class (mas abajo)
-			NotifiacionVista unaNotificacion=new NotifiacionVista(notificacion.getEmisor().getId(),notificacion.getMensaje(),notificacion.getLink(),notificacion.getTipo(),notificacion.getFechaHora().toString(),"Estado Notificacion");
+			NotifiacionVista unaNotificacion=new NotifiacionVista(notificacion.getEmisor().getId(),notificacion.getMensaje(),notificacion.getLink(),notificacion.getTipo(),notificacion.getFechaHora().toString(),notificacion.getEstado());
 			//seteo la variable que es capturada en la vista
 			this.getValoresJson().add(unaNotificacion);
 		}	
 	}
 	
-	private boolean validarLogin(){
-		Map<String, Object> session = ActionContext.getContext().getSession();
-		String user = (String) session.get("perfil");
-		if (user == null) {
-			return false;
-		}
-		this.setUsrLogueado((Usuario) session.get("usrLogin"));
-		return true;
-	}
-	
 	//Mensajes para crear notificaciones
 	//El link debe apuntar a un viaje
 	public boolean crearNotificacionComentario(Usuario receptor,Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();			
 			this.setMensaje(getText("notificacion.mensaje.viaje.comentario",this.argumentos));		
 			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"ban");
@@ -185,9 +178,9 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//El link debe apuntar a un viaje
-	public boolean crearNotificacionSalida(Usuario receptor,Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+	public boolean crearNotificacionSalidaViaje(Usuario receptor,Viaje elViaje) throws Exception{
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();			
 			this.setMensaje(getText("notificacion.mensaje.viaje.salida",this.argumentos));		
 			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"comment");
@@ -199,8 +192,8 @@ public class NotificacionAction extends ActionSupport {
 	
 	//El link debe apuntar a un viaje
 	public boolean crearNotificacionModificacionViaje(Usuario receptor,Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();				
 			this.setMensaje(getText("notificacion.mensaje.viaje.modificacion",this.argumentos));		
 			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"pencil");
@@ -211,11 +204,11 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	public boolean crearNotificacionCancelarViaje(Usuario receptor,Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();				
 			this.setMensaje(getText("notificacion.mensaje.viaje.cancelar",this.argumentos));
-			Notificacion notificacion=this.crearNotificacion(receptor, "#","ban");
+			Notificacion notificacion=this.crearNotificacion(receptor, "#?","ban");
 			this.registrarNotificacion(notificacion);
 			return true;
 		}else{
@@ -223,15 +216,14 @@ public class NotificacionAction extends ActionSupport {
 		}
 	}
 
-	public boolean crearNotificacionCalificacion() throws Exception{
+	public boolean crearNotificacionCalificacion(Viajero calificado) throws Exception{
 		//para no mostrar quien califico a quien, el usuario que se muestre
 		//en la notificacion sera un usuario que represente al sistema
-		if(this.validarLogin()){
+		if(SessionUtil.checkLogin()){
 			this.setMensaje(getText("notificacion.mensaje.calificacion"));
-			UsuarioDAO usuarioDAO=FactoryDAO.getUsuarioDAO();
-			this.setReceptor((Viajero)usuarioDAO.encontrarUsuarioSistema());
-			Notificacion notificacion=this.crearNotificacion(this.getReceptor(), "miPerfil","star");
-			this.registrarNotificacion(notificacion);
+			this.setEmisor(FactoryDAO.getViajeroDAO().encontrarUsuarioSistema());
+			this.setReceptor(calificado);
+			this.crearRegistrarNotificacion(this.getReceptor(), "verPerfilViajero?","star");
 			return true;
 		}else{
 			return false;
@@ -240,8 +232,8 @@ public class NotificacionAction extends ActionSupport {
 	
 	//El link debe apuntar a un viaje
 	public boolean crearNotificacionSolicitudAceptar(Usuario receptor,Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];		
 			this.setMensaje(getText("notificacion.mensaje.solicitud.aceptar",this.argumentos));
@@ -254,8 +246,8 @@ public class NotificacionAction extends ActionSupport {
 	
 	//El link debe apuntar a un viaje
 	public boolean crearNotificacionRechazoSolicitud(Usuario receptor,Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();			
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();			
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
 			this.setMensaje(getText("notificacion.mensaje.solicitud.rechazar",this.argumentos));
@@ -269,12 +261,27 @@ public class NotificacionAction extends ActionSupport {
 	//El link debe apuntar a un viaje
 	//tiene solo un parametro porque el receptor es el conductor del viaje
 	public boolean crearNotificacionSolicitudNueva(Viaje elViaje) throws Exception{
-		if(this.validarLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
 			this.setMensaje(getText("notificacion.mensaje.solicitud.nueva",this.argumentos));			
-			this.crearRegistrarNotificacion(elViaje.getConductor(), "solicitudesViaje.action?id="+elViaje.getId(),"flag-o");
+			this.crearRegistrarNotificacion(elViaje.getConductor(), "detalleViaje.action?id="+elViaje.getId(),"flag-o");
+			return true;
+		}else{
+			return false;
+		}
+	}
+	
+	//El link debe apuntar a un viaje
+	//tiene solo un parametro porque el receptor es el conductor del viaje
+	public boolean crearNotificacionSolicitudCancelada(Viaje elViaje) throws Exception{
+		if(SessionUtil.checkLogin()){
+			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
+			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
+			this.setMensaje(getText("notificacion.mensaje.solicitud.cancelar",this.argumentos));			
+			this.crearRegistrarNotificacion(elViaje.getConductor(), "detalleViaje.action?id="+elViaje.getId(),"flag-o");
 			return true;
 		}else{
 			return false;
@@ -283,7 +290,7 @@ public class NotificacionAction extends ActionSupport {
 	
 	//El link debe apuntar a un mensaje
 	public boolean crearNotificacionPrivado(Usuario receptor,int idMensaje) throws Exception{
-		if(this.validarLogin()){
+		if(SessionUtil.checkLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.setMensaje(getText("notificacion.mensaje.privado",this.argumentos));
 			this.crearRegistrarNotificacion(receptor, "detalle.action?id="+idMensaje,"comment");
@@ -309,13 +316,13 @@ public class NotificacionAction extends ActionSupport {
 	private Notificacion crearNotificacion(Usuario receptor, String link,String elTipo){
 		Notificacion notificacion=new Notificacion();
 		notificacion.setId(UUID.randomUUID().toString().replaceAll("-",""));
-		notificacion.setEmisor(this.getUsrLogueado());
+		notificacion.setEmisor(this.getEmisor());
 		notificacion.setReceptor(receptor);
 		notificacion.setTipo(elTipo);
 		notificacion.setLink((link+"&notif="+notificacion.getId()));
 		notificacion.setFechaHora(new Date());
 		notificacion.setMensaje(this.getMensaje());		
-		notificacion.setEstado(FactoryDAO.getEstadoNotificacionDAO().traerNoVisto());
+		notificacion.setEstado(EstadoNotificacion.NOVISTO);
 		return notificacion;
 	}
 	
@@ -330,11 +337,11 @@ public class NotificacionAction extends ActionSupport {
 		String link;
 		String tipo;
 		String fecha;
-		String estado;
+		EstadoNotificacion estado;
 		
-		NotifiacionVista(int id,String elMensaje,String elLink,String elTipo,String laFecha,String elEstado){
+		NotifiacionVista(int id,String elMensaje,String elLink,String elTipo,String laFecha,EstadoNotificacion elEstado){
 			Map<String, Object> session = ActionContext.getContext().getSession();
-			String user = (String) session.get("perfil");
+			String user = SessionUtil.getUsuario().getUsuario();
 			if(user!=null){
 			this.idEmisor=id;
 			this.mensaje=elMensaje;
@@ -374,10 +381,10 @@ public class NotificacionAction extends ActionSupport {
 		public void setFecha(String fecha) {
 			this.fecha = fecha.substring(0,9);
 		}
-		public String getEstado() {
+		public EstadoNotificacion getEstado() {
 			return estado;
 		}
-		public void setEstado(String estado) {
+		public void setEstado(EstadoNotificacion estado) {
 			this.estado = estado;
 		}
 		

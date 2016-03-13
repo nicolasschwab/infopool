@@ -185,10 +185,11 @@ public class ViajeAction extends ActionSupport {
 			else{
 				System.out.println("viaje id de la sesion");
 				//viaje = viajeDAO.encontrarPorId(Integer.parseInt(session.get("id").toString()));				
-			}								
-			/*if(this.getNotif()!=""){
-				new NotificacionAction().cambiarEstadoAVisitado(this.notif);
-			}*/
+			}
+			String notif=request.getParameter("notif");
+			if(notif!=""){
+				new NotificacionAction().cambiarEstadoAVisitado(notif);
+			}
 			soyPasajero = viaje.esPasajero(viajero);
 			soyConductor = viaje.esConductor(viajero);
 			soyViajero = (!soyPasajero || !soyConductor);			

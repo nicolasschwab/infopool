@@ -4,7 +4,7 @@
 	width: 350px;
 	overflow:visible;
 	position:absolute;
-	right:5%;
+	right: 14%;
 	top:67%;
 	height:auto;
 	display:none;
@@ -126,6 +126,9 @@ hr {
 }
 .linkNotificacion:hover{
 	text-decoration:none;
+}
+.linkNotificacion{
+	color:#2a6496;	
 }
 .circulo{
     -moz-border-radius: 50%;

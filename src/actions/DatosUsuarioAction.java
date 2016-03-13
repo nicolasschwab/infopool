@@ -8,10 +8,15 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+
 import model.Usuario;
 import model.Viajero;
 import util.SessionUtil;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
 public class DatosUsuarioAction extends ActionSupport {
@@ -161,6 +166,12 @@ public class DatosUsuarioAction extends ActionSupport {
 	
 	public String verPerfilViajero() throws Exception {		
 		if(SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+			String idNotif=request.getParameter("notif");
+			if(idNotif!=""){
+				new NotificacionAction().cambiarEstadoAVisitado(idNotif);
+				
+			}
 			user = SessionUtil.getUsuario();
 			id = user.getId();			
 			return SUCCESS;
