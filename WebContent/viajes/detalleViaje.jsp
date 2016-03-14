@@ -50,6 +50,12 @@
 					  				<s:hidden name="id" value="%{viaje.id}"/> 
 					  				<s:submit  value="Enviar Mensaje" cssClass="btn btn-primary"/>
 					  			</s:form>
+					  			<s:if test="%{soyConductor}">
+					  				<s:form role="form" theme="simple" action="EdicionViaje" method="post">
+					  					<s:hidden name="idViaje" value="%{viaje.id}"/>
+					  					<s:submit value="Editar Viaje" cssClass="btn btn-primary"/>
+					  				</s:form>
+					  			</s:if>
 					  			<s:if test="%{soyPasajero | soyConductor}">
 						  			<s:form role="form" theme="simple" action="calificaciones" method="post">
 						  				<s:hidden name="idViaje" value="%{viaje.id}"/> 

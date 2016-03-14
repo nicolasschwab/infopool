@@ -123,25 +123,18 @@
 			<result name="sinPermisos" type="redirect">cerrarSesion</result>
 		</action>	
 		
+		<action name="EdicionViaje" method="EdicionViaje" class="datosViajeAction">
+			<result name="success">/viajes/editarViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
 		
+		<action name="EditarViaje" method="EditarViaje" class="datosViajeAction">
+			<result name="success" type="redirect">misViajes</result>
+			<result name="input">/viajes/editarViaje.jsp</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
 		
 		<!-- REVISAR ESTOS ULTIMOS 7 -->
-		<action name="listarViajes" method="listarViajes" class="viajeAction">
-			<result name="success">/viajero/viajes.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>		
-		
-		<action name="edicionViaje" method="edicionViaje" class="viajeAction">			
-			<result name="success">/editar_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-				
-		<action name="editarViaje" method="editarViaje" class="viajeAction">
-			<result name="success" type="redirect">listarViajes</result>
-			<result name="input">/editar_viaje.jsp</result>
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
-		
 		<action name="cancelarSubscripcionViaje" method="cancelarSubscripcionViaje" class="viajeAction">
 			<result name="success" type="redirect">
 				<param name="location">detalleViaje</param>
@@ -187,8 +180,11 @@
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 		
-		<action name="AceptarSolicitudViaje" method="AceptarSolicitudViaje" class="solicitudViajeAction">
-			<result name="success" type="redirect">SolicitudesFrecuenciaViaje</result>
+		<action name="AceptarSolicitudViaje" method="AceptarSolicitudViaje" class="solicitudViajeAction">			
+			<result name="success" type="redirect">
+				<param name="location">SolicitudesFrecuenciaViaje</param>
+				<param name="idFrecuenciaViaje">${idFrecuenciaViaje}</param>
+			</result>			
 			<result name="input" type="redirect">SolicitudesFrecuenciaViaje</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>

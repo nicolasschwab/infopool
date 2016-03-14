@@ -186,7 +186,9 @@ public class SolicitudViajeAction extends ActionSupport{
 				frecuenciaViaje.agregarViajeroFrecuencia(viajero);				
 				frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()-1);				
 				frecuenciaViajeDAO.modificar(frecuenciaViaje);
-
+				
+				idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();
+				
 				new NotificacionAction().crearNotificacionSolicitudAceptar(viajero, viaje);
 				return SUCCESS;
 			}

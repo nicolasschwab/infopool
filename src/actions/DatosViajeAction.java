@@ -241,4 +241,75 @@ public class DatosViajeAction extends ActionSupport{
 		}
 	}
 	
+	public String EdicionViaje() throws Exception{
+		if (SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);		
+			id = Integer.parseInt(request.getParameter("idViaje"));
+			viaje = viajeDAO.encontrarPorId(id);
+			return SUCCESS;
+		}
+		return "sinPermisos";
+	}
+	
+	public String EditarViaje() throws Exception{
+		if (SessionUtil.checkLogin()){			
+			if (this.getDireccionOrigen() == null){
+				return INPUT;
+			}
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");			
+			Date fInicio = null;
+			Date fFin = null;
+			Time hPartida = null;
+			Time hRegreso = null;
+			viaje = new Viaje();
+			EstadoFrecuencia estadoFrecuencia = EstadoFrecuencia.ACTIVA;
+			frecuencias = new ArrayList<FrecuenciaViaje>();
+			Viajero conductor = (Viajero) SessionUtil.getUsuario();
+			
+			if (this.getTramoViaje().equals("IDAVUELTA")){
+				hRegreso = Time.valueOf(this.getHoraRegreso()+":00");
+			}
+			hPartida = Time.valueOf(this.getHoraPartida()+":00");
+			
+			if (this.getTipoViaje().equals("PERIODICO")){				
+				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);		
+				diaPeriodico = request.getParameterValues("diaPeriodico");
+				if (diaPeriodico != null && diaPeriodico.length > 0) {
+					for (int i = 0; i < diaPeriodico.length; i++) {						
+						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje));						
+					}
+				}
+				fFin = sdf.parse(this.getFechaFin());
+			}
+			else{				
+				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje));
+			}
+			fInicio = sdf.parse(this.getFechaInicio());
+			
+			viaje.setFechaPublicacion(new Date());
+			viaje.setDireccionOrigen(this.getDireccionOrigen());
+			viaje.setDireccionDestino(this.getDireccionDestino());
+			viaje.setPuntosTrayecto(this.getPuntosTrayecto());
+			viaje.setFechaInicio(fInicio);
+			viaje.setFechaFin(fFin);
+			viaje.setDescripcion(this.getDescripcion());
+			viaje.setKilometros(this.getKilometros());
+			viaje.setConductor(conductor);
+			viaje.setFrecuencias(frecuencias);
+			viaje.setTramoViaje(TramoViaje.valueOf(this.getTramoViaje()));
+			viaje.setTipoViaje(TipoViaje.valueOf(this.getTipoViaje()));
+			viaje.setActivo(true);
+			//creo el foro de pasajeros, cuando se acepte una solicitud el ususario debe ser agregado a este foro			
+			viaje.setForoViaje(ConversacionAction.crearForo("Foro de pasajeros", viaje, conductor));
+			
+			((ViajeDAOjpa)viajeDAO).modificar(viaje);			
+			
+			return SUCCESS;			
+		}
+		else{			
+			return "sinPermisos";
+		}
+	}
+	
 }
