@@ -9,7 +9,7 @@
 </div>							
 <li class="dropdown">
 	<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-		<img src="resources/images/user.png" alt="" class="img-perfil"> <%= ((Usuario)session.getAttribute("usrLogin")).getUsuario() %> <span class="caret"></span>
+		<img class="img-perfil" src="ImageAction?id=<%=((Usuario)session.getAttribute("usrLogin")).getId()  %>"><%= ((Usuario)session.getAttribute("usrLogin")).getUsuario() %> <span class="caret"></span>
 	</a>
 	<ul class="dropdown-menu">
 		<li <% if (Integer.valueOf(request.getParameter("itemActivo")) == 2) {%> class="active" <%}%>>
