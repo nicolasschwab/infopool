@@ -16,6 +16,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Type;
+
 @Entity
 public class FrecuenciaViaje implements Serializable{
 	
@@ -51,18 +53,26 @@ public class FrecuenciaViaje implements Serializable{
 	@OneToMany(mappedBy="frecuenciaViaje")
 	private Collection<SolicitudViaje> solicitudesViaje = new ArrayList<SolicitudViaje>();
 	
+	@Enumerated(EnumType.STRING)
+	private TramoViaje tramoViaje;
+	
+	@Column
+	@Type(type="text")
+    private String puntosTrayecto;
+	
 	public FrecuenciaViaje(){
 		super();
 	}	
 	public FrecuenciaViaje(DiasSemana diaFrecuencia, EstadoFrecuencia estadoFrecuencia, Time horaPartida,
-			Time horaRegreso, int asientosDisponibles, Viaje viaje) {
+			Time horaRegreso, int asientosDisponibles, Viaje viaje, TramoViaje tramoViaje) {
 		super();
 		this.diaFrecuencia = diaFrecuencia;
 		this.estadoFrecuencia = estadoFrecuencia;
 		this.horaPartida = horaPartida;
 		this.horaRegreso = horaRegreso;
 		this.asientosDisponibles = asientosDisponibles;
-		this.viaje = viaje;		
+		this.viaje = viaje;
+		this.tramoViaje = tramoViaje;		
 	}
 	
 	public int getId() {
@@ -124,6 +134,18 @@ public class FrecuenciaViaje implements Serializable{
 	}
 	public void setSolicitudesViaje(Collection<SolicitudViaje> solicitudesViaje) {
 		this.solicitudesViaje = solicitudesViaje;
+	}	
+	public TramoViaje getTramoViaje() {
+		return tramoViaje;
+	}
+	public void setTramoViaje(TramoViaje tramoViaje) {
+		this.tramoViaje = tramoViaje;
+	}	
+	public String getPuntosTrayecto() {
+		return puntosTrayecto;
+	}
+	public void setPuntosTrayecto(String puntosTrayecto) {
+		this.puntosTrayecto = puntosTrayecto;
 	}
 	
 	public boolean esPasajero(Usuario usuario){

@@ -64,9 +64,6 @@ public class Viaje implements Serializable{
 	
 	@ManyToMany(mappedBy="misViajesPasajero",fetch=FetchType.EAGER)
 	private Collection<Viajero> pasajeros;
-		
-	@Enumerated(EnumType.STRING)
-	private TramoViaje tramoViaje;
 	
 	@Enumerated(EnumType.STRING)
 	private TipoViaje tipoViaje;
@@ -86,7 +83,7 @@ public class Viaje implements Serializable{
 	public Viaje(String direccionOrigen, String direccionDestino,
 			String puntosTrayecto, Date fechaPublicacion, Date fechaInicio, Date fechaFin,
 			Evento eventoAsociado, Conversacion foroViaje, Collection<FrecuenciaViaje> frecuencias,
-			Viajero conductor, TramoViaje tramoViaje, TipoViaje tipoViaje, String descripcion, float kilometros,
+			Viajero conductor, TipoViaje tipoViaje, String descripcion, float kilometros,
 			boolean activo) {
 		super();
 		this.direccionOrigen = direccionOrigen;
@@ -98,8 +95,7 @@ public class Viaje implements Serializable{
 		this.eventoAsociado = eventoAsociado;
 		this.foroViaje = foroViaje;
 		this.frecuencias = frecuencias;
-		this.conductor = conductor;
-		this.tramoViaje = tramoViaje;
+		this.conductor = conductor;		
 		this.tipoViaje = tipoViaje;
 		this.descripcion = descripcion;
 		this.kilometros = kilometros;
@@ -183,12 +179,6 @@ public class Viaje implements Serializable{
 	}
 	public void setPasajeros(Collection<Viajero> pasajeros) {
 		this.pasajeros = pasajeros;
-	}
-	public TramoViaje getTramoViaje() {
-		return tramoViaje;
-	}
-	public void setTramoViaje(TramoViaje tramoViaje) {
-		this.tramoViaje = tramoViaje;
 	}
 	public TipoViaje getTipoViaje() {
 		return tipoViaje;

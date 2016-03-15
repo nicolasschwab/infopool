@@ -206,13 +206,13 @@ public class DatosViajeAction extends ActionSupport{
 				diaPeriodico = request.getParameterValues("diaPeriodico");
 				if (diaPeriodico != null && diaPeriodico.length > 0) {
 					for (int i = 0; i < diaPeriodico.length; i++) {						
-						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje));						
+						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));						
 					}
 				}
 				fFin = sdf.parse(this.getFechaFin());
 			}
 			else{				
-				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje));
+				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));
 			}
 			fInicio = sdf.parse(this.getFechaInicio());
 			
@@ -225,8 +225,7 @@ public class DatosViajeAction extends ActionSupport{
 			viaje.setDescripcion(this.getDescripcion());
 			viaje.setKilometros(this.getKilometros());
 			viaje.setConductor(conductor);
-			viaje.setFrecuencias(frecuencias);
-			viaje.setTramoViaje(TramoViaje.valueOf(this.getTramoViaje()));
+			viaje.setFrecuencias(frecuencias);			
 			viaje.setTipoViaje(TipoViaje.valueOf(this.getTipoViaje()));
 			viaje.setActivo(true);
 			//creo el foro de pasajeros, cuando se acepte una solicitud el ususario debe ser agregado a este foro			
@@ -277,13 +276,13 @@ public class DatosViajeAction extends ActionSupport{
 				diaPeriodico = request.getParameterValues("diaPeriodico");
 				if (diaPeriodico != null && diaPeriodico.length > 0) {
 					for (int i = 0; i < diaPeriodico.length; i++) {						
-						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje));						
+						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));						
 					}
 				}
 				fFin = sdf.parse(this.getFechaFin());
 			}
 			else{				
-				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje));
+				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));
 			}
 			fInicio = sdf.parse(this.getFechaInicio());
 			
@@ -297,7 +296,6 @@ public class DatosViajeAction extends ActionSupport{
 			viaje.setKilometros(this.getKilometros());
 			viaje.setConductor(conductor);
 			viaje.setFrecuencias(frecuencias);
-			viaje.setTramoViaje(TramoViaje.valueOf(this.getTramoViaje()));
 			viaje.setTipoViaje(TipoViaje.valueOf(this.getTipoViaje()));
 			viaje.setActivo(true);
 			//creo el foro de pasajeros, cuando se acepte una solicitud el ususario debe ser agregado a este foro			

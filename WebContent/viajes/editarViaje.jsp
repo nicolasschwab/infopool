@@ -25,13 +25,10 @@
 					<s:form role="form" theme="simple" cssClass="form-datos" action="EditarViaje">
 						<fieldset id="datosUbicacion">
 							<legend>Ubicación del Viaje</legend>
-							<div class="form-group">
-								<label><s:text name="viaje.dirorigen" /></label>
-								<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" onchange="javascript:calcularTrayecto();" value="%{viaje.direccionOrigen}"/>						
-							</div>		
-							<div class="form-group">
-								<label><s:text name="viaje.dirdestino" /></label>
-								<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" onchange="javascript:calcularTrayecto();" value="%{viaje.direccionDestino}"/>						
+							<p>Solo se almacenaran los puntos intermedios del recorrido.</p>
+							<div class="form-group">								
+								<s:hidden cssClass="form-control" id="dirOrigen" name="direccionOrigen" value="%{viaje.direccionOrigen}"/>					
+								<s:hidden cssClass="form-control" id="dirDestino" name="direccionDestino" value="%{viaje.direccionDestino}"/>						
 							</div>
 							<div class="form-group">
 								<div class="row">									
@@ -47,111 +44,74 @@
 								<div id="map-canvas" style="height: 500px"></div>
 							</div>
 						</fieldset>
-										
-						<fieldset id="datosTiempo">
-							<legend>Frecuencia del Viaje</legend>
-							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-12">
-										<label><s:text name="viaje.tipoviaje" /></label>
-										<s:select cssClass="form-control" id="tipoViaje" name="tipoViaje" list="#{'PUNTUAL':'Puntual','PERIODICO':'Periodico'}" onchange="javascript: cambiarTipoViaje()" />								
-									</div>							
-								</div>												
-							</div>				
-							<div class="form-group">
-								<div class="row">							
-									<div class="col-sm-6">
-										<label><s:text name="viaje.fechavp" /></label>
-										<div class='input-group date col-sm-10 datepicker'>
-											<s:textfield cssClass="form-control" name="fechaInicio" data-date-format="YYYY-MM-DD"/>
-											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										</div>								
-									</div>
-									<div id="vperFecha" class="col-sm-6" style="display:none">
-										<label><s:text name="viaje.fechavp" /></label>
-										<div class='input-group date col-sm-10 datepicker'>
-											<s:textfield cssClass="form-control" name="fechaFin" data-date-format="YYYY-MM-DD"/>
-											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-										</div>								
-									</div>							
-								</div>								
-							</div>					
-							<div id="vperPanel" class="form-group" style="display:none">						
-								<div class="row">
-									<div class="col-sm-12">
-										<label><s:text name="viaje.diaslbl" /></label><br>
-										<label class="checkbox-inline">
-											<s:checkbox name="diaPeriodico" fieldValue="LUNES" /> Lunes
-										</label> 
-										<label class="checkbox-inline"> 
-											<s:checkbox name="diaPeriodico" fieldValue="MARTES" /> Martes
-										</label> 
-										<label class="checkbox-inline">
-											<s:checkbox name="diaPeriodico" fieldValue="MIERCOLES" /> Miercoles
-										</label> 
-										<label class="checkbox-inline"> 
-											<s:checkbox name="diaPeriodico" fieldValue="JUEVES" /> Jueves
-										</label> 
-										<label class="checkbox-inline"> 
-											<s:checkbox name="diaPeriodico" fieldValue="VIERNES" /> Viernes
-										</label> 
-										<label class="checkbox-inline"> 
-											<s:checkbox name="diaPeriodico" fieldValue="SABADO" /> Sabado
-										</label> 
-										<label class="checkbox-inline"> 
-											<s:checkbox name="diaPeriodico" fieldValue="DOMINGO" /> Domingo
-										</label>																		
-									</div>
-								</div>
-							</div>							
-							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-12">
-										<label>Tramo Viaje</label>
-										<s:select cssClass="form-control" id="tramoViaje" name="tramoViaje" list="#{'IDA':'IDA','IDAVUELTA':'IDA/VUELTA'}" onchange="javascript: cambiarTramoViaje()" />								
-									</div>							
-								</div>												
-							</div>							
-							<div class="form-group">
-								<div class="row">							
-									<div class="col-sm-6">
-										<label><s:text name="viaje.horapartida" /></label>
-										<div class='input-group date horaviaje col-sm-10'>
-											<s:textfield cssClass="form-control" name="horaPartida" data-date-format="HH:mm"/>
-											<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-										</div>								
-									</div>							
-									<div id="tcompHora" class="col-sm-6" style="display:none">
-										<label><s:text name="viaje.horaregreso" /></label>
-										<div class='input-group date horaviaje col-sm-10'>
-											<s:textfield cssClass="form-control" name="horaRegreso" data-date-format="HH:mm"/>
-											<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-										</div>								
-									</div>
-								</div>
-							</div>
-						</fieldset>
 						
 						<fieldset id="datosDetalle">
-							<legend>Datos varios</legend>
+							<legend>Datos Varios</legend>
 							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-2">
-										<label><s:text name="viaje.asientos" /></label>								
-										<s:textfield cssClass="form-control" name="asientosDisponibles" />													
-									</div>							
-								</div>
-							</div>
-							<div class="form-group">								
-								<label>Descripcion</label>
-								<s:textarea cssClass="form-control" name="descripcion"/>								
+								<label>Descripción</label>
+								<s:textarea cssClass="form-control" name="descripcion" value="%{viaje.descripcion}"/>								
 							</div>
 						</fieldset>					
+										
+						<fieldset id="datosTiempo">
+							<legend>Frecuencias del Viaje</legend>																	
+							<div class="form-group">
+								<div class="row">							
+									<div class="col-sm-6">
+										<label><s:text name="viaje.fechavp" /></label>
+										<div class='input-group date col-sm-10 datepicker'>
+											<s:date name="viaje.fechaInicio" id="fechaIni" format="yyyy-MM-dd"/>
+											<s:textfield cssClass="form-control" name="fechaInicio" data-date-format="YYYY-MM-DD" value="%{fechaIni}"/>
+											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+										</div>								
+									</div>									
+									<s:if test="{viaje.tipoViaje.name()=='PERIODICO'}">										
+										<div id="vperFecha" class="col-sm-6">
+											<label><s:text name="viaje.fechavp" /></label>
+											<div class='input-group date col-sm-10 datepicker'>
+												<s:date name="viaje.fechaFin" id="fechaFin" format="yyyy-MM-dd"/>
+												<s:textfield cssClass="form-control" name="fechaFin" data-date-format="YYYY-MM-DD" value="%{fechaFin}"/>
+												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+											</div>								
+										</div>
+									</s:if>							
+								</div>								
+							</div>
+							<s:set var="trmViaje" value="%{viaje.tramoViaje.name()}" />							
+							<s:iterator value="viaje.frecuencias">
+								<p><strong><s:property value="%{diaFrecuencia.name()}"/></strong></p>
+								<div class="form-group">
+									<div class="row">
+										<div class="col-sm-2">
+											<label><s:text name="viaje.asientos" /></label>								
+											<s:textfield cssClass="form-control" name="asientosDisponibles" value="%{asientosDisponibles}"/>													
+										</div>															
+										<div class="col-sm-5">
+											<label><s:text name="viaje.horapartida" /></label>
+											<div class='input-group date horaviaje col-sm-10'>
+												<s:date name="horaPartida" id="horaPar" format="HH:mm"/>
+												<s:textfield cssClass="form-control" name="horaPartida" data-date-format="HH:mm" value="%{horaPar}"/>
+												<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+											</div>								
+										</div>										
+										<s:if test="%{viaje.tramoViaje.name()=='IDAVUELTA'}">							
+											<div id="tcompHora" class="col-sm-5">
+												<label><s:text name="viaje.horaregreso" /></label>
+												<div class='input-group date horaviaje col-sm-10'>
+													<s:date name="horaRegreso" id="horaReg" format="HH:mm"/>
+													<s:textfield cssClass="form-control" name="horaRegreso" data-date-format="HH:mm" value="%{horaReg}"/>
+													<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+												</div>								
+											</div>
+										</s:if>
+									</div>
+								</div>
+							</s:iterator>
+						</fieldset>
 						
 						<div class="form-group">
-							<s:submit cssClass="btn btn-primary" value="%{getText('global.registrar')}"/>
+							<s:submit cssClass="btn btn-primary" value="%{getText('global.editar')}"/>
 						</div>
-	
 					</s:form>
 				</div>
 			</div>
