@@ -277,7 +277,7 @@ public class NotificacionAction extends ActionSupport {
 	//tiene solo un parametro porque el receptor es el conductor del viaje
 	public boolean crearNotificacionSolicitudCancelada(Viaje elViaje) throws Exception{
 		if(SessionUtil.checkLogin()){
-			this.argumentos[0]=this.getUsrLogueado().getUsuario();
+			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
 			this.setMensaje(getText("notificacion.mensaje.solicitud.cancelar",this.argumentos));			

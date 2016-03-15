@@ -209,8 +209,10 @@ public class SolicitudViajeAction extends ActionSupport{
 			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.RECHAZADA);
 			solicitudViaje.setFechaFinSolicitud(new Date());
 			solicitudViajeDAO.modificar(solicitudViaje);	
-			
-			idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();			
+
+			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
+			idFrecuenciaViaje = frecuenciaViaje.getId();
+			viaje = frecuenciaViaje.getViaje();
 			
 			new NotificacionAction().crearNotificacionRechazoSolicitud(solicitudViaje.getViajero(), viaje);
 			return SUCCESS;
@@ -244,7 +246,6 @@ public class SolicitudViajeAction extends ActionSupport{
 			frecuenciaViajeDAO.modificar(frecuenciaViaje);			
 			
 			idFrecuenciaViaje = frecuenciaViaje.getId();
-			//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
 			new NotificacionAction().crearNotificacionSolicitudCancelada(viaje);
 			return SUCCESS;
 			
