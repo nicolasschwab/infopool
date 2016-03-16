@@ -7,6 +7,7 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import interfacesDAO.UsuarioDAO;
 import model.Usuario;
+import util.Csrf;
 import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
@@ -63,7 +64,10 @@ public class LoginAction extends ActionSupport implements SessionAware{
 				user = usuarioDAO.existe(this.getUsuario(),this.getClave());
 				if (user != null) {
 					if (user.getActivo()){						
-						sessionMap.put("usrLogin", user);						
+						sessionMap.put("usrLogin", user);
+						//Esto genera los id unicos y randoms que el ususario va a usar en esta sesion
+						Csrf.getTokenId();
+						Csrf.getTokenValue();
 						return SUCCESS;
 					}
 					else{

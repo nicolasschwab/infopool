@@ -1,0 +1,96 @@
+.botonEditarPerfil{
+	padding-top:05%;	
+}
+.iEditarPerfil{
+	cursor: pointer;
+	border-radius:10px;
+	border: 0px solid #000000;
+}
+
+.iSubMenuEditarPerfil{
+	width:100%;
+}
+.listaPerfil li:hover a i{
+	background-color:lightblue;
+}
+
+.listaPerfil{
+	color: #0896ff;
+	text-decoration:none;
+	padding-top:04%;
+	padding-left: 5px;
+}
+.listaPerfil li{
+	display:block;
+    padding-bottom: 5%;
+    padding-top: 5%;
+    cursor:pointer;
+    padding-right: 30px;
+}
+.listaPerfil li:hover{
+	background: #f1f1f1;
+}
+.listaPerfil li a{
+	 width: 100%;
+    height: 115px;
+    color: #999;
+    text-align: center;
+    
+}
+.imgEditarPerfil{
+	max-width:80%;
+}
+.divEditarPerfil{
+	padding-bottom:16px;
+}
+.editarPreferencias{
+	padding-right:5px;
+}
+.rowEditarPerfil{
+	margin-top:15px;
+}
+.fieldsetPerfil{
+	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2),0 0 1px rgba(0,0,0,0.15);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2),0 0 1px rgba(0,0,0,0.15);
+    line-height: 32px;
+    margin-bottom: 30px;
+    background-color: #FFF;
+    font-size: 13px;
+    padding: 15px;
+}
+.fieldsetPerfil input{
+	border-radius:3px;
+	width: 100%;	
+}
+.barraLateral{
+    background: white;
+    min-height: 1515px;  
+    margin-top: 15px;    
+}
+.menuBarra{
+	position:fixed;
+}
+.iconoBarra{
+	margin-right: 10px;
+}
+.botonImagenEdicion{
+	display: inline-flex;
+}
+.popUpImagen{
+	width: 50%;
+    position: ;
+    text-align: center;
+    padding: 0px;
+    margin-left: 25%;
+}
+.popUpBoton{
+	width: 25% !important;
+}
+.botonContrasena{
+	float:right;
+	width: 35% !important; 
+}
+.errorEdicion{
+	color:red;
+	text-decoration: underline;
+}

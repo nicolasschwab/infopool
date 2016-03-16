@@ -1,25 +1,32 @@
 package actions;
 
 import interfacesDAO.UsuarioDAO;
-
+import interfacesDAO.ViajeroDAO;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-
+import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.struts2.ServletActionContext;
+import org.apache.struts2.dispatcher.SessionMap;
+import org.apache.struts2.interceptor.SessionAware;
 
+import model.Administrador;
 import model.Usuario;
 import model.Viajero;
+import util.Csrf;
 import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class DatosUsuarioAction extends ActionSupport {
+import implementacionesDAO.FactoryDAO;
+
+public class DatosUsuarioAction extends ActionSupport implements SessionAware{
 	
 	private static final long serialVersionUID = 1L;
 	public int id;
@@ -37,9 +44,31 @@ public class DatosUsuarioAction extends ActionSupport {
 	private String fperfilUsuarioContentType;
 	private String fperfilUsuarioFileName;
 
+	
+	//Variable usadas en la edicion del perfil
+	public String nombreUsuarioEdicion;
+	public String apellidoUsuarioEdicion;
+	public String fNacimientoUsuarioEdicion;	
+	public String telefonoUsuarioEdicion;
+	public String mailUsuarioEdicion;	
+	public String usuarioEdicion;
+	private File fperfilUsuarioEdicion;
+	private SessionMap<String, Object> sessionMap;
+	public String claveActualEdicion;
+	public String claveNuevaEdicion;
+	public String repetirClaveEdicion;
+	private String respuesta;
+	
 	private UsuarioDAO usuarioDAO;
 	public Usuario user;	
 		
+	
+	public String getRespuesta() {
+		return respuesta;
+	}
+	public void setRespuesta(String respuesta) {
+		this.respuesta = respuesta;
+	}
 	public int getId() {
 		return id;
 	}
@@ -118,8 +147,73 @@ public class DatosUsuarioAction extends ActionSupport {
 	}
 	public void setUsuarioDAO(UsuarioDAO usuarioDAO) {
 		this.usuarioDAO = usuarioDAO;
+	}	
+	public String getNombreUsuarioEdicion() {
+		return nombreUsuarioEdicion;
 	}
-	
+	public void setNombreUsuarioEdicion(String nombreUsuarioEdicion) {
+		this.nombreUsuarioEdicion = nombreUsuarioEdicion;
+	}
+	public String getApellidoUsuarioEdicion() {
+		return apellidoUsuarioEdicion;
+	}
+	public void setApellidoUsuarioEdicion(String apellidoUsuarioEdicion) {
+		this.apellidoUsuarioEdicion = apellidoUsuarioEdicion;
+	}
+	public String getfNacimientoUsuarioEdicion() {
+		return fNacimientoUsuarioEdicion;
+	}
+	public void setfNacimientoUsuarioEdicion(String fNacimientoUsuarioEdicion) {
+		this.fNacimientoUsuarioEdicion = fNacimientoUsuarioEdicion;
+	}
+	public String getTelefonoUsuarioEdicion() {
+		return telefonoUsuarioEdicion;
+	}
+	public void setTelefonoUsuarioEdicion(String telefonoUsuarioEdicion) {
+		this.telefonoUsuarioEdicion = telefonoUsuarioEdicion;
+	}
+	public String getMailUsuarioEdicion() {
+		return mailUsuarioEdicion;
+	}
+	public void setMailUsuarioEdicion(String mailUsuarioEdicion) {
+		this.mailUsuarioEdicion = mailUsuarioEdicion;
+	}
+	public String getUsuarioEdicion() {
+		return usuarioEdicion;
+	}
+	public void setUsuarioEdicion(String usuarioEdicion) {
+		this.usuarioEdicion = usuarioEdicion;
+	}
+	public SessionMap<String, Object> getSessionMap() {
+		return sessionMap;
+	}
+	public void setSessionMap(SessionMap<String, Object> sessionMap) {
+		this.sessionMap = sessionMap;
+	}
+	public File getFperfilUsuarioEdicion() {
+		return fperfilUsuarioEdicion;
+	}
+	public void setFperfilUsuarioEdicion(File fperfilUsuarioEdicion) {
+		this.fperfilUsuarioEdicion = fperfilUsuarioEdicion;
+	}
+	public String getClaveActualEdicion() {
+		return claveActualEdicion;
+	}
+	public void setClaveActualEdicion(String claveActualEdicion) {
+		this.claveActualEdicion = claveActualEdicion;
+	}
+	public String getClaveNuevaEdicion() {
+		return claveNuevaEdicion;
+	}
+	public void setClaveNuevaEdicion(String claveNuevaEdicion) {
+		this.claveNuevaEdicion = claveNuevaEdicion;
+	}
+	public String getRepetirClaveEdicion() {
+		return repetirClaveEdicion;
+	}
+	public void setRepetirClaveEdicion(String repetirClaveEdicion) {
+		this.repetirClaveEdicion = repetirClaveEdicion;
+	}
 	public String registrarUsuario() throws Exception{
 		if (!SessionUtil.checkLogin()) {
 			if (this.getApellidoUsuario() == null){
@@ -188,6 +282,129 @@ public class DatosUsuarioAction extends ActionSupport {
 		}
 	}
 	
+	public String actualizarUsuario() throws Exception{
+		if(SessionUtil.checkLogin()){
+			ViajeroDAO viajeroDAO=FactoryDAO.getViajeroDAO();
+			Viajero user=viajeroDAO.encontrar(SessionUtil.getUsuario().getId());
+			if(this.getUsuarioEdicion()!=null){
+				if(!(user.getUsuario().equals(this.getUsuarioEdicion()))){
+					user.setUsuario(this.getUsuarioEdicion());
+				}
+			}
+			if(this.getNombreUsuarioEdicion()!=null){
+				if(!(user.getNombre().equals(this.getNombreUsuarioEdicion()))){
+					user.setNombre(this.getNombreUsuarioEdicion());
+				}
+			}	
+			if(this.getApellidoUsuarioEdicion()!=null){
+				if(!(user.getApellido().equals(this.getApellidoUsuarioEdicion()))){
+					user.setApellido(this.getApellidoUsuarioEdicion());
+				}
+			}	
+			if(this.getMailUsuarioEdicion()!=null){
+				if(!(user.getMail().equals(this.getMailUsuarioEdicion()))){
+					user.setMail(this.getMailUsuarioEdicion());
+				}
+			}	
+			if(this.getfNacimientoUsuarioEdicion()!=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date fnac = sdf.parse(this.getfNacimientoUsuarioEdicion());
+				if(!(user.getFechaNacimiento().equals(fnac))){
+					user.setFechaNacimiento(fnac);
+				}
+			}	
+			if(this.getTelefonoUsuarioEdicion()!=null){
+				if(!(user.getTelefono().equals(this.getTelefonoUsuarioEdicion()))){
+					user.setTelefono(this.getTelefonoUsuarioEdicion());
+				}
+			}	
+			viajeroDAO.modificar(user);
+			sessionMap.put("usrLogin", user);
+		}else{
+			return "sinLogueo";
+		}
+		return SUCCESS;
+	}
+	@Override
+	public void setSession(Map<String, Object> map) {
+		sessionMap = (SessionMap<String, Object>) map;		
+	}
+	
+	public String modificarImagen() throws Exception{
+		if(SessionUtil.checkLogin()){
+			if(this.getFperfilUsuarioEdicion()!=null){
+				Viajero usr=FactoryDAO.getViajeroDAO().encontrar(SessionUtil.getUsuario().getId());
+				byte[] b = new byte[(int) this.fperfilUsuarioEdicion.length()];
+				try {
+					FileInputStream fileInputStream = new FileInputStream(this.getFperfilUsuarioEdicion());
+					fileInputStream.read(b);
+				} catch (IOException e1) {
+					System.out.println("Error Reading The File.");
+					e1.printStackTrace();
+				}
+				usr.setFotoPerfil(b);
+				FactoryDAO.getViajeroDAO().modificar(usr);
+				sessionMap.put("usrLogin", usr);
+			}	
+			return SUCCESS;
+		}
+		return "sinPermisos";
+		
+	}
+	
+	public String actualizarContrasena() throws Exception{
+		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
+		String csrfId=Csrf.getTokenId();
+		String csrfValue=request.getParameter(csrfId);
+		if(SessionUtil.checkLogin()){		
+			if(csrfId!=null){
+				if(csrfValue!=null){
+					if(Csrf.checkValues(csrfId, csrfValue)){
+						if(this.getClaveActualEdicion()!=null & this.getClaveActualEdicion()!=""){
+							if(this.getClaveNuevaEdicion()!=null & this.getClaveNuevaEdicion()!=""){
+								if(this.getRepetirClaveEdicion()!=null & this.getRepetirClaveEdicion()!=""){
+									if(this.getClaveNuevaEdicion().equals(this.getRepetirClaveEdicion())){
+										Usuario user=this.getUsuarioDAO().encontrarPorId(String.valueOf(SessionUtil.getUsuario().getId()));
+										if(user.getClave().equals(this.getClaveActualEdicion())){
+											user.setClave(this.getClaveNuevaEdicion());
+											this.getUsuarioDAO().modificar(user);
+											this.setRespuesta("modificado");
+											return SUCCESS;
+										}else{
+											this.setRespuesta("la clave actual no es la correcta");
+											return SUCCESS;
+										}										
+									}else{
+										this.setRespuesta("las claves no coinciden");
+										return SUCCESS;
+									}
+								}else{
+									this.setRespuesta("la clave no puede estar vacia");
+									return SUCCESS;
+								}
+							}else{
+								this.setRespuesta("la clave no puede estar vacia");
+								return SUCCESS;
+							}
+						}else{
+							this.setRespuesta("la clave no puede estar vacia");
+							return SUCCESS;
+						}
+					}else{
+						this.setRespuesta("la clave no puede estar vacia");
+						return SUCCESS;
+					}
+				}else{
+					this.setRespuesta("la clave no puede estar vacia");
+					return SUCCESS;
+				}
+			}else{
+				this.setRespuesta("la clave no puede estar vacia");
+				return SUCCESS;
+			}
+		}
+		return "sinPermisos";
+	}
 	/*
 	private boolean validarPreferencias(){
 		List<String> pref= new ArrayList<String>();
