@@ -15,6 +15,7 @@
 
 <!-- Estilos de voy.con.vos -->
 <link href="resources/css/style.css" rel='stylesheet' type='text/css' />
+<link href="resources/css/estilosSolicitudes.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/estilosEditarPerfil.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/spiner.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/foro.css" rel='stylesheet' type='text/css' />

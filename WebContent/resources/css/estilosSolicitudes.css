@@ -1,0 +1,13 @@
+.imagenSolicitudes{
+	width:auto;
+}
+.linkSolicitudes{
+	float:left;
+}
+.datosSolicitud{
+    text-align: right;
+}
+.divisionSolicitudes{
+	padding-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}   
