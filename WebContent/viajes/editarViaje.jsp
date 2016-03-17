@@ -35,6 +35,10 @@
 									<div class="col-sm-3">
 										<label>Distancia del trayecto (km)</label>										
 										<s:textfield cssClass="form-control" id="kilometros" name="kilometros" readonly="true"/>
+										<div class="col-md-2">
+											<div id="spinerTray" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div>
+											<div id="checkTray" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div>
+										</div>
 									</div>
 								</div>						
 							</div>		
@@ -79,7 +83,8 @@
 							</div>
 							<s:set var="trmViaje" value="%{viaje.tramoViaje.name()}" />							
 							<s:iterator value="viaje.frecuencias">
-								<p><strong><s:property value="%{diaFrecuencia.name()}"/></strong></p>
+								<strong><s:property value="%{diaFrecuencia.name()}"/></strong>
+								
 								<div class="form-group">
 									<div class="row">
 										<div class="col-sm-2">
@@ -88,8 +93,9 @@
 										</div>															
 										<div class="col-sm-5">
 											<label><s:text name="viaje.horapartida" /></label>
-											<div class='input-group date horaviaje col-sm-10'>
-												<s:date name="horaPartida" id="horaPar" format="HH:mm"/>
+											<s:date name="horaPartida" id="horaPar" format="HH:mm"/>
+											<p><s:property value="%{horaPar}"/></p>
+											<div class='input-group date horaviaje col-sm-10' id="">												
 												<s:textfield cssClass="form-control" name="horaPartida" data-date-format="HH:mm" value="%{horaPar}"/>
 												<span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
 											</div>								
