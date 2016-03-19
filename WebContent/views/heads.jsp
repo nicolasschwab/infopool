@@ -42,7 +42,7 @@
 <script type="text/javascript" src="resources/js/jquery.min.js"></script>
 <script type="text/javascript" src="resources/js/foro.js"></script>
 <script type="text/javascript" src="resources/js/editarUsuario.js"></script>
-<script type="text/javascript" src="resources/js/funcionesEditarUsuario.js"></script>
+<script type="text/javascript" src="resources/js/funcionesAltaUsuario.js"></script>
 <script type="text/javascript" src="resources/js/viajes.js"></script>
 <script type="text/javascript" src="resources/js/conversaciones.js"></script>
 <script type="text/javascript" src="resources/js/bootstrap.js"></script>

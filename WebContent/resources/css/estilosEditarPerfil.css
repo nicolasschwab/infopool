@@ -52,7 +52,7 @@
 .fieldsetPerfil{
 	-webkit-box-shadow: 0 1px 2px rgba(0,0,0,0.2),0 0 1px rgba(0,0,0,0.15);
     box-shadow: 0 1px 2px rgba(0,0,0,0.2),0 0 1px rgba(0,0,0,0.15);
-    line-height: 32px;
+    line-height: 32px;    
     margin-bottom: 30px;
     background-color: #FFF;
     font-size: 13px;

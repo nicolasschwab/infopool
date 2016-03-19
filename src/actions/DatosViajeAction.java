@@ -35,6 +35,7 @@ public class DatosViajeAction extends ActionSupport{
 	
 	private static final long serialVersionUID = 1L;
 	public int id;
+	private int idFrecuencia;
 	
 	//DATOS FORMULARIO
 	private String direccionOrigen;
@@ -178,6 +179,12 @@ public class DatosViajeAction extends ActionSupport{
 	public void setFrecuencias(Collection<FrecuenciaViaje> frecuencias) {
 		this.frecuencias = frecuencias;
 	}
+	public int getIdFrecuencia() {
+		return idFrecuencia;
+	}
+	public void setIdFrecuencia(int idFrecuencia) {
+		this.idFrecuencia = idFrecuencia;
+	}
 	
 	//FALTAN VALIDACIONES
 	public String RegistrarViaje() throws Exception {
@@ -243,7 +250,7 @@ public class DatosViajeAction extends ActionSupport{
 	public String EdicionViaje() throws Exception{
 		if (SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);		
-			id = Integer.parseInt(request.getParameter("idViaje"));
+			id = Integer.parseInt(request.getParameter("id"));
 			viaje = viajeDAO.encontrarPorId(id);
 			return SUCCESS;
 		}
@@ -251,61 +258,75 @@ public class DatosViajeAction extends ActionSupport{
 	}
 	
 	public String EditarViaje() throws Exception{
-		if (SessionUtil.checkLogin()){			
-			if (this.getDireccionOrigen() == null){
-				return INPUT;
+		if (SessionUtil.checkLogin()){
+			ViajeDAO viajeDAO = FactoryDAO.getViajeDAO();
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);		
+			id = Integer.parseInt(request.getParameter("id"));
+			viaje = viajeDAO.encontrarPorId(id);
+			if(this.getKilometros()!=0.0){
+				if(!(this.getKilometros()==viaje.getKilometros())){					
+					viaje.setKilometros(this.getKilometros());
+				}				
+				viaje.setPuntosTrayecto(this.getPuntosTrayecto());
 			}
-			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");			
-			Date fInicio = null;
-			Date fFin = null;
-			Time hPartida = null;
-			Time hRegreso = null;
-			viaje = new Viaje();
-			EstadoFrecuencia estadoFrecuencia = EstadoFrecuencia.ACTIVA;
-			frecuencias = new ArrayList<FrecuenciaViaje>();
-			Viajero conductor = (Viajero) SessionUtil.getUsuario();
-			
-			if (this.getTramoViaje().equals("IDAVUELTA")){
-				hRegreso = Time.valueOf(this.getHoraRegreso()+":00");
-			}
-			hPartida = Time.valueOf(this.getHoraPartida()+":00");
-			
-			if (this.getTipoViaje().equals("PERIODICO")){				
-				HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);		
-				diaPeriodico = request.getParameterValues("diaPeriodico");
-				if (diaPeriodico != null && diaPeriodico.length > 0) {
-					for (int i = 0; i < diaPeriodico.length; i++) {						
-						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));						
-					}
+			if(this.getDescripcion()!=null){
+				if(!(this.getDescripcion().equals(viaje.getDescripcion()))){
+					viaje.setDescripcion(this.getDescripcion());
 				}
-				fFin = sdf.parse(this.getFechaFin());
 			}
-			else{				
-				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));
+			if(this.getFechaInicio()!=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date fini = sdf.parse(this.getFechaInicio());
+				if(!(viaje.getFechaInicio().equals(fini))){
+					viaje.setFechaInicio(fini);
+				}
 			}
-			fInicio = sdf.parse(this.getFechaInicio());
-			
-			viaje.setFechaPublicacion(new Date());
-			viaje.setDireccionOrigen(this.getDireccionOrigen());
-			viaje.setDireccionDestino(this.getDireccionDestino());
-			viaje.setPuntosTrayecto(this.getPuntosTrayecto());
-			viaje.setFechaInicio(fInicio);
-			viaje.setFechaFin(fFin);
-			viaje.setDescripcion(this.getDescripcion());
-			viaje.setKilometros(this.getKilometros());
-			viaje.setConductor(conductor);
-			viaje.setFrecuencias(frecuencias);
-			viaje.setTipoViaje(TipoViaje.valueOf(this.getTipoViaje()));
-			viaje.setActivo(true);
-			//creo el foro de pasajeros, cuando se acepte una solicitud el ususario debe ser agregado a este foro			
-			viaje.setForoViaje(ConversacionAction.crearForo("Foro de pasajeros", viaje, conductor));
-			
-			((ViajeDAOjpa)viajeDAO).modificar(viaje);			
-			
+			if(this.getFechaFin()!=null){
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				Date ffin = sdf.parse(this.getFechaFin());
+				if(!(viaje.getFechaFin().equals(ffin))){
+					viaje.setFechaFin(ffin);
+				}
+			}
+			viajeDAO.modificar(viaje);			
 			return SUCCESS;			
 		}
 		else{			
+			return "sinPermisos";
+		}
+	}
+	
+	public String EditarFrecuencia() throws Exception{
+		if (SessionUtil.checkLogin()){
+			if(this.getIdFrecuencia()>0){
+				FrecuenciaViaje frecuencia = frecuenciaViajeDAO.encontrar(this.getIdFrecuencia());
+				if(this.getAsientosDisponibles()>0){
+					if(!(frecuencia.getAsientosDisponibles()==this.getAsientosDisponibles())){
+						frecuencia.setAsientosDisponibles(this.getAsientosDisponibles());
+					}
+				}
+				System.out.println("hPartida:"+this.getHoraPartida());
+				if(this.getHoraPartida()!=null){
+					Time hPartida = Time.valueOf(this.getHoraPartida()+":00");
+					if(!(frecuencia.getHoraPartida().equals(hPartida)))
+					frecuencia.setHoraPartida(hPartida);
+				}
+				System.out.println("hRegreso:"+this.getHoraRegreso().equals("undefined"));
+				if(!(this.getHoraRegreso().equals("undefined"))){
+					Time hRegreso = Time.valueOf(this.getHoraRegreso()+":00");
+					if(!(frecuencia.getHoraRegreso().equals(hRegreso))){
+						frecuencia.setHoraRegreso(hRegreso);
+					}
+				}
+				frecuenciaViajeDAO.modificar(frecuencia);
+				id = frecuencia.getViaje().getId();
+				return SUCCESS;
+			}			
+			else{
+				return INPUT;
+			}
+		}
+		else{
 			return "sinPermisos";
 		}
 	}

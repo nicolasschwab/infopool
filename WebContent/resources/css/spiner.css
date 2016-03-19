@@ -1,8 +1,11 @@
+.spiner-div{
+	margin-top:20px;
+}
 .windows8 {
 	position: relative;
 	width: 24px;
 	height:24px;
-	margin:auto;
+	margin:auto;	
 }
 
 .windows8 .wBall {

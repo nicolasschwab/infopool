@@ -32,7 +32,7 @@
 		  		<s:fielderror />
 		  		<div class="col-md-8">
 		  			<fieldset id="editarInfoTi" class="fieldsetPerfil" >
-		  				<legend >Información sobre ti</legend>
+		  				<legend>Información sobre ti</legend>
 		  				<div class="row rowEditarPerfil"><div class="col-md-12"><s:text name="perfil.acercaDeTi" /></div></div>
 		  				<div class="row rowEditarPerfil">
 		  					<div class="col-md-3"><strong><s:text name="perfil.informacionSobreTi" />:</strong></div>

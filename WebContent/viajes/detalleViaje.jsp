@@ -7,7 +7,7 @@
 	<%@ include file="../views/heads.jsp"%>
 	<%@ taglib prefix="s" uri="/struts-tags"%>
 </head>
-<body onload="inicializarRecorridoViaje('<s:property value="viaje.direccionOrigen" />','<s:property value="viaje.direccionDestino" />')">
+<body onload="inicializarRecorridoViaje('<s:property value="viaje.puntosTrayecto"/>')">
 
 	<jsp:include page="../views/header.jsp">
 		<jsp:param name="itemActivo" value="3" />
@@ -15,14 +15,7 @@
 
 	<div class="main_bg">		
 		<div class="container">
-			<div class="row">
-				<!-- PROBAR CON ESTA OPCION SI SE NECESITAN MANDAR PARAMS				 
-				<s:form action="actionName">
-				    <input type="hidden" value="<s:property value="someProperty"/>" name="someProperty"/>
-				    <input type="hidden" value="<s:property value="someProperty2"/>" name="someProperty2"/>
-				    <s:submit value="Back" />
-				</s:form> 
-				-->
+			<div class="row">				
 				<ol class="breadcrumb">
   					<li><a href="#" onclick="window.history.back();return false;">&lt; Regresar</a></li>
   				</ol>
@@ -52,7 +45,7 @@
 					  			</s:form>
 					  			<s:if test="%{soyConductor}">
 					  				<s:form role="form" theme="simple" action="EdicionViaje" method="post">
-					  					<s:hidden name="idViaje" value="%{viaje.id}"/>
+					  					<s:hidden name="id" value="%{viaje.id}"/>
 					  					<s:submit value="Editar Viaje" cssClass="btn btn-primary"/>
 					  				</s:form>
 					  			</s:if>
