@@ -8,9 +8,10 @@
 	<package name="default" namespace="" extends="struts-default">
 
 		<!-- Actions Inicio -->
-		<action name="Inicio" method="Inicio" class="inicioAction">
+		<action name="Inicio" method="inicio" class="inicioAction">
 			<result name="success">/index.jsp</result>
 		</action>
+
 		
 		<!-- Actions Login/out -->		
 		<action name="iniciarSesion" method="iniciarSesion" class="loginAction">			
@@ -42,6 +43,11 @@
 				<param name="id">${id}</param>
 			</result>			
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<action name="editarAuto" method="editarAuto" class="datosUsuarioAction">
+			<result name="success" type="redirect">verPerfilViajero</result>
+			<result name="sinPermisos" type="redirect" >cerrarSesion</result>	
 		</action>
 		
 		<action name="modificarImagen" method="modificarImagen" class="datosUsuarioAction">
@@ -381,7 +387,6 @@
    			</result>		
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
-		
 		<action name="EditarViaje" method="EditarViaje" class="actions.DatosViajeAction">
 			<result name="success" type="redirect">
 				<param name="location">DetalleViaje</param>
@@ -395,6 +400,11 @@
 				<param name="id">${id}</param>
 			</result>
 			<result name="input">/viajes/editarViaje.jsp</result>
+		</action>
+		<action name="traerModelosDeMarca" method="traerModelosDeMarca" class="actions.DatosUsuarioAction">
+			<result type="json">
+        		<param name="root">modelos</param>
+   			</result>		
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
 		</action>
 	</package>

@@ -1,5 +1,50 @@
 
 $(document).ready(function(){
+	
+	$("#editarAuto").submit(function(event){
+		marca=$("#vistaMarca").val();
+		modelo=$("#modelos").val();
+		$.ajax({
+			type : "GET",
+			headers:{
+				Accept:"application/json; charset=utf-8",
+				"Content-Type": "application/json; charset=utf-8"
+			},
+			url : "editarAuto",
+			data: { marcaSeleccionada :marca, modeloSeleccionado: modelo},
+			success:function(response){
+				
+			}
+				
+		});
+		event.preventDefault();
+	});
+	
+	
+	$("#vistaMarca").change(function(){
+		valor=$("#vistaMarca").val();
+		$("#modelos option").each(function(){
+			$(this).remove();
+		});			
+		
+		$.ajax({
+			type : "GET",
+			headers:{
+				Accept:"application/json; charset=utf-8",
+				"Content-Type": "application/json; charset=utf-8"
+			},
+			url : "traerModelosDeMarca",
+			data: { marcaSeleccionada :valor},
+			success:function(response){
+				$.each($.makeArray(response),function(k,objeto){
+					$("#modelos").append(
+							"<option value='"+objeto.id+"'>"+objeto.nombre +"</option>"
+							);
+				});
+			}
+				
+		});	
+	});
 
 	$("#botonContrasena").click(function(){
 		$("#spinerContrasena").css("display","inline-flex");

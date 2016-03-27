@@ -24,6 +24,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Viajero extends Usuario implements Serializable{	
@@ -86,7 +87,7 @@ public class Viajero extends Usuario implements Serializable{
 				inverseJoinColumns={@JoinColumn(name="viaje_id", nullable=false)})
 	private Collection<Viaje> misViajesPasajero = new ArrayList<Viaje>();
 	
-	@OneToMany(mappedBy="viajeroHuella")
+	@OneToMany(mappedBy="viajeroHuella",cascade = {CascadeType.ALL})
 	private Collection<HuellaCarbono> miHuellaCarbono = new ArrayList<HuellaCarbono>();
 	
 	@OneToMany(mappedBy = "calificado")
@@ -95,7 +96,7 @@ public class Viajero extends Usuario implements Serializable{
     @OneToMany(mappedBy = "calificador")
     private List<Calificacion> misCalificacionesRealizadas = new ArrayList<Calificacion>();
     
-    @Column
+    @OneToOne(cascade = {CascadeType.ALL})
 	private Auto auto;
     
     @Column(nullable=false)

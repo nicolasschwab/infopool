@@ -16,6 +16,9 @@ import org.apache.struts2.dispatcher.SessionMap;
 import org.apache.struts2.interceptor.SessionAware;
 
 import model.Administrador;
+import model.Auto;
+import model.MarcaAuto;
+import model.ModeloAuto;
 import model.Usuario;
 import model.Viajero;
 import util.Csrf;
@@ -44,6 +47,11 @@ public class DatosUsuarioAction extends ActionSupport implements SessionAware{
 	private String fperfilUsuarioContentType;
 	private String fperfilUsuarioFileName;
 
+	//Listas de marcas y modelos
+	private List<MarcaAuto> marcas;
+	private List<ModeloAuto> modelos;
+	public String marcaSeleccionada;
+	public String modeloSeleccionado;
 	
 	//Variable usadas en la edicion del perfil
 	public String nombreUsuarioEdicion;
@@ -214,6 +222,30 @@ public class DatosUsuarioAction extends ActionSupport implements SessionAware{
 	public void setRepetirClaveEdicion(String repetirClaveEdicion) {
 		this.repetirClaveEdicion = repetirClaveEdicion;
 	}
+	public List<MarcaAuto> getMarcas() {
+		return marcas;
+	}
+	public void setMarcas(List<MarcaAuto> marcas) {
+		this.marcas = marcas;
+	}
+	public List<ModeloAuto> getModelos() {
+		return modelos;
+	}
+	public void setModelos(List<ModeloAuto> modelos) {
+		this.modelos = modelos;
+	}	
+	public String getMarcaSeleccionada() {
+		return marcaSeleccionada;
+	}
+	public void setMarcaSeleccionada(String marcaSeleccionada) {
+		this.marcaSeleccionada = marcaSeleccionada;
+	}
+	public String getModeloSeleccionado() {
+		return modeloSeleccionado;
+	}
+	public void setModeloSeleccionado(String modeloSeleccionado) {
+		this.modeloSeleccionado = modeloSeleccionado;
+	}
 	public String registrarUsuario() throws Exception{
 		if (!SessionUtil.checkLogin()) {
 			if (this.getApellidoUsuario() == null){
@@ -266,6 +298,7 @@ public class DatosUsuarioAction extends ActionSupport implements SessionAware{
 				new NotificacionAction().cambiarEstadoAVisitado(idNotif);
 				
 			}
+			this.setMarcas(FactoryDAO.getMarcaAutoDAO().listar());
 			user = SessionUtil.getUsuario();
 			id = user.getId();			
 			return SUCCESS;
@@ -274,12 +307,47 @@ public class DatosUsuarioAction extends ActionSupport implements SessionAware{
 		}
 	}
 	
+	public String traerModelosDeMarca(){
+		if(SessionUtil.checkLogin()){
+			if(this.getMarcaSeleccionada()!=null & this.getMarcaSeleccionada()!=""){
+				this.setModelos(FactoryDAO.getModeloAutoDAO().encontrarPorMarca(this.getMarcaSeleccionada()));
+				return SUCCESS;
+			}
+		}
+		return "sinPermisos";
+	}
+	
 	public String edicionUsuario(){
 		if(SessionUtil.checkLogin()){
 			return SUCCESS;
 		}else{
 			return "sinPermisos";
 		}
+	}
+	
+	public String editarAuto() throws Exception{
+		System.out.println("HOLAAAAAAA");
+		if(SessionUtil.checkLogin()){
+			if(this.getModeloSeleccionado()!=null && this.getModeloSeleccionado()!=""){
+				if(this.getMarcaSeleccionada()!=null && this.getMarcaSeleccionada()!=""){
+					Viajero viajero=FactoryDAO.getViajeroDAO().encontrar(SessionUtil.getUsuario().getId());
+					Auto auto=viajero.getAuto();
+					MarcaAuto marca=FactoryDAO.getMarcaAutoDAO().encontrar(Integer.parseInt(marcaSeleccionada));
+					ModeloAuto modelo=FactoryDAO.getModeloAutoDAO().encontrar(Integer.parseInt(modeloSeleccionado));
+					if(auto==null){
+						auto=new Auto();
+					}
+					auto.setMarca(marca);
+					auto.setModelo(modelo);
+					System.out.println("HOLAAAAAAA");
+					viajero.setAuto(auto);
+					//FactoryDAO.getAutoDAO().registrar(auto);
+					FactoryDAO.getViajeroDAO().modificar(viajero);
+				}
+			}
+			return SUCCESS;
+		}
+		return "sinPermisos";
 	}
 	
 	public String actualizarUsuario() throws Exception{
