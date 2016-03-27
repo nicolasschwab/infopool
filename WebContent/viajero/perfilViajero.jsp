@@ -95,11 +95,11 @@
 				  	<!-- Fieldset con los datos de usuario -->  	
 			  		<fieldset id="editarInfoAuto" class="fieldsetPerfil">
 			  			<legend ><s:text name="perfil.informacionAuto" /></legend>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.marca" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:select list="#{'':'','FORD':'Ford','CITROEN':'Citroen','CHEVROLET':'Chevrolet','DODGE':'Dodge','FIAT':'Fiat','HONDA':'Honda','HYUNDAI':'Hyundai','PEUGEOT':'Peugeot','RENAULT':'Renault','SEAT':'Seat','SUZUKI':'Suzuki','TOYOTA':'Toyota','VOLKSWAGEN':'Volkswagen'}" name="vistaMarca" ></s:select></div></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.modelo" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:select list="#{'':'','FORD':'Ford','CITROEN':'Citroen','CHEVROLET':'Chevrolet','DODGE':'Dodge','FIAT':'Fiat','HONDA':'Honda','HYUNDAI':'Hyundai','PEUGEOT':'Peugeot','RENAULT':'Renault','SEAT':'Seat','SUZUKI':'Suzuki','TOYOTA':'Toyota','VOLKSWAGEN':'Volkswagen'}" name="vistaMarca" ></s:select></div></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.combustible" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:select list="#{'':'','NAFTA':'Nafta','GASOIL':'Gasoil','GAS':'Gas','ELECTRICO':'Electrico'}" cssClass="form-control" name="vistaCombustible"></s:select></div></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.tipo" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield id="claveOriginal" name="claveOriginal" ></s:textfield></div></div></div>
-			  			
+			  			<form id="editarAuto" >
+			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.marca" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:select emptyOption="true" list="marcas"  listKey="id" listValue="nombre"  name="vistaMarca" value="4" cssClass="form-control" /></div></div></div>
+			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.modelo" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><select id="modelos" name="modelos" class="form-control"><option></option></select></div></div></div>
+			  			<div class="row rowEditarPerfil"><div class="col-md-3 derecha"><s:submit cssClass="btn btn-primary " value="%{getText('global.registrar')}"></s:submit></div></div>
+			  			</form>
 				  	</fieldset>
 				</div>
 		  	
