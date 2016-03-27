@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -34,6 +35,10 @@ public class HuellaCarbono implements Serializable{
 	
 	public HuellaCarbono(){
 		super();
+		this.fecha=new Date();
+		this.kmAcumulados=0;
+		this.emisionesAcumuladas=0;
+		this.cantidadViajesRealizados=0;
 	}
 	
 	public HuellaCarbono(Date fecha, float kmAcumulados,
@@ -83,7 +88,25 @@ public class HuellaCarbono implements Serializable{
 	public void setViajeroHuella(Viajero viajeroHuella) {
 		this.viajeroHuella = viajeroHuella;
 	}
-	
+	public void aumentarCantViajes(){
+		cantidadViajesRealizados+=1;
+	}
+	public void sumarKm(float km){
+		kmAcumulados+=km;
+	}
+	public void sumarEmision(double emision){
+		emisionesAcumuladas+=emision;
+	}
+	public boolean esDeEsteAño() {
+		String fecha= this.fecha.toString();
+		Date year=new Date();
+		String fechaHuella=(fecha.split(" "))[0].split("-")[0];
+		String fechaDate=(String.valueOf(year)).split(" ")[5];
+		if(fechaHuella.equals(fechaDate)){
+			return true;
+		}
+		return false;
+	}
 	
 	
 }

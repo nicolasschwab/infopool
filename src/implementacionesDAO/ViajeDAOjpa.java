@@ -2,6 +2,7 @@ package implementacionesDAO;
 
 import interfacesDAO.ViajeDAO;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -10,8 +11,10 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 
 import model.Conversacion;
+import model.DiasSemana;
 import model.Evento;
 import model.FrecuenciaViaje;
+import model.HuellaCarbono;
 import model.Mensaje;
 import model.SolicitudViaje;
 import model.Viaje;
@@ -243,6 +246,44 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			q.setMaxResults(10);
 			listadoViajes = (List<Viaje>) q.getResultList();
 			for(Viaje v : listadoViajes){
+				for(FrecuenciaViaje f : v.getFrecuencias()){
+					f.getPasajeros();
+				}
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}		
+		return listadoViajes;
+	}
+
+	@Override
+	public <T> List<Viaje> getViajesAyer(DiasSemana diaAyer,String ayer) {
+		
+		List<Viaje> listadoViajes = null;		
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{
+			String qstr = "select e from "+ this.persistentClass.getSimpleName() +" e "
+					+ "where e.activo = true and ((e.fechaFin!=null"
+					+ " and (DATE(:ayer) between e.fechaInicio AND e.fechaFin)"
+					+ " and (select fv from FrecuenciaViaje fv where fv.diaFrecuencia = :dia) in elements(e.frecuencias)))"
+					+ " or ( DATE(:ayer)= e.fechaInicio))  ORDER BY e.fechaPublicacion ";
+			Query q = em.createQuery(qstr);
+			q.setParameter("ayer",ayer);
+			q.setParameter("dia",diaAyer);
+			listadoViajes = (List<Viaje>) q.getResultList();
+			for(Viaje v : listadoViajes){
+				for(Viajero viajero:v.getPasajeros()){
+					for(HuellaCarbono huella:viajero.getMiHuellaCarbono()){
+						huella.getEmisionesAcumuladas();
+					}
+				}
+				for(HuellaCarbono huella:v.getConductor().getMiHuellaCarbono()){
+					huella.getEmisionesAcumuladas();
+				}
+				v.getKilometros();
+				v.getConductor().getAuto().getModelo().getEmisionGases();
 				for(FrecuenciaViaje f : v.getFrecuencias()){
 					f.getPasajeros();
 				}

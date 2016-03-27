@@ -11,7 +11,9 @@
 		<action name="Inicio" method="inicio" class="inicioAction">
 			<result name="success">/index.jsp</result>
 		</action>
-
+		<action name="" method="index" class="inicioAction">
+			<result name="success">/index.jsp</result>
+		</action>
 		
 		<!-- Actions Login/out -->		
 		<action name="iniciarSesion" method="iniciarSesion" class="loginAction">			
@@ -349,6 +351,11 @@
 				<param name="idViaje">${idViaje}</param>
 			</result>
 			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
+		</action>
+		
+		<!-- Huella action -->
+		<action name="inicializarActualizarHuella" method="inicializarActualizarHuella" class="actualizarHuellaAction">
+			<result name="success" type="redirect">Inicio</result>
 		</action>
 		
 	</package>

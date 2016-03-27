@@ -71,6 +71,9 @@ public class Auto implements Serializable{
 	}
 	public void setCaracteristicas(String caracteristicas) {
 		this.caracteristicas = caracteristicas;
-	}	
+	}
+	public double calcularEmision(float km){
+		return km*modelo.getEmisionGases();
+	}
 
 }

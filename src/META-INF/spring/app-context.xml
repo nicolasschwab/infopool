@@ -32,6 +32,7 @@
 	
 	<!-- Actions Beans -->
 	<bean id="inicioAction" class="actions.InicioAction" scope="prototype" />
+	<bean id="actualizarHuellaAction" class="actions.ActualizarHuellaAction" scope="prototype" />
 	<bean id="loginAction" class="actions.LoginAction" scope="prototype">
 		<property name="usuarioDAO" ref="usuarioDAO" />
 	</bean>	

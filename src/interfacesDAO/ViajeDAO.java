@@ -1,9 +1,12 @@
 package interfacesDAO;
 
+import java.util.Date;
 import java.util.List;
 
+import model.DiasSemana;
 import model.Evento;
 import model.Viaje;
+import model.Viajero;
 
 public interface ViajeDAO extends GenericDAO<Viaje>{
 
@@ -20,4 +23,5 @@ public interface ViajeDAO extends GenericDAO<Viaje>{
 	public <T> List<Viaje> listarViajesConductor(T id);
 	public <T> List<Viaje> listarViajesPasajero(T id);
 	public <T> List<Viaje> listarViajesNoAsociados(T id,Evento evento);
+	public <T> List<Viaje> getViajesAyer(DiasSemana diasSemana, String string);
 }
