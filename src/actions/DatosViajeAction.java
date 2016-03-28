@@ -213,13 +213,13 @@ public class DatosViajeAction extends ActionSupport{
 				diaPeriodico = request.getParameterValues("diaPeriodico");
 				if (diaPeriodico != null && diaPeriodico.length > 0) {
 					for (int i = 0; i < diaPeriodico.length; i++) {						
-						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));						
+						frecuencias.add(new FrecuenciaViaje(DiasSemana.valueOf(diaPeriodico[i]), estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, this.getPuntosTrayecto(), this.getKilometros(), TramoViaje.valueOf(this.tramoViaje)));						
 					}
 				}
 				fFin = sdf.parse(this.getFechaFin());
 			}
 			else{				
-				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, TramoViaje.valueOf(this.tramoViaje)));
+				frecuencias.add(new FrecuenciaViaje(null, estadoFrecuencia, hPartida, hRegreso, this.getAsientosDisponibles(), viaje, this.getPuntosTrayecto(), this.getKilometros(), TramoViaje.valueOf(this.tramoViaje)));
 			}
 			fInicio = sdf.parse(this.getFechaInicio());
 			

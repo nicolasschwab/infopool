@@ -18,7 +18,6 @@ function inicializarRegistroViaje() {
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
   directionsDisplay.setMap(map);
   directionsDisplay.addListener('directions_changed', function() {
-	  //ACA SE DEBERIAN ACTUALIZAR LOS WAYPOINTS Y EL KM
 	  actualizarTrayecto(directionsDisplay.getDirections(),'');
   });
   

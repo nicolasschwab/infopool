@@ -75,9 +75,9 @@ public class ActualizarHuellaAction  extends ActionSupport implements Job{
 					List<HuellaCarbono> huellas=(List<HuellaCarbono>) viajero.getMiHuellaCarbono();
 					HuellaCarbono huella=null;
 					if(!huellas.isEmpty()){
-						//traer la huella del año corriente, si no hay crea una nueva
+						//traer la huella del aï¿½o corriente, si no hay crea una nueva
 						for(HuellaCarbono unaHuella: huellas){
-							if(unaHuella.esDeEsteAño()){
+							if(unaHuella.esDeEsteAnio()){
 								huella=unaHuella;
 							}
 						}

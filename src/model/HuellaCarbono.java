@@ -97,7 +97,7 @@ public class HuellaCarbono implements Serializable{
 	public void sumarEmision(double emision){
 		emisionesAcumuladas+=emision;
 	}
-	public boolean esDeEsteAño() {
+	public boolean esDeEsteAnio() {
 		String fecha= this.fecha.toString();
 		Date year=new Date();
 		String fechaHuella=(fecha.split(" "))[0].split("-")[0];
