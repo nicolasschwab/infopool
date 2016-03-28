@@ -19,7 +19,7 @@ function inicializarRegistroViaje() {
   directionsDisplay.setMap(map);
   directionsDisplay.addListener('directions_changed', function() {
 	  //ACA SE DEBERIAN ACTUALIZAR LOS WAYPOINTS Y EL KM
-	  actualizarTrayecto(directionsDisplay.getDirections());
+	  actualizarTrayecto(directionsDisplay.getDirections(),'');
   });
   
   var inputO = (document.getElementById('dirOrigen')); 
@@ -40,14 +40,17 @@ function inicializarRegistroViaje() {
   });
 }
 
-function inicializarEdicionViaje(wp){
-	  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);	  
-	  directionsDisplay.setMap(map);
-	  directionsDisplay.addListener('directions_changed', function() {
+function mostrarRecorridoFrecuencia(frecuencia){
+	  var directionsDisplayF = new google.maps.DirectionsRenderer(rendererOptions);
+	  var directionsServiceF = new google.maps.DirectionsService();
+	  var mapF = new google.maps.Map(document.getElementById('map-canvas'+frecuencia), mapOptions);	  
+	  directionsDisplayF.setMap(mapF);	  
+	  directionsDisplayF.addListener('directions_changed', function() {
 		  //ACA SE DEBERIAN ACTUALIZAR LOS WAYPOINTS Y EL KM
-		  actualizarTrayecto(directionsDisplay.getDirections());		  
+		  actualizarTrayecto(directionsDisplayF.getDirections(),"_"+frecuencia);		  
 	  });
-	  directionsDisplay.setPanel(document.getElementById('directionsPanel'));
+	  directionsDisplayF.setPanel(document.getElementById('directionsPanel'));
+	  var wp = document.getElementById("puntosTrayecto_"+frecuencia).value;	  
 	  var wpV = JSON.parse(wp)
 	  
 	  var waypoints = [];
@@ -69,9 +72,9 @@ function inicializarEdicionViaje(wp){
 	      travelMode: google.maps.TravelMode.DRIVING
 	    };
 
-	    directionsService.route(request, function(response, status) {
-	      if (status == google.maps.DirectionsStatus.OK) {
-	        directionsDisplay.setDirections(response);
+	    directionsServiceF.route(request, function(response,status) {
+	      if (status == google.maps.DirectionsStatus.OK){
+	        directionsDisplayF.setDirections(response);
 	      }
 	    });
 	  }
@@ -150,16 +153,16 @@ function calcularUbicacion(dirOrigen) {
 	}
 }
 
-function actualizarTrayecto(result) {
+function actualizarTrayecto(result,contenedor) {
   var total = (result.routes[0].legs[0].distance.value)/1000;  
-  document.getElementById('kilometros').value = total;  
-  guardarPuntosTrayecto();
+  document.getElementById('kilometros'+contenedor).value = total;
+  guardarPuntosTrayecto(result,"puntosTrayecto"+contenedor);  
 }
 
-function guardarPuntosTrayecto(){
-    var t=[];
+function guardarPuntosTrayecto(result,contenedor){	
+	var t=[];
     var pt;
-    var tleg = directionsDisplay.directions.routes[0].legs[0];
+    var tleg = result.routes[0].legs[0];
     data.start = {'lat': tleg.start_location.lat(), 'lng':tleg.start_location.lng()}
     data.end = {'lat': tleg.end_location.lat(), 'lng':tleg.end_location.lng()}
     var pt = tleg.via_waypoints;
@@ -168,11 +171,10 @@ function guardarPuntosTrayecto(){
     }
     data.waypoints = t;
     var str = JSON.stringify(data);
-    document.getElementById('puntosTrayecto').value = str;
+    document.getElementById(contenedor).value = str;
 }
 
-/* --------------------------- */
-	
+/* --------------------------- */	
 function inicializarRegistroEvento() {
 
 	  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  

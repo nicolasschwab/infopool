@@ -60,11 +60,14 @@ public class FrecuenciaViaje implements Serializable{
 	@Type(type="text")
     private String puntosTrayecto;
 	
+	@Column(nullable=false)
+	private float kilometros;
+	
 	public FrecuenciaViaje(){
 		super();
 	}	
 	public FrecuenciaViaje(DiasSemana diaFrecuencia, EstadoFrecuencia estadoFrecuencia, Time horaPartida,
-			Time horaRegreso, int asientosDisponibles, Viaje viaje, TramoViaje tramoViaje) {
+			Time horaRegreso, int asientosDisponibles, Viaje viaje, String puntosTrayecto, float kilometros, TramoViaje tramoViaje) {
 		super();
 		this.diaFrecuencia = diaFrecuencia;
 		this.estadoFrecuencia = estadoFrecuencia;
@@ -72,7 +75,8 @@ public class FrecuenciaViaje implements Serializable{
 		this.horaRegreso = horaRegreso;
 		this.asientosDisponibles = asientosDisponibles;
 		this.viaje = viaje;
-		this.tramoViaje = tramoViaje;		
+		this.tramoViaje = tramoViaje;
+		this.puntosTrayecto = puntosTrayecto;
 	}
 	
 	public int getId() {
@@ -146,6 +150,12 @@ public class FrecuenciaViaje implements Serializable{
 	}
 	public void setPuntosTrayecto(String puntosTrayecto) {
 		this.puntosTrayecto = puntosTrayecto;
+	}	
+	public float getKilometros() {
+		return kilometros;
+	}
+	public void setKilometros(float kilometros) {
+		this.kilometros = kilometros;
 	}
 	
 	public boolean esPasajero(Usuario usuario){
