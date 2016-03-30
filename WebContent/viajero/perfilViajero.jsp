@@ -17,57 +17,58 @@
 <div class="main_bg">    
     <div class="container">
         <div class="main row">
-		  <div class="col-md-12">
-		  		<div class="col-md-1"></div>
-		  		<div class="col-md-2 barraLateral">
+		  <div class="col-md-12">		  		
+		  		<div class="col-md-3 barraLateral">
 		  			<div class="menuBarra">	  			
 						<ul class="listaPerfil">						
 							<li id="infoTi" onclick="javascript:anclaInfoTi()"><i class="fa fa-user iconoBarra"></i>Informacion sobre ti</li>
 							<li id="contrasena" onclick="javascript:anclaContrasena()"><i class="fa fa-lock iconoBarra"></i>Contraseña</li>
 							<li id="infoPer" onclick="javascript:anclaInfoPersonal()"><i class="fa fa-male iconoBarra"></i>Informacion Personal</li>
-							<li id="infoAuto" onclick="javascript:anclaInfoAuto()"><i class="fa fa-car iconoBarra"></i>Informacion de tu auto</li>
+							<li id="infoAuto" onclick="javascript:anclaInfoAuto()"><i class="fa fa-circle iconoBarra"></i>Informacion de tu auto</li>
 						</ul>
 					</div>	  			
 		  		</div>
 		  		<s:fielderror />
-		  		<div class="col-md-8">
-		  			<fieldset id="editarInfoTi" class="fieldsetPerfil" >
-		  				<legend>Información sobre ti</legend>
-		  				<div class="row rowEditarPerfil"><div class="col-md-12"><s:text name="perfil.acercaDeTi" /></div></div>
-		  				<div class="row rowEditarPerfil">
-		  					<div class="col-md-3"><strong><s:text name="perfil.informacionSobreTi" />:</strong></div>
-			  				<div class="col-md-8 botonImagenEdicion">
-				  				<div class="col-md-4">
-				  					<div class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-									  <div class="modal-dialog modal-lg">
-									    <div class="modal-content popUpImagen">
-									        <div class="modal-header">
-									          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-									          <h4 class="modal-title" id="myLargeModalLabel"><s:text name="viajero.seleccionaFoto" /></h4>
-									        </div>
-									        <div class="modal-body">
-									        	<s:form cssClass="form-datos" theme="simple" role="form" id="registroForm" action="modificarImagen" method="POST" enctype="multipart/form-data">
-									       			<s:file name="fperfilUsuarioEdicion" />
-									       			<s:submit cssClass="btn btn-primary popUpBoton" value="%{getText('global.editar')}"/>
-									       		</s:form>															          
-									        </div>      
-									    </div>
-									  </div>
+		  		<div class="col-md-9">
+		  			<div class="fieldsetPerfil">		  		  
+			  			<fieldset id="editarInfoTi">
+			  				<legend>Información sobre ti</legend>
+			  				<div class="row rowEditarPerfil"><div class="col-md-12"><s:text name="perfil.acercaDeTi" /></div></div>
+			  				<div class="row rowEditarPerfil">
+			  					<div class="col-md-3"><strong><s:text name="perfil.informacionSobreTi" />:</strong></div>
+				  				<div class="col-md-8 botonImagenEdicion">
+					  				<div class="col-md-4">
+					  					<div class="modal fade myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+										  <div class="modal-dialog modal-lg">
+										    <div class="modal-content popUpImagen">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+										          <h4 class="modal-title" id="myLargeModalLabel"><s:text name="viajero.seleccionaFoto" /></h4>
+										        </div>
+										        <div class="modal-body">
+										        	<s:form cssClass="form-datos" theme="simple" role="form" id="registroForm" action="modificarImagen" method="POST" enctype="multipart/form-data">
+										       			<s:file name="fperfilUsuarioEdicion" />
+										       			<s:submit cssClass="btn btn-primary popUpBoton" value="%{getText('global.editar')}"/>
+										       		</s:form>															          
+										        </div>      
+										    </div>
+										  </div>
+										</div>
+					  					<img src="<s:url action="ImageAction">
+												<s:param name="id" value="%{user.id}"></s:param>
+											</s:url>" class="img-thumbnail">
 									</div>
-				  					<img src="<s:url action="ImageAction">
-											<s:param name="id" value="%{user.id}"></s:param>
-										</s:url>" class="img-thumbnail">
-								</div>
-								<div class="md-col-4">
-									<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target=".myModal"><s:text name="viajero.cambiarImagen" /></button>									
+									<div class="md-col-4">
+										<button type="button" class="btn btn-xs btn-info" data-toggle="modal" data-target=".myModal"><s:text name="viajero.cambiarImagen" /></button>									
+					  				</div>
 				  				</div>
 			  				</div>
-		  				</div>
-		  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.nombreUsuario" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="usuarioEdicion" id="usuarioEdicion" value="%{user.usuario}"/></div><div class="col-md-2"><div id="spinerUs" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkUs" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.preferencias" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><i class="fa fa-paw"></i></div></div></div>		  				
-		  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.calificacion" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:property value="user.calificacion"/>/5</div></div></div>
-		  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.fechaingreso" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:date name="user.fechaIngresoSistema" format="YYYY-MM-dd"/></div></div></div>
-		  			</fieldset>
+			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.nombreUsuario" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="usuarioEdicion" id="usuarioEdicion" value="%{user.usuario}"/></div><div class="col-md-2"><div id="spinerUs" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkUs" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+				  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.preferencias" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><i class="fa fa-paw"></i></div></div></div>		  				
+			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.calificacion" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:property value="user.calificacion"/>/5</div></div></div>
+			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.fechaingreso" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:date name="user.fechaIngresoSistema" format="YYYY-MM-dd"/></div></div></div>
+			  			</fieldset>
+		  			</div>
 		  			<fieldset id="editarContrasenia" class="fieldsetPerfil" >
 		  				<legend ><s:text name="perfil.contrasena" /></legend>
 		  				<form id="formContrasena">
@@ -101,9 +102,7 @@
 			  			<div class="row rowEditarPerfil"><div class="col-md-3 derecha"><s:submit cssClass="btn btn-primary " value="%{getText('global.registrar')}"></s:submit></div></div>
 			  			</form>
 				  	</fieldset>
-				</div>
-		  	
-		  	
+				</div>			 
 		  </div>
 		</div>
     </div>
