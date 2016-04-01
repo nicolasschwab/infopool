@@ -262,13 +262,7 @@ public class DatosViajeAction extends ActionSupport{
 			ViajeDAO viajeDAO = FactoryDAO.getViajeDAO();
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);		
 			id = Integer.parseInt(request.getParameter("id"));
-			viaje = viajeDAO.encontrarPorId(id);
-			if(this.getKilometros()!=0.0){
-				if(!(this.getKilometros()==viaje.getKilometros())){					
-					viaje.setKilometros(this.getKilometros());
-				}				
-				viaje.setPuntosTrayecto(this.getPuntosTrayecto());
-			}
+			viaje = viajeDAO.encontrarPorId(id);			
 			if(this.getDescripcion()!=null){
 				if(!(this.getDescripcion().equals(viaje.getDescripcion()))){
 					viaje.setDescripcion(this.getDescripcion());
@@ -299,30 +293,37 @@ public class DatosViajeAction extends ActionSupport{
 	public String EditarFrecuencia() throws Exception{
 		if (SessionUtil.checkLogin()){
 			if(this.getIdFrecuencia()>0){
-				FrecuenciaViaje frecuencia = frecuenciaViajeDAO.encontrar(this.getIdFrecuencia());
+				FrecuenciaViaje frecuencia = frecuenciaViajeDAO.encontrar(this.getIdFrecuencia());				
 				if(this.getAsientosDisponibles()>0){
 					if(!(frecuencia.getAsientosDisponibles()==this.getAsientosDisponibles())){
 						frecuencia.setAsientosDisponibles(this.getAsientosDisponibles());
 					}
-				}
-				System.out.println("hPartida:"+this.getHoraPartida());
+				}				
 				if(this.getHoraPartida()!=null){
 					Time hPartida = Time.valueOf(this.getHoraPartida()+":00");
 					if(!(frecuencia.getHoraPartida().equals(hPartida)))
 					frecuencia.setHoraPartida(hPartida);
-				}
-				System.out.println("hRegreso:"+this.getHoraRegreso().equals("undefined"));
-				if(!(this.getHoraRegreso().equals("undefined"))){
-					Time hRegreso = Time.valueOf(this.getHoraRegreso()+":00");
-					if(!(frecuencia.getHoraRegreso().equals(hRegreso))){
-						frecuencia.setHoraRegreso(hRegreso);
+				}				
+				if(this.getHoraRegreso()!=null){
+					if(!(this.getHoraRegreso().equals("undefined"))){
+						Time hRegreso = Time.valueOf(this.getHoraRegreso()+":00");
+						if(!(frecuencia.getHoraRegreso().equals(hRegreso))){
+							frecuencia.setHoraRegreso(hRegreso);
+						}
 					}
+				}				
+				if(this.getKilometros()!=0.0){					
+					if(!(this.getKilometros()==frecuencia.getKilometros())){					
+						frecuencia.setKilometros(this.getKilometros());						
+					}					
+					frecuencia.setPuntosTrayecto(this.getPuntosTrayecto());					
 				}
 				frecuenciaViajeDAO.modificar(frecuencia);
 				id = frecuencia.getViaje().getId();
 				return SUCCESS;
 			}			
 			else{
+				System.out.println("Id Frecuencia invalido "+this.getIdFrecuencia());
 				return INPUT;
 			}
 		}

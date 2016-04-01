@@ -63,45 +63,51 @@
 					  				</div>
 				  				</div>
 			  				</div>
-			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.nombreUsuario" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="usuarioEdicion" id="usuarioEdicion" value="%{user.usuario}"/></div><div class="col-md-2"><div id="spinerUs" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkUs" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.nombreUsuario" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="usuarioEdicion" id="usuarioEdicion" value="%{user.usuario}" cssClass="form-control"/></div><div class="col-md-2"><div id="spinerUs" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkUs" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
 				  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.preferencias" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><i class="fa fa-paw"></i></div></div></div>		  				
 			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.calificacion" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:property value="user.calificacion"/>/5</div></div></div>
 			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.fechaingreso" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:date name="user.fechaIngresoSistema" format="YYYY-MM-dd"/></div></div></div>
 			  			</fieldset>
 		  			</div>
-		  			<fieldset id="editarContrasenia" class="fieldsetPerfil" >
-		  				<legend ><s:text name="perfil.contrasena" /></legend>
-		  				<form id="formContrasena">
-		  					<div class="row rowEditarPerfil"><div class="col-md-3 errorEdicion" id="divRespuesta"></div></div>	
-			  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.claveActual" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:password id="claveActualEdicion" name="claveActualEdicion" value="" /></div></div></div>
-							<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.clave" />:</strong> </div><div class="col-md-8"><div class="col-md-6"> <s:password id="claveNuevaEdicion" name="claveNuevaEdicion" /></div></div></div>
-							<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.reingresarclave" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:password id="repetirClaveEdicion" name="repetirClaveEdicion" /></div></div></div>
-							<input type="hidden" name="<%=(session.getAttribute("tokenId"))%>" value="<%=(session.getAttribute("tokenValue"))%>">
-							<div class="col-md-2"><div id="spinerContrasena" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkContrasena" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div><input type="button" value="modificar" class="btn btn-primary botonContrasena" id="botonContrasena">
-						</form>
-				  	</fieldset>
-				  		
-				  		
-			  		<!-- Fieldset con los datos de usuario -->  	
-			  		<fieldset id="editarInfoPersonal" class="fieldsetPerfil">
-			  			<legend ><s:text name="perfil.informacionPersonal" /></legend>
-			  			<div class="row rowEditarPerfil"><div class="col-md-12"><s:text name="perfil.mensajeInfoPersonal" /></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.nombre" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="nombreUsuarioEdicion" cssClass="nombreEditar" id="nombreUsuarioEdicion" value="%{user.nombre}"/></div><div class="col-md-2"><div id="spinerNom" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkNom" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
-				  		<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.apellido" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="apellidoUsuarioEdicion" id="apellidoUsuarioEdicion" value="%{user.apellido}" /></div><div class="col-md-2"><div id="spinerApe" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkApe" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
-				  		<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.mail" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="mailUsuarioEdicion" id="mailUsuarioEdicion" value="%{user.mail}" /></div><div class="col-md-2"><div id="spinerMail" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkMail" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
-				  		<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.telefono" />:</strong> </div><div class="col-md-8"><div class="col-md-6"> <s:textfield name="telefonoUsuarioEdicion" id="telefonoUsuarioEdicion" value="%{user.telefono}"/></div><div class="col-md-2"><div id="spinerTel" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkTel" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
-						<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.fechanacimiento" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:date name="user.fechaNacimiento" format="YYYY-MM-dd" id="fechaNac" /> <s:textfield name="fNacimientoUsuarioEdicion" id="fNacimientoUsuarioEdicion" data-date-format="YYYY-MM-DD" value="%{fechaNac}"/></div><div class="col-md-2"><div id="spinerFNac" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkFNac" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
-				  		
-				  	</fieldset>
-				  	<!-- Fieldset con los datos de usuario -->  	
-			  		<fieldset id="editarInfoAuto" class="fieldsetPerfil">
-			  			<legend ><s:text name="perfil.informacionAuto" /></legend>
-			  			<form id="editarAuto" >
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.marca" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:select emptyOption="true" list="marcas"  listKey="id" listValue="nombre"  name="vistaMarca" value="4" cssClass="form-control" /></div></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.modelo" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><select id="modelos" name="modelos" class="form-control"><option></option></select></div></div></div>
-			  			<div class="row rowEditarPerfil"><div class="col-md-3 derecha"><s:submit cssClass="btn btn-primary " value="%{getText('global.registrar')}"></s:submit></div></div>
-			  			</form>
-				  	</fieldset>
+		  			<div class="fieldsetPerfil">
+			  			<fieldset id="editarContrasenia">
+			  				<legend ><s:text name="perfil.contrasena" /></legend>
+			  				<form id="formContrasena">
+			  					<div class="row rowEditarPerfil"><div class="col-md-3 errorEdicion" id="divRespuesta"></div></div>	
+				  				<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.claveActual" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:password id="claveActualEdicion" name="claveActualEdicion" value="" cssClass="form-control"/></div></div></div>
+								<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.clave" />:</strong> </div><div class="col-md-8"><div class="col-md-6"> <s:password id="claveNuevaEdicion" name="claveNuevaEdicion" cssClass="form-control"/></div></div></div>
+								<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.reingresarclave" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:password id="repetirClaveEdicion" name="repetirClaveEdicion" cssClass="form-control"/></div></div></div>
+								<input type="hidden" name="<%=(session.getAttribute("tokenId"))%>" value="<%=(session.getAttribute("tokenValue"))%>">
+								<div class="col-md-2"><div id="spinerContrasena" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkContrasena" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div>
+								<input type="button" value="modificar" class="btn btn-primary botonContrasena" id="botonContrasena">
+							</form>
+					  	</fieldset>
+					</div>
+				  					  		
+			  		<!-- Fieldset con los datos de usuario -->
+			  		<div class="fieldsetPerfil">  	
+				  		<fieldset id="editarInfoPersonal">
+				  			<legend ><s:text name="perfil.informacionPersonal" /></legend>
+				  			<div class="row rowEditarPerfil"><div class="col-md-12"><s:text name="perfil.mensajeInfoPersonal" /></div></div>
+				  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.nombre" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="nombreUsuarioEdicion" cssClass="nombreEditar form-control" id="nombreUsuarioEdicion" value="%{user.nombre}"/></div><div class="col-md-2"><div id="spinerNom" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkNom" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+					  		<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.apellido" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="apellidoUsuarioEdicion" id="apellidoUsuarioEdicion" value="%{user.apellido}" cssClass="form-control"/></div><div class="col-md-2"><div id="spinerApe" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkApe" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+					  		<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.mail" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:textfield name="mailUsuarioEdicion" id="mailUsuarioEdicion" value="%{user.mail}" cssClass="form-control"/></div><div class="col-md-2"><div id="spinerMail" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkMail" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+					  		<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.telefono" />:</strong> </div><div class="col-md-8"><div class="col-md-6"> <s:textfield name="telefonoUsuarioEdicion" id="telefonoUsuarioEdicion" value="%{user.telefono}" cssClass="form-control"/></div><div class="col-md-2"><div id="spinerTel" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkTel" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+							<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="viajero.fechanacimiento" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:date name="user.fechaNacimiento" format="YYYY-MM-dd" id="fechaNac" /> <s:textfield name="fNacimientoUsuarioEdicion" id="fNacimientoUsuarioEdicion" data-date-format="YYYY-MM-DD" value="%{fechaNac}" cssClass="form-control"/></div><div class="col-md-2"><div id="spinerFNac" style="display:none"><jsp:include page="../spiner.jsp"></jsp:include></div><div id="checkFNac" style="display:none"><i style="color:green" class="fa fa-check"></i> Guardado</div></div></div></div>
+					  		
+					  	</fieldset>
+					</div>
+				  	<!-- Fieldset con los datos de usuario -->
+				  	<div class="fieldsetPerfil">  	
+				  		<fieldset id="editarInfoAuto">
+				  			<legend ><s:text name="perfil.informacionAuto" /></legend>
+				  			<form id="editarAuto" >
+				  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.marca" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><s:select emptyOption="true" list="marcas"  listKey="id" listValue="nombre"  name="vistaMarca" value="4" cssClass="form-control" /></div></div></div>
+				  			<div class="row rowEditarPerfil"><div class="col-md-3"><strong><s:text name="vehiculo.modelo" />:</strong> </div><div class="col-md-8"><div class="col-md-6"><select id="modelos" name="modelos" class="form-control"><option></option></select></div></div></div>
+				  			<div class="row rowEditarPerfil"><div class="col-md-3 derecha"><s:submit cssClass="btn btn-primary " value="%{getText('global.registrar')}"></s:submit></div></div>
+				  			</form>
+					  	</fieldset>
+					</div>
 				</div>			 
 		  </div>
 		</div>
