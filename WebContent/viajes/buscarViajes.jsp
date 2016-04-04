@@ -23,7 +23,7 @@
 						<div class="boxViajes">
 							<div class="tiposListadoViajes" id="pasajero"><h3 class="titulo-contenido">Resultados de busqueda</h3></div>
 						</div>
-						<div class="listaViajesConductor">
+						<div class="listaViajesConductor listaviajes_wrap">
 							<s:if test="%{listaBusquedaViajes.isEmpty()}">							
 								<div>No hay Viajes para mostrar</div>
 							</s:if>

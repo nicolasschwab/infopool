@@ -522,7 +522,6 @@ body {
 	z-index: 1;
 }
 
-
 /* footer */
 footer{
 	padding: 1%;	
@@ -534,6 +533,40 @@ footer p{
 	margin: 0;
 	text-align: center;
 }
+
+
+/* Listado de Viajes */
+.viaje_item{
+	border: 1px solid #ddd;
+	padding: 5px;
+	margin: 10px 0;
+	box-sizing: border-box;
+    min-height: 100px
+}
+    
+.viaje_item_imagen{
+	width: 100px;	 
+	padding: 0;  
+}
+
+.viaje_item_content{
+	padding-right: 10px;
+	padding-left: 10px;
+}
+
+.viaje_item_main_content, .viaje_item_review_content{
+	padding-right: 0;
+	padding-left: 0;
+}
+
+.viaje_item_main_content{
+	padding-right: 10px;
+}
+
+.viaje_item_main_content span,.viaje_item_review_content span{
+	width: 100%;
+}
+
 
 /***** Media Quries *****/
 @media only screen and (max-width: 1440px) and (min-width: 240px)  {
