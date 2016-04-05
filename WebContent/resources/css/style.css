@@ -563,10 +563,61 @@ footer p{
 	padding-right: 10px;
 }
 
-.viaje_item_main_content span,.viaje_item_review_content span{
+.viaje_item_main_content span, .viaje_item_review_content span{
 	width: 100%;
+	display: block;
 }
 
+.viaje_item_content span.fecha_viaje{
+	color:#444;	
+	font-size:small;	
+}
+
+.viaje_item_content span.direccion_viaje{
+	color:#81c784;
+	font-weight:bold;
+	font-size:14px;
+	text-decoration:none;
+}
+
+.viaje_item_content span.descripcion_viaje{
+	font-size:small;
+	margin-top:5px;
+}
+
+.viaje_item_content span.icono_asientos_res{	
+	background:url("../images/asiento_icono.png") no-repeat;
+	background-size: 10%;	
+}
+
+.viaje_item_content span.icono_tramo_res{	
+	background:url("../images/tramo.png") no-repeat;
+	background-size: 10%;
+}
+
+.viaje_item_content span.icono_kilometros_res{	
+	background:url("../images/kilometros.png") no-repeat;
+	background-size: 10%;
+}
+
+.viaje_item_content span.icono_tipoviaje_res{	
+	background:url("../images/periodicidad.png") no-repeat;
+	background-size: 10%;	
+}
+
+.viaje_item_content .btn_infoviaje{	
+	color:#fff;		
+	padding: 5px 25px;
+	border: 0;
+	background-color:#81c784;
+	margin-top:5px;
+}
+
+.viaje_item_content span span{
+	margin-left:30px;
+	margin-bottom:5px;
+	font-size: small;
+}
 
 /***** Media Quries *****/
 @media only screen and (max-width: 1440px) and (min-width: 240px)  {
