@@ -5,6 +5,14 @@
 	<constant name="struts.objectFactory" value="org.apache.struts2.spring.StrutsSpringObjectFactory" />	
 	<constant name="struts.devMode" value="true" />
 	<constant name="struts.url.includeParams" value="none" />
+	<constant name="struts.action.extension" value="xhtml,,xml,json,action"/>
+    <constant name="struts.mapper.class" value="org.apache.struts2.dispatcher.mapper.PrefixBasedActionMapper" />
+	<constant name="struts.mapper.prefixMapping" value="/mobileLogin:rest,:struts"/>	
+	<constant name="struts.convention.action.suffix" value="Action"/>
+    <constant name="struts.convention.action.mapAllMatches" value="true"/>
+    <constant name="struts.convention.default.parent.package" value="rest-default"/>
+    <constant name="struts.convention.package.locators" value="actionsRest"/>
+        
 	<package name="default" namespace="" extends="struts-default">
 
 		<!-- Actions Inicio -->

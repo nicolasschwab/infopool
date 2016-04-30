@@ -12,6 +12,8 @@ import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import actionsGeneric.LoginActionGeneric;
+
 public class LoginAction extends ActionSupport implements SessionAware{
 	
 	private static final long serialVersionUID = 1L;
@@ -57,48 +59,40 @@ public class LoginAction extends ActionSupport implements SessionAware{
 
 	public String iniciarSesion() {
 		if (!SessionUtil.checkLogin()) {
-			if (this.getUsuario() == null){
-				return INPUT;
-			}
-			if ((this.getUsuario().length() > 0) && (this.getClave().length() > 0)){
-				user = usuarioDAO.existe(this.getUsuario(),this.getClave());
-				if (user != null) {
-					if (user.getActivo()){						
-						sessionMap.put("usrLogin", user);
-						//Esto genera los id unicos y randoms que el ususario va a usar en esta sesion
-						Csrf.getTokenId();
-						Csrf.getTokenValue();
-						return SUCCESS;
-					}
-					else{
-						addFieldError("loginError", "La cuenta a la que desea ingresa se encuentra desactivada temporalmente!");
-						return INPUT;
-					}
-				} else {
-					addFieldError("loginError", "Los datos ingresado son incorrectos!");
-					return INPUT;
+			if ((this.getUsuario().length() > 0 || this.getUsuario() == null) && (this.getClave().length() > 0 || this.getClave() == null)){
+				String respuesta=LoginActionGeneric.iniciarSesionGeneric(this.getUsuario(),this.getClave(),this.getUsuarioDAO(),sessionMap);
+				switch (respuesta){
+					case "success":
+						return this.finSuccessMetodo();
+					default:
+						return this.finErrorMetodo(respuesta);
 				}
 			}
 			else{
-				addFieldError("loginError", "Debe ingresar el usuario y la clave para acceder!");
-				return INPUT;
+				return this.finErrorMetodo("faltanDatos");				
 			}
 		} else {
-			return "conectado";
+			return this.finLogueadoMetodo();
 		}
 	}	
 	
-	public String cerrarSesion() {		
-		if(SessionUtil.checkLogin()){
-			sessionMap.invalidate();
-			return SUCCESS;
-		}else{
-			return "sinPermisos";
-		}		
+	public String cerrarSesion() {
+		return LoginActionGeneric.cerrarSesionGeneric(sessionMap);		
 	}
 	@Override
 	public void setSession(Map<String, Object> map) {
 		sessionMap = (SessionMap<String, Object>) map;		
+	}
+	
+	private String finSuccessMetodo() {
+		return SUCCESS;
+	}	
+	private String finLogueadoMetodo() {
+		return "conectado";
+	}
+	private String finErrorMetodo(String tipo) {
+		addFieldError("loginError", getText("error.login."+tipo));
+		return INPUT;
 	}
 	
 }
