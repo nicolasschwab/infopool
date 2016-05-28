@@ -59,7 +59,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
 
 	public String iniciarSesion() {
 		if (!SessionUtil.checkLogin()) {
-			if ((this.getUsuario().length() > 0 || this.getUsuario() == null) && (this.getClave().length() > 0 || this.getClave() == null)){
+			if ((this.getUsuario() == null || this.getUsuario().length() > 0 ) && (this.getClave() == null || this.getClave().length() > 0 )){
 				String respuesta=LoginActionGeneric.iniciarSesionGeneric(this.getUsuario(),this.getClave(),this.getUsuarioDAO(),sessionMap);
 				switch (respuesta){
 					case "success":
