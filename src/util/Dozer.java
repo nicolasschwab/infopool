@@ -7,7 +7,7 @@ public class Dozer {
 
 	static Mapper mapper=null;
 	
-	public Mapper getMapper(){
+	public static Mapper getMapper(){
 		if(mapper==null){
 			mapper = new DozerBeanMapper();
 		}
