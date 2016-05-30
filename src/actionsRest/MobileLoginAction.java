@@ -16,6 +16,7 @@ import implementacionesDAO.FactoryDAO;
 import model.Usuario;
 
 import util.Dozer;
+import util.SessionUtil;
 import util.Validacion;
 
 public class MobileLoginAction extends ActionSupport  implements SessionAware,ModelDriven<ViajeroDto>{
@@ -66,8 +67,10 @@ public class MobileLoginAction extends ActionSupport  implements SessionAware,Mo
 	}
 	
 	@Action("/mobileLogout")
-	public String cerrarSesion() {		
-		return LoginActionGeneric.cerrarSesionGeneric(sessionMap);	
+	public String cerrarSesion() {
+		String mensaje =LoginActionGeneric.cerrarSesionGeneric(sessionMap);
+		this.getModel().setMensaje(mensaje);
+		return mensaje;
 	}
 	
 	@Override
