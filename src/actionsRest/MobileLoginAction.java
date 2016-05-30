@@ -16,10 +16,11 @@ import implementacionesDAO.FactoryDAO;
 import model.Usuario;
 
 import util.Dozer;
+import util.Validacion;
 
 public class MobileLoginAction extends ActionSupport  implements SessionAware,ModelDriven<ViajeroDto>{
 	
-	private String usuario;
+	private String usr;
 	private String clave;
 	private ViajeroDto model;
 	private SessionMap<String, Object> sessionMap;
@@ -29,12 +30,12 @@ public class MobileLoginAction extends ActionSupport  implements SessionAware,Mo
 	}
 	public void setSession(SessionMap<String, Object> sessionMap) {
 		this.sessionMap = sessionMap;
+	}	
+	public String getUsr() {
+		return usr;
 	}
-	public String getUsuario() {
-		return usuario;
-	}
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
+	public void setUsr(String usr) {
+		this.usr = usr;
 	}
 	public String getClave() {
 		return clave;
@@ -45,9 +46,23 @@ public class MobileLoginAction extends ActionSupport  implements SessionAware,Mo
 
 	@Action("/mobileLogin")
 	public void index(){
-		//FIXME falta agregar las validaciones, cuando se tenga la app android andando
-		LoginActionGeneric.iniciarSesionGeneric(usuario, clave,FactoryDAO.getUsuarioDAO(),sessionMap);
-		model=(new Dozer().getMapper().map(FactoryDAO.getUsuarioDAO().existe(usuario,clave),ViajeroDto.class));
+		if(Validacion.stringNoVacio(this.getClave()) && Validacion.stringNoVacio(this.getUsr()) ){
+			String login=LoginActionGeneric.iniciarSesionGeneric(this.getUsr(), this.getClave(), FactoryDAO.getUsuarioDAO(), sessionMap);
+			switch (login){
+			case "success":
+				this.setModel((Dozer.getMapper().map(FactoryDAO.getUsuarioDAO().existe(this.getUsr(),this.getClave()),ViajeroDto.class)));
+				break;
+			case "desactivada":
+				this.getModel().setMensaje("El usuario esta desactivado temporalmente");
+				break;
+			case "datosIncorrectos":
+				this.getModel().setMensaje("Los datos ingresados son incorrectos");
+				break;
+			}			
+		}
+		else{
+			this.getModel().setMensaje("Debe completar todos los campos");
+		}		
 	}
 	
 	@Action("/mobileLogout")
@@ -62,6 +77,13 @@ public class MobileLoginAction extends ActionSupport  implements SessionAware,Mo
 
 	
 	public ViajeroDto getModel() {
+		if(model==null){
+			model=new ViajeroDto();
+		}
 		return model;
+	}
+	
+	public void setModel(ViajeroDto model){
+		this.model=model;
 	}
 }

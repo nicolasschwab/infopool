@@ -4,8 +4,6 @@ public class ViajeroDto {
 
 	private String usuario;
 	
-	private String clave;
-	
 	private String nombre;	
 
 	private String apellido;
@@ -13,6 +11,8 @@ public class ViajeroDto {
 	private float calificacion;
 	
 	private String mail;
+	
+	private String mensaje;
 
 	public String getMail() {
 		return mail;
@@ -28,14 +28,6 @@ public class ViajeroDto {
 
 	public void setUsuario(String usuario) {
 		this.usuario = usuario;
-	}
-
-	public String getClave() {
-		return clave;
-	}
-
-	public void setClave(String clave) {
-		this.clave = clave;
 	}
 
 	public String getNombre() {
@@ -61,5 +53,14 @@ public class ViajeroDto {
 	public void setCalificacion(float calificacion) {
 		this.calificacion = calificacion;
 	}
+
+	public String getMensaje() {
+		return mensaje;
+	}
+
+	public void setMensaje(String mensaje) {
+		this.mensaje = mensaje;
+	}
+	
 	
 }
