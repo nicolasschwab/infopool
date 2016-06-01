@@ -66,12 +66,18 @@ public class ViajeAction extends ActionSupport {
 		this.viajeId = viajeId;
 	}
 	public String getDireccionOrigen() {
+		if(this.direccionOrigen==null){
+			this.direccionOrigen="";
+		}
 		return direccionOrigen;
 	}
 	public void setDireccionOrigen(String direccionOrigen) {
 		this.direccionOrigen = direccionOrigen;
 	}
 	public String getDireccionDestino() {
+		if(this.direccionDestino==null){
+			this.direccionDestino="";
+		}
 		return direccionDestino;
 	}
 	public void setDireccionDestino(String direccionDestino) {
@@ -161,7 +167,6 @@ public class ViajeAction extends ActionSupport {
 	
 	public String busquedaViaje() {
 		if (SessionUtil.checkLogin()){
-			viajero = (Viajero) SessionUtil.getUsuario();
 			listaBusquedaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
 			return SUCCESS;
 		}
@@ -202,20 +207,12 @@ public class ViajeAction extends ActionSupport {
 	public String BusquedaParametrizadaViaje() throws Exception{		
 		if (SessionUtil.checkLogin()){
 			viajero = (Viajero) SessionUtil.getUsuario();
-			if (this.direccionOrigen != null && !this.direccionOrigen.equals("")) {
-				if (this.direccionDestino != null && !this.direccionDestino.equals("")) {
-					if((this.fechaViaje == null) || (this.fechaViaje.equals(""))){
-						fechaViaje = "2016-01-01";
-					}
-					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-					Date fecha = sdf.parse(this.getFechaViaje());
-					listaBusquedaViajes = viajeDAO.obtenerViajesBusquedaParametrizada(this.direccionOrigen,this.direccionDestino,fecha);
-				} else {
-					addFieldError("loginError", "Por favor ingrese la direccion destino");
-				}
-			} else {
-				addFieldError("loginError", "Por favor ingrese la direccion origen");
-			}						
+			if((this.fechaViaje == null) || (this.fechaViaje.equals(""))){
+				fechaViaje = "2016-01-01";
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fecha = sdf.parse(this.getFechaViaje());
+			listaBusquedaViajes = viajeDAO.obtenerViajesBusquedaParametrizada(this.getDireccionOrigen(),this.getDireccionDestino(),fecha);
 			return SUCCESS;
 		}		
 		return "sinPermisos";
