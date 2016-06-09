@@ -10,7 +10,7 @@ import org.apache.struts2.interceptor.SessionAware;
 import com.opensymphony.xwork2.ActionSupport;
 import com.opensymphony.xwork2.ModelDriven;
 
-import actionsGeneric.LoginActionGeneric;
+import actionsGeneric.GenericLoginAction;
 import dto.ViajeroDto;
 import implementacionesDAO.FactoryDAO;
 import model.Usuario;
@@ -18,8 +18,8 @@ import model.Usuario;
 import util.Dozer;
 import util.SessionUtil;
 import util.Validacion;
-
-public class MobileLoginAction extends ActionSupport  implements SessionAware,ModelDriven<ViajeroDto>{
+@Action("/sesion")
+public class MobileLoginAction implements SessionAware,ModelDriven<ViajeroDto>{
 	
 	private String usr;
 	private String clave;
@@ -45,32 +45,19 @@ public class MobileLoginAction extends ActionSupport  implements SessionAware,Mo
 		this.clave = clave;
 	}
 
-	@Action("/mobileLogin")
+	@Action("/login")
 	public void index(){
 		if(Validacion.stringNoVacio(this.getClave()) && Validacion.stringNoVacio(this.getUsr()) ){
-			String login=LoginActionGeneric.iniciarSesionGeneric(this.getUsr(), this.getClave(), FactoryDAO.getUsuarioDAO(), sessionMap);
-			switch (login){
-			case "success":
+			String login=GenericLoginAction.iniciarSesionGeneric(this.getUsr(), this.getClave(), FactoryDAO.getUsuarioDAO(), sessionMap);
+			if (login=="success"){
 				this.setModel((Dozer.getMapper().map(FactoryDAO.getUsuarioDAO().existe(this.getUsr(),this.getClave()),ViajeroDto.class)));
-				break;
-			case "desactivada":
-				this.getModel().setMensaje("El usuario esta desactivado temporalmente");
-				break;
-			case "datosIncorrectos":
-				this.getModel().setMensaje("Los datos ingresados son incorrectos");
-				break;
 			}			
 		}
-		else{
-			this.getModel().setMensaje("Debe completar todos los campos");
-		}		
 	}
 	
-	@Action("/mobileLogout")
-	public String cerrarSesion() {
-		String mensaje =LoginActionGeneric.cerrarSesionGeneric(sessionMap);
-		this.getModel().setMensaje(mensaje);
-		return mensaje;
+	@Action("/logout")
+	public void cerrarSesion() {
+		GenericLoginAction.cerrarSesionGeneric(sessionMap);
 	}
 	
 	@Override

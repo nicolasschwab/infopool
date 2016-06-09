@@ -12,7 +12,7 @@ import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-import actionsGeneric.LoginActionGeneric;
+import actionsGeneric.GenericLoginAction;
 
 public class LoginAction extends ActionSupport implements SessionAware{
 	
@@ -60,7 +60,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
 	public String iniciarSesion() {
 		if (!SessionUtil.checkLogin()) {
 			if ((this.getUsuario() == null || this.getUsuario().length() > 0 ) && (this.getClave() == null || this.getClave().length() > 0 )){
-				String respuesta=LoginActionGeneric.iniciarSesionGeneric(this.getUsuario(),this.getClave(),this.getUsuarioDAO(),sessionMap);
+				String respuesta=GenericLoginAction.iniciarSesionGeneric(this.getUsuario(),this.getClave(),this.getUsuarioDAO(),sessionMap);
 				switch (respuesta){
 					case "success":
 						return this.finSuccessMetodo();
@@ -77,7 +77,7 @@ public class LoginAction extends ActionSupport implements SessionAware{
 	}	
 	
 	public String cerrarSesion() {
-		return LoginActionGeneric.cerrarSesionGeneric(sessionMap);		
+		return GenericLoginAction.cerrarSesionGeneric(sessionMap);		
 	}
 	@Override
 	public void setSession(Map<String, Object> map) {

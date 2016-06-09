@@ -24,6 +24,7 @@ import util.SessionUtil;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
+import actionsGeneric.GenericViajeAction;
 import implementacionesDAO.FactoryDAO;
 
 public class ViajeAction extends ActionSupport {
@@ -166,11 +167,11 @@ public class ViajeAction extends ActionSupport {
 	}
 	
 	public String busquedaViaje() {
-		if (SessionUtil.checkLogin()){
-			listaBusquedaViajes = viajeDAO.obtenerUltimosViajesBusqueda();			
-			return SUCCESS;
+		listaBusquedaViajes = new GenericViajeAction().busquedaViaje();
+		if(listaBusquedaViajes ==null){
+			return "sinPermisos";
 		}
-		return "sinPermisos";
+		return SUCCESS;		
 	}
 	
 	public String DetalleViaje() throws Exception {

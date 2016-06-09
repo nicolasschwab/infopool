@@ -12,7 +12,7 @@ import model.Usuario;
 import util.Csrf;
 import util.SessionUtil;
 
-public class LoginActionGeneric{
+public class GenericLoginAction{
 	
 
 	public static String iniciarSesionGeneric(String usuario,String clave,UsuarioDAO usuarioDAO, SessionMap<String, Object>  sessionMap){

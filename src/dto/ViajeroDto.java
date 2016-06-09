@@ -11,8 +11,6 @@ public class ViajeroDto {
 	private float calificacion;
 	
 	private String mail;
-	
-	private String mensaje;
 
 	public String getMail() {
 		return mail;
@@ -52,15 +50,6 @@ public class ViajeroDto {
 
 	public void setCalificacion(float calificacion) {
 		this.calificacion = calificacion;
-	}
-
-	public String getMensaje() {
-		return mensaje;
-	}
-
-	public void setMensaje(String mensaje) {
-		this.mensaje = mensaje;
-	}
-	
+	}	
 	
 }
