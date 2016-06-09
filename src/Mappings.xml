@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mappings xmlns="http://dozer.sourceforge.net"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://dozer.sourceforge.net
+          http://dozer.sourceforge.net/schema/beanmapping.xsd">  
+
+  <mapping wildcard="false"> 
+    <class-a>model.Viaje</class-a>
+    <class-b>dto.ViajeDto</class-b>
+      <field>
+        <a>id</a>
+        <b>id</b>
+      </field>   
+      <field>
+        <a>direccionOrigen</a>
+        <b>direccionOrigen</b>
+      </field>
+      <field>
+        <a>direccionDestino</a>
+        <b>direccionDestino</b>
+      </field>
+      <field>
+        <a>puntosTrayecto</a>
+        <b>puntosTrayecto</b>
+      </field>
+      <field>
+        <a>fechaPublicacion</a>
+        <b>fechaPublicacion</b>
+      </field>
+      <field>
+        <a>fechaInicio</a>
+        <b>fechaInicio</b>
+      </field>
+      <field>
+        <a>fechaFin</a>
+        <b>fechaFin</b>
+      </field>
+      <field>
+        <a>eventoAsociado</a>
+        <b>eventoAsociado</b>
+      </field>
+      <field>
+        <a>descripcion</a>
+        <b>descripcion</b>
+      </field>
+      <field>
+        <a>kilometros</a>
+        <b>kilometros</b>
+      </field>
+      <field>
+        <a>fechaPublicacion</a>
+        <b>fechaPublicacion</b>
+      </field>
+      <field>
+        <a>conductor.nombre</a>
+        <b>nombreConductor</b>
+      </field>
+      
+      
+      
+      
+	
+	
+	
+			
+		
+	
+	
+	
+	
+	<!--  private Viajero conductor;-->
+
+  </mapping>  
+
+</mappings> 
