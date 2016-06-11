@@ -1,5 +1,6 @@
 package actionsRest;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import com.opensymphony.xwork2.ModelDriven;
 import actionsGeneric.GenericViajeAction;
 import dto.ViajeDto;
 import dto.ViajeroDto;
+import model.Evento;
 import model.Viaje;
 import util.Dozer;
 import util.SessionUtil;
@@ -18,6 +20,9 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 
 	private List<Viaje> listaBusquedaViajes;
 	private List<ViajeDto> listaBusquedaViajesDto;
+	private String direccionOrigen;
+	private String direccionDestino;
+	private String fechaViaje;
 	
 	
 	public List<Viaje> getListaBusquedaViajes() {
@@ -39,11 +44,41 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		this.listaBusquedaViajesDto = listaBusquedaViajesDto;
 	}
 	
+	public String getDireccionOrigen() {
+		if(this.direccionOrigen==null){
+			this.direccionOrigen="";
+		}
+		return direccionOrigen;
+	}
+
+	public void setDireccionOrigen(String direccionOrigen) {
+		this.direccionOrigen = direccionOrigen;
+	}
+
+	public String getDireccionDestino() {
+		if(this.direccionDestino==null){
+			this.direccionDestino="";
+		}
+		return direccionDestino;
+	}
+
+	public void setDireccionDestino(String direccionDestino) {
+		this.direccionDestino = direccionDestino;
+	}
+
+	public String getFechaViaje() {
+		return fechaViaje;
+	}
+
+	public void setFechaViaje(String fechaViaje) {
+		this.fechaViaje = fechaViaje;
+	}
+
 	@Action("/buscar")
-	public void busquedaViaje(){
+	public void busquedaViaje() throws ParseException{
 		if(SessionUtil.checkLogin()){		
-			this.setListaBusquedaViajes( new GenericViajeAction().busquedaViaje());
-			if(this.getListaBusquedaViajes() !=null){
+			this.setListaBusquedaViajes( new GenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje()));
+			if(!this.getListaBusquedaViajes().isEmpty()){
 				for(Viaje v: this.getListaBusquedaViajes()){
 					ViajeDto viajedto= new ViajeDto();
 					Dozer.getMapper().map(v, viajedto);

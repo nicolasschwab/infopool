@@ -4,6 +4,7 @@ import interfacesDAO.FrecuenciaViajeDAO;
 import interfacesDAO.ViajeDAO;
 import interfacesDAO.ViajeroDAO;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Collections;
@@ -166,7 +167,7 @@ public class ViajeAction extends ActionSupport {
 		this.soyPasajero = soyPasajero;
 	}
 	
-	public String busquedaViaje() {
+	public String busquedaViaje() throws ParseException {
 		listaBusquedaViajes = new GenericViajeAction().busquedaViaje();
 		if(listaBusquedaViajes ==null){
 			return "sinPermisos";
@@ -207,13 +208,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String BusquedaParametrizadaViaje() throws Exception{		
 		if (SessionUtil.checkLogin()){
-			viajero = (Viajero) SessionUtil.getUsuario();
-			if((this.fechaViaje == null) || (this.fechaViaje.equals(""))){
-				fechaViaje = "2016-01-01";
-			}
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			Date fecha = sdf.parse(this.getFechaViaje());
-			listaBusquedaViajes = viajeDAO.obtenerViajesBusquedaParametrizada(this.getDireccionOrigen(),this.getDireccionDestino(),fecha);
+			listaBusquedaViajes = new GenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje());
 			return SUCCESS;
 		}		
 		return "sinPermisos";

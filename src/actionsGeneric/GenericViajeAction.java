@@ -1,5 +1,8 @@
 package actionsGeneric;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import implementacionesDAO.FactoryDAO;
@@ -24,11 +27,25 @@ private ViajeDAO viajeDAO;
 	}
 
 
-	public List<Viaje> busquedaViaje() {
+	public List<Viaje> busquedaViaje() throws ParseException {
 		if (SessionUtil.checkLogin()){
-			return this.getViajeDAO().obtenerUltimosViajesBusqueda();
+			return this.busquedaViaje(null,null, null);
 		}
 		return null;
 	}
+	
+	public List<Viaje> busquedaViaje(String dirOrigen, String dirDestino, String fecha) throws ParseException{
+		if (SessionUtil.checkLogin()){
+			if((fecha == null) || (fecha.equals(""))){
+				fecha = "2016-01-01";
+			}
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Date fechaViaje = sdf.parse(fecha);
+			return this.getViajeDAO().obtenerViajesBusquedaParametrizada(dirOrigen, dirDestino, fechaViaje);
+		}
+		return null;
+	}
+	
+	
 	
 }
