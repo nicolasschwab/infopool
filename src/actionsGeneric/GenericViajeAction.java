@@ -48,7 +48,7 @@ private ViajeDAO viajeDAO;
 	}
 	
 	public Viaje detalleViaje(String id){
-		return viajeDAO.encontrarPorId(Integer.parseInt(id));
+		return this.getViajeDAO().encontrarPorId(Integer.parseInt(id));
 	}
 	
 	

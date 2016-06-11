@@ -22,13 +22,15 @@ public class ViajeDto {
 	
 	private Date fechaFin;		
 		
-	private Evento eventoAsociado;
-	
-	private String nombreConductor;
+	private Evento eventoAsociado;	
 	
 	private String descripcion;
 	
 	private float kilometros;
+	
+	private String nombreConductor;
+	
+	private String calificacionConductor;
 
 	public int getId() {
 		return id;
@@ -117,6 +119,15 @@ public class ViajeDto {
 	public void setKilometros(float kilometros) {
 		this.kilometros = kilometros;
 	}
+
+	public String getCalificacionConductor() {
+		return calificacionConductor;
+	}
+
+	public void setCalificacionConductor(String calificacionConductor) {
+		this.calificacionConductor = calificacionConductor;
+	}
+	
 	
 	
 	

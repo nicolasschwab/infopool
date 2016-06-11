@@ -55,6 +55,10 @@
         <a>conductor.nombre</a>
         <b>nombreConductor</b>
       </field>
+      <field>
+        <a>conductor.calificacion</a>
+        <b>calificacionConductor</b>
+      </field>
       
       
       
