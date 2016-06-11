@@ -9,6 +9,7 @@ import implementacionesDAO.FactoryDAO;
 import interfacesDAO.ViajeDAO;
 import model.Viaje;
 import util.SessionUtil;
+import util.Validacion;
 
 public class GenericViajeAction {
 
@@ -36,7 +37,7 @@ private ViajeDAO viajeDAO;
 	
 	public List<Viaje> busquedaViaje(String dirOrigen, String dirDestino, String fecha) throws ParseException{
 		if (SessionUtil.checkLogin()){
-			if((fecha == null) || (fecha.equals(""))){
+			if(!Validacion.stringNoVacio(fecha)){
 				fecha = "2016-01-01";
 			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -44,6 +45,10 @@ private ViajeDAO viajeDAO;
 			return this.getViajeDAO().obtenerViajesBusquedaParametrizada(dirOrigen, dirDestino, fechaViaje);
 		}
 		return null;
+	}
+	
+	public Viaje detalleViaje(String id){
+		return viajeDAO.encontrarPorId(Integer.parseInt(id));
 	}
 	
 	

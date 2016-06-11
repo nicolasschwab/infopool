@@ -7,7 +7,7 @@ public class Generics {
 	private static GenericViajeAction genericViaje;
 	
 	public static GenericViajeAction getGenericViajeAction(){
-		if(genericViaje!=null){
+		if(genericViaje==null){
 			genericViaje=new GenericViajeAction();
 		}
 		return genericViaje;

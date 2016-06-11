@@ -16,13 +16,14 @@ import model.Viaje;
 import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
+import util.Validacion;
 @Action("/viaje")
 public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 
 	private List<Viaje> listaBusquedaViajes;
 	private List<ViajeDto> listaBusquedaViajesDto;
 	
-	private Integer id;
+	private String id;
 	private String direccionOrigen;
 	private String direccionDestino;
 	private String fechaViaje;
@@ -77,11 +78,11 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		this.fechaViaje = fechaViaje;
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -102,7 +103,12 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 	@Action("/detalle")
 	public void detalle(){
 		if(SessionUtil.checkLogin()){
-			
+			if(Validacion.stringNoVacio(this.getId())){			
+				Viaje viaje=Generics.getGenericViajeAction().detalleViaje(this.getId());
+				if(viaje!=null){				
+					this.getModel().add(Dozer.getMapper().map(viaje, ViajeDto.class));
+				}
+			}
 		}
 	}
 	

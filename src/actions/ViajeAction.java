@@ -181,7 +181,7 @@ public class ViajeAction extends ActionSupport {
 			viajero = (Viajero) SessionUtil.getUsuario();						
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 			if(request.getParameter("id") != null){
-				viaje = viajeDAO.encontrarPorId(Integer.parseInt(request.getParameter("id")));
+				viaje = Generics.getGenericViajeAction().detalleViaje(request.getParameter("id"));
 				//Ordena los mensajes por fecha
 				Collections.sort((List)viaje.getForoViaje().getMensajes(), new Comparator<Mensaje>() {
 				    public int compare(Mensaje o1, Mensaje o2) {
