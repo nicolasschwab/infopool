@@ -20,6 +20,7 @@ import model.Mensaje;
 import model.Usuario;
 import model.Viaje;
 import model.Viajero;
+import util.Generics;
 import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -168,7 +169,7 @@ public class ViajeAction extends ActionSupport {
 	}
 	
 	public String busquedaViaje() throws ParseException {
-		listaBusquedaViajes = new GenericViajeAction().busquedaViaje();
+		listaBusquedaViajes = Generics.getGenericViajeAction().busquedaViaje();
 		if(listaBusquedaViajes ==null){
 			return "sinPermisos";
 		}
@@ -208,7 +209,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String BusquedaParametrizadaViaje() throws Exception{		
 		if (SessionUtil.checkLogin()){
-			listaBusquedaViajes = new GenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje());
+			listaBusquedaViajes = Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje());
 			return SUCCESS;
 		}		
 		return "sinPermisos";

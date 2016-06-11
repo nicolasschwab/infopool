@@ -14,12 +14,15 @@ import dto.ViajeroDto;
 import model.Evento;
 import model.Viaje;
 import util.Dozer;
+import util.Generics;
 import util.SessionUtil;
 @Action("/viaje")
 public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 
 	private List<Viaje> listaBusquedaViajes;
 	private List<ViajeDto> listaBusquedaViajesDto;
+	
+	private Integer id;
 	private String direccionOrigen;
 	private String direccionDestino;
 	private String fechaViaje;
@@ -74,10 +77,18 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		this.fechaViaje = fechaViaje;
 	}
 
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 	@Action("/buscar")
 	public void busquedaViaje() throws ParseException{
 		if(SessionUtil.checkLogin()){		
-			this.setListaBusquedaViajes( new GenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje()));
+			this.setListaBusquedaViajes( Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje()));
 			if(!this.getListaBusquedaViajes().isEmpty()){
 				for(Viaje v: this.getListaBusquedaViajes()){
 					ViajeDto viajedto= new ViajeDto();
@@ -87,6 +98,14 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 			}
 		}
 	}
+	
+	@Action("/detalle")
+	public void detalle(){
+		if(SessionUtil.checkLogin()){
+			
+		}
+	}
+	
 
 	@Override
 	public List<ViajeDto> getModel() {
