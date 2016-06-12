@@ -1,5 +1,6 @@
 package actions;
 
+import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.FrecuenciaViajeDAOjpa;
 import implementacionesDAO.SolicitudViajeDAOjpa;
 import implementacionesDAO.ViajeDAOjpa;
@@ -23,6 +24,7 @@ import model.Viajero;
 
 import org.apache.struts2.ServletActionContext;
 
+import util.Generics;
 import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -133,29 +135,20 @@ public class SolicitudViajeAction extends ActionSupport{
 	}
 		
 	public String RegistroSolicitudViaje() throws Exception{		
-		if (SessionUtil.checkLogin()) {
-			viajero = (Viajero)SessionUtil.getUsuario();
+		if (SessionUtil.checkLogin()) {			
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-			idFrecuenciaViaje = Integer.parseInt(request.getParameter("idFrecuenciaViaje"));
-			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(idFrecuenciaViaje);
-			viaje = frecuenciaViaje.getViaje();			
-			if (!viaje.esConductor(viajero)){
-				idViaje = viaje.getId();				
-				tieneSolicitudPendiente = solicitudViajeDAO.tieneSolicitudEstado(viajero,frecuenciaViaje,EstadoSolicitud.PENDIENTE);
-				if(!tieneSolicitudPendiente){
-					Date fechaInicioSolicitud = new Date();					
-					solicitudViaje = new SolicitudViaje(fechaInicioSolicitud,null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,null);					
-					solicitudViajeDAO.registrar(solicitudViaje);
-					new NotificacionAction().crearNotificacionSolicitudNueva(viaje);
-					return SUCCESS;				
-				}else{					
+			String idFrecuencia=request.getParameter("idFrecuenciaViaje");
+			String respuesta= Generics.getGenericSolicitudAction().RegistroSolicitudViaje(idFrecuencia);
+			idViaje=((FrecuenciaViaje) FactoryDAO.getFrecuenciaViajeDAO().encontrar(Integer.parseInt(idFrecuencia))).getViaje().getId();
+			switch(respuesta){
+				case "SUCCESS":
+					return SUCCESS;
+				case "INPUT":
 					addFieldError("loginError", "Usted ya solicito participar en este viaje");
 					return INPUT;
+				default:
+					return respuesta;
 				}
-			}
-			else{
-				return "sinPermisos";
-			}
 		}
 		else{
 			return "login";
