@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Convert;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 
+import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
 import dto.SolicitudViajeDto;
@@ -60,8 +63,20 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 			SolicitudViaje solicitud= FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
 			String respuesta= Generics.getGenericSolicitudAction().AceptarSolicitudViaje(solicitud);
 			if(respuesta=="SUCCESS"){
-				this.getModel().add(Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+				
 			}		
+		}
+	}
+	
+	@Action("/rechazar")
+	public void RechazarSolicitudViaje() throws NumberFormatException, Exception{
+		if(SessionUtil.checkLogin()){
+			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
+			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(Integer.parseInt(request.getParameter("id")));
+			String respuesta=Generics.getGenericSolicitudAction().RechazarSolicitudViaje(solicitudViaje);
+			if(respuesta=="SUCCESS"){
+				this.getModel().add(Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
+			}
 		}
 	}
 	

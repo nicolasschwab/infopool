@@ -86,4 +86,19 @@ public class GenericSolicitudAction {
 			return "INPUT";
 		}
 	}
+	
+	public String RechazarSolicitudViaje(SolicitudViaje solicitudViaje) throws Exception{
+	
+		FrecuenciaViaje frecuenciaViaje = ((FrecuenciaViajeDAOjpa)FactoryDAO.getFrecuenciaViajeDAO()).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
+		Viaje viaje = frecuenciaViaje.getViaje();
+		if(viaje.esConductor(SessionUtil.getUsuario())){
+			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.RECHAZADA);
+			solicitudViaje.setFechaFinSolicitud(new Date());
+			FactoryDAO.getSolicitudViajeDAO().modificar(solicitudViaje);
+		
+			new NotificacionAction().crearNotificacionRechazoSolicitud(solicitudViaje.getViajero(), viaje);
+			return "SUCCESS";
+		}
+		return "INPUT";
+	}
 }

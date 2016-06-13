@@ -177,18 +177,15 @@ public class SolicitudViajeAction extends ActionSupport{
 		if (SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
 			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-			
-			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.RECHAZADA);
-			solicitudViaje.setFechaFinSolicitud(new Date());
-			solicitudViajeDAO.modificar(solicitudViaje);	
-
-			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
-			idFrecuenciaViaje = frecuenciaViaje.getId();
-			viaje = frecuenciaViaje.getViaje();
-			
-			new NotificacionAction().crearNotificacionRechazoSolicitud(solicitudViaje.getViajero(), viaje);
-			return SUCCESS;
-		} else{
+			String respuesta=Generics.getGenericSolicitudAction().RechazarSolicitudViaje(solicitudViaje);
+			idFrecuenciaViaje=solicitudViaje.getFrecuenciaViaje().getId();
+			switch(respuesta){
+			case "SUCCESS":
+				return SUCCESS;
+			default:
+				return "sinPermisos";
+			}			
+		}else{
 			return "sinPermisos";
 		}
 	}
