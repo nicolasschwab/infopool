@@ -1,5 +1,6 @@
 package util;
 
+import actionsGeneric.GenericDatosViajeAction;
 import actionsGeneric.GenericLoginAction;
 import actionsGeneric.GenericSolicitudAction;
 import actionsGeneric.GenericViajeAction;
@@ -9,6 +10,7 @@ public class Generics {
 	private static GenericViajeAction genericViaje;
 	private static GenericSolicitudAction genericSolicitud;
 	private static GenericLoginAction genericLogin;
+	private static GenericDatosViajeAction genericDatosViaje;
 	
 	public static GenericViajeAction getGenericViajeAction(){
 		if(genericViaje==null){
@@ -31,5 +33,11 @@ public class Generics {
 		return genericLogin;
 	}
 	
+	public static GenericDatosViajeAction getGenericDatosViajeAction(){
+		if(genericDatosViaje==null){
+			genericDatosViaje=new GenericDatosViajeAction();
+		}
+		return genericDatosViaje;
+	}
 	
 }
