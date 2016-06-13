@@ -112,6 +112,20 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		}
 	}
 	
+	@Action("/listar/misViajes")
+	public void misViajes(){
+		if(SessionUtil.checkLogin()){			
+			for(Viaje viaje: Generics.getGenericViajeAction().viajesUsuarioConductor()){
+				this.getModel().add(Dozer.getMapper().map(viaje, ViajeDto.class));
+			}
+			//Agrego un null para poder diferenciar entre viajes como conductor y viajes como pasajero
+			this.getModel().add(null);
+			for(Viaje viaje: Generics.getGenericViajeAction().viajesUsuarioViajero()){
+				this.getModel().add(Dozer.getMapper().map(viaje, ViajeDto.class));
+			}
+		}
+	}
+	
 
 	@Override
 	public List<ViajeDto> getModel() {

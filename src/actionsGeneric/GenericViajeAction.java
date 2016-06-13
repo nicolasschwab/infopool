@@ -8,6 +8,7 @@ import java.util.List;
 import implementacionesDAO.FactoryDAO;
 import interfacesDAO.ViajeDAO;
 import model.Viaje;
+import model.Viajero;
 import util.SessionUtil;
 import util.Validacion;
 
@@ -49,6 +50,16 @@ private ViajeDAO viajeDAO;
 	
 	public Viaje detalleViaje(String id){
 		return this.getViajeDAO().encontrarPorId(Integer.parseInt(id));
+	}
+	
+	public List<Viaje> viajesUsuarioConductor(){
+		Viajero viajero = (Viajero)SessionUtil.getUsuario();			
+		return FactoryDAO.getViajeDAO().obtenerViajesConductorEstado(viajero, true);		
+	}
+	
+	public List<Viaje> viajesUsuarioViajero(){
+		Viajero viajero = (Viajero)SessionUtil.getUsuario();
+		return FactoryDAO.getViajeDAO().obtenerViajesPasajeroEstado(viajero, true);
 	}
 	
 	

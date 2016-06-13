@@ -15,6 +15,7 @@ import model.Viajero;
 
 import org.apache.struts2.ServletActionContext;
 
+import util.Generics;
 import util.SessionUtil;
 
 import com.opensymphony.xwork2.ActionContext;
@@ -124,9 +125,8 @@ public class ViajeroAction extends ActionSupport{
 	
 	public String misViajes() throws Exception{		
 		if (SessionUtil.checkLogin()){			
-			viajero = (Viajero)SessionUtil.getUsuario();			
-			listaViajesConductor = viajeDAO.obtenerViajesConductorEstado(viajero, true);
-			listaViajesPasajero = viajeDAO.obtenerViajesPasajeroEstado(viajero, true);	
+			listaViajesConductor = Generics.getGenericViajeAction().viajesUsuarioConductor();
+			listaViajesPasajero = Generics.getGenericViajeAction().viajesUsuarioViajero();	
 			//HISTORIAL DE VIAJES!!	
 			return SUCCESS;
 		}
