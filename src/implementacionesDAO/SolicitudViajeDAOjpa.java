@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import model.FrecuenciaViaje;
 import model.SolicitudViaje;
 import model.Viaje;
 import model.Viajero;
@@ -30,6 +31,23 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 			q.setParameter("viajero", viajero);
 			q.setParameter("frecuenciaViaje", frecuenciaViaje);
 			q.setParameter("estadoSolicitud", estadoSolicitud);			
+			tieneSolicitud = (!q.getResultList().isEmpty());			
+		}catch(HibernateException e){
+			e.printStackTrace();
+		}finally{
+			em.close();
+		}
+		return tieneSolicitud;
+	}
+	
+	public <T> boolean tieneSolicitudEstado(T viajero, T frecuenciaViaje){		
+		boolean tieneSolicitud = false;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
+		try{
+			String qstr = "select s from "+this.persistentClass.getSimpleName()+" s where s.frecuenciaViaje = :frecuenciaViaje and s.viajero = :viajero";
+			Query q = em.createQuery(qstr);
+			q.setParameter("viajero", viajero);
+			q.setParameter("frecuenciaViaje", frecuenciaViaje);
 			tieneSolicitud = (!q.getResultList().isEmpty());			
 		}catch(HibernateException e){
 			e.printStackTrace();
@@ -104,5 +122,7 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 		}
 		return resultado;		
 	}
+
+
 
 }

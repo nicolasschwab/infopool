@@ -2,6 +2,7 @@ package interfacesDAO;
 
 import java.util.List;
 
+import model.FrecuenciaViaje;
 import model.SolicitudViaje;
 import model.Viaje;
 import model.Viajero;
@@ -14,6 +15,7 @@ public interface SolicitudViajeDAO extends GenericDAO<SolicitudViaje>{
 	/* Revisar estos metodos */
 	List<SolicitudViaje> listarSolicitudesViaje(Viaje viaje);
 	List<SolicitudViaje> yaSolicito(Viaje viaje, Viajero viajero);
+	public <T> boolean tieneSolicitudEstado(T viajero, T frecuenciaViaje);
 	
 
 }

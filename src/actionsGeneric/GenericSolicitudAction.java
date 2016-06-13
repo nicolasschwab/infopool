@@ -31,7 +31,7 @@ public class GenericSolicitudAction {
 		FrecuenciaViaje frecuenciaViaje = FactoryDAO.getFrecuenciaViajeDAO().encontrar(Integer.parseInt(idFrecuencia));
 		Viaje viaje = frecuenciaViaje.getViaje();			
 		if (!viaje.esConductor(viajero) || !viaje.esPasajero(viajero)){				
-			boolean tieneSolicitudPendiente = FactoryDAO.getSolicitudViajeDAO().tieneSolicitudEstado(viajero,frecuenciaViaje,EstadoSolicitud.PENDIENTE);
+			boolean tieneSolicitudPendiente = FactoryDAO.getSolicitudViajeDAO().tieneSolicitudEstado(viajero,frecuenciaViaje);
 			if(!tieneSolicitudPendiente){					
 				SolicitudViaje solicitudViaje = new SolicitudViaje(new Date(),null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,null);					
 				FactoryDAO.getSolicitudViajeDAO().registrar(solicitudViaje);
