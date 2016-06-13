@@ -248,8 +248,10 @@ public class SolicitudViajeAction extends ActionSupport{
 	
 	public String SolicitudesFrecuenciaViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
-			frecuenciaViaje = frecuenciaViajeDAO.encontrar(this.idFrecuenciaViaje);			
-			listaSolicitudes = ((SolicitudViajeDAOjpa)solicitudViajeDAO).buscarSolicitudesFrecuencia(frecuenciaViaje);			
+			listaSolicitudes = Generics.getGenericSolicitudAction().SolicitudesFrecuenciaViaje(idFrecuenciaViaje);
+			if(listaSolicitudes==null){
+				return "sinPermisos"; 
+			}
 			return SUCCESS;
 		}
 		return "sinPermisos";

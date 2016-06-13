@@ -1,10 +1,12 @@
 package actionsGeneric;
 
+
 import java.util.Date;
+import java.util.List;
 
 import actions.NotificacionAction;
 import implementacionesDAO.FactoryDAO;
-import implementacionesDAO.FrecuenciaViajeDAOjpa;
+import implementacionesDAO.SolicitudViajeDAOjpa;
 import model.EstadoSolicitud;
 import model.FrecuenciaViaje;
 import model.SolicitudViaje;
@@ -35,4 +37,12 @@ public class GenericSolicitudAction {
 		}
 	}
 	
+	public List<SolicitudViaje> SolicitudesFrecuenciaViaje(int idFrecuencia) throws Exception{
+		FrecuenciaViaje frecuenciaViaje = FactoryDAO.getFrecuenciaViajeDAO().encontrar(idFrecuencia);
+		if(frecuenciaViaje.getViaje().esConductor(SessionUtil.getUsuario())){
+			return ((SolicitudViajeDAOjpa) FactoryDAO.getSolicitudViajeDAO()).buscarSolicitudesFrecuencia(frecuenciaViaje);
+		}
+		return null;
+				
+	}
 }
