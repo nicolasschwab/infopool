@@ -16,6 +16,7 @@ import implementacionesDAO.FactoryDAO;
 import model.Usuario;
 
 import util.Dozer;
+import util.Generics;
 import util.SessionUtil;
 import util.Validacion;
 @Action("/sesion")
@@ -48,7 +49,7 @@ public class MobileLoginAction implements SessionAware,ModelDriven<ViajeroDto>{
 	@Action("/login")
 	public void index(){
 		if(Validacion.stringNoVacio(this.getClave()) && Validacion.stringNoVacio(this.getUsr()) ){
-			String login=GenericLoginAction.iniciarSesionGeneric(this.getUsr(), this.getClave(), FactoryDAO.getUsuarioDAO(), sessionMap);
+			String login=Generics.getGenericLoginAction().iniciarSesionGeneric(this.getUsr(), this.getClave(), FactoryDAO.getUsuarioDAO(), sessionMap);
 			if (login=="success"){
 				this.setModel((Dozer.getMapper().map(FactoryDAO.getUsuarioDAO().existe(this.getUsr(),this.getClave()),ViajeroDto.class)));
 			}			
@@ -57,7 +58,7 @@ public class MobileLoginAction implements SessionAware,ModelDriven<ViajeroDto>{
 	
 	@Action("/logout")
 	public void cerrarSesion() {
-		GenericLoginAction.cerrarSesionGeneric(sessionMap);
+		Generics.getGenericLoginAction().cerrarSesionGeneric(sessionMap);
 	}
 	
 	@Override

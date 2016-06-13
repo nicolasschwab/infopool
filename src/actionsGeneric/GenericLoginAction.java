@@ -15,7 +15,7 @@ import util.SessionUtil;
 public class GenericLoginAction{
 	
 
-	public static String iniciarSesionGeneric(String usuario,String clave,UsuarioDAO usuarioDAO, SessionMap<String, Object>  sessionMap){
+	public String iniciarSesionGeneric(String usuario,String clave,UsuarioDAO usuarioDAO, SessionMap<String, Object>  sessionMap){
 		Usuario user= usuarioDAO.existe(usuario,clave);
 		if (user != null) {
 			if (user.getActivo()){
@@ -32,7 +32,7 @@ public class GenericLoginAction{
 			return "datosIncorrectos";
 		}
 	}	
-	public static String cerrarSesionGeneric( SessionMap<String, Object>  sessionMap){
+	public String cerrarSesionGeneric( SessionMap<String, Object>  sessionMap){
 		if(SessionUtil.checkLogin()){
 			sessionMap.invalidate();
 			return "success";
