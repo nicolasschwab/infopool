@@ -158,38 +158,17 @@ public class SolicitudViajeAction extends ActionSupport{
 	public String AceptarSolicitudViaje() throws Exception{		
 		if(SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
-			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));			
-			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
-			viaje = frecuenciaViaje.getViaje();
-			idViaje = viaje.getId();
-			 
-			if (frecuenciaViaje.getAsientosDisponibles() > 0){				
-				solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
-				solicitudViaje.setFechaFinSolicitud(new Date());
-				solicitudViajeDAO.modificar(solicitudViaje);
-				
-				viajero = ((ViajeroDAOjpa)viajeroDAO).encontrar(solicitudViaje.getViajero().getId());
-				if (((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).cantidadFrecuenciasEnViaje(viajero,viaje) == 0){
-					ViajeAction.agregarUsuarioAForo(idViaje,viajero.getId());
-					viajero.agregarViajePasajero(viaje);
-				}
-				viajero.agregarFrecuenciaPasajero(frecuenciaViaje);
-				viajeroDAO.modificar(viajero);
-				
-				frecuenciaViaje.agregarViajeroFrecuencia(viajero);				
-				frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()-1);				
-				frecuenciaViajeDAO.modificar(frecuenciaViaje);
-				
-				idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();
-				
-				new NotificacionAction().crearNotificacionSolicitudAceptar(viajero, viaje);
-				return SUCCESS;
-			}
-			else{
-				//solicitudesviaje = solicitudViajeDAO.listarSolicitudesViaje(viaje);
-				addFieldError("loginError", "Se completaron todos los asientos!");
-				return INPUT;
-			}
+			solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(Integer.parseInt(request.getParameter("id")));
+			String respuesta=Generics.getGenericSolicitudAction().AceptarSolicitudViaje(solicitudViaje);				
+			idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();
+			switch(respuesta)
+			{
+				case "SUCCESS":
+					return SUCCESS;
+				case "INPUT":
+					addFieldError("loginError", "Se completaron todos los asientos!");
+					return INPUT;
+			}			
 		}
 		return "sinPermisos";
 	}

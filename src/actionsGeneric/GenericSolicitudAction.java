@@ -4,9 +4,18 @@ package actionsGeneric;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.struts2.ServletActionContext;
+
+import com.opensymphony.xwork2.ActionContext;
+
 import actions.NotificacionAction;
+import actions.ViajeAction;
 import implementacionesDAO.FactoryDAO;
+import implementacionesDAO.FrecuenciaViajeDAOjpa;
 import implementacionesDAO.SolicitudViajeDAOjpa;
+import implementacionesDAO.ViajeroDAOjpa;
 import model.EstadoSolicitud;
 import model.FrecuenciaViaje;
 import model.SolicitudViaje;
@@ -44,5 +53,37 @@ public class GenericSolicitudAction {
 		}
 		return null;
 				
+	}
+	
+	
+	public String AceptarSolicitudViaje(SolicitudViaje solicitudViaje) throws Exception{	
+					
+		FrecuenciaViaje frecuenciaViaje = ((FrecuenciaViajeDAOjpa)FactoryDAO.getFrecuenciaViajeDAO()).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
+		Viaje viaje = frecuenciaViaje.getViaje();
+		int idViaje = viaje.getId();
+		 
+		if (frecuenciaViaje.getAsientosDisponibles() > 0){				
+			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
+			solicitudViaje.setFechaFinSolicitud(new Date());
+			FactoryDAO.getSolicitudViajeDAO().modificar(solicitudViaje);
+			
+			Viajero viajero = ((ViajeroDAOjpa)FactoryDAO.getViajeroDAO()).encontrar(solicitudViaje.getViajero().getId());
+			if (((FrecuenciaViajeDAOjpa)FactoryDAO.getFrecuenciaViajeDAO()).cantidadFrecuenciasEnViaje(viajero,viaje) == 0){
+				ViajeAction.agregarUsuarioAForo(idViaje,viajero.getId());
+				viajero.agregarViajePasajero(viaje);
+			}
+			viajero.agregarFrecuenciaPasajero(frecuenciaViaje);
+			FactoryDAO.getViajeroDAO().modificar(viajero);
+			
+			frecuenciaViaje.agregarViajeroFrecuencia(viajero);				
+			frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()-1);				
+			FactoryDAO.getFrecuenciaViajeDAO().modificar(frecuenciaViaje);
+			
+			new NotificacionAction().crearNotificacionSolicitudAceptar(viajero, viaje);
+			return "SUCCESS";
+		}
+		else{
+			return "INPUT";
+		}
 	}
 }
