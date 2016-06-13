@@ -194,30 +194,14 @@ public class SolicitudViajeAction extends ActionSupport{
 		if(SessionUtil.checkLogin()){
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
 			solicitudViaje = solicitudViajeDAO.encontrar(Integer.parseInt(request.getParameter("id")));
-			frecuenciaViaje = ((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
-			viaje = ((ViajeDAOjpa)viajeDAO).encontrarPorId(frecuenciaViaje.getViaje().getId());
-							
-			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.CANCELADA);
-			solicitudViaje.setFechaFinSolicitud(new Date());
-			solicitudViajeDAO.modificar(solicitudViaje);
-			
-			viajero = ((ViajeroDAOjpa)viajeroDAO).encontrar(solicitudViaje.getViajero().getId());
-			if (((FrecuenciaViajeDAOjpa)frecuenciaViajeDAO).cantidadFrecuenciasEnViaje(viajero,viaje) == 1){				
-				viajero.quitarViajePasajero(viaje);				
-				viaje.quitarPasajero(viajero);
-			}			
-			viajero.quitarFrecuenciaPasajero(frecuenciaViaje);
-			viajeroDAO.modificar(viajero);			
-			viajeDAO.modificar(viaje);
-			
-			frecuenciaViaje.agregarPasajeroHistorial(viajero);
-			frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()+1);			
-			frecuenciaViajeDAO.modificar(frecuenciaViaje);			
-			
-			idFrecuenciaViaje = frecuenciaViaje.getId();
-			new NotificacionAction().crearNotificacionSolicitudCancelada(viaje);
-			return SUCCESS;
-			
+			idFrecuenciaViaje = solicitudViaje.getFrecuenciaViaje().getId();
+			String respuesta=Generics.getGenericSolicitudAction().CancelarSolicitudViaje(solicitudViaje);
+			switch(respuesta){
+				case "SUCCESS":
+					return SUCCESS;
+				default:
+					return "sinPermisos";
+			}	
 		}
 		return "sinPermisos";
 	}

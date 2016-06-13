@@ -15,6 +15,7 @@ import actions.ViajeAction;
 import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.FrecuenciaViajeDAOjpa;
 import implementacionesDAO.SolicitudViajeDAOjpa;
+import implementacionesDAO.ViajeDAOjpa;
 import implementacionesDAO.ViajeroDAOjpa;
 import model.EstadoSolicitud;
 import model.FrecuenciaViaje;
@@ -100,5 +101,34 @@ public class GenericSolicitudAction {
 			return "SUCCESS";
 		}
 		return "INPUT";
+	}
+	
+	public String CancelarSolicitudViaje(SolicitudViaje solicitudViaje) throws Exception{
+		FrecuenciaViaje frecuenciaViaje = ((FrecuenciaViajeDAOjpa)FactoryDAO.getFrecuenciaViajeDAO()).encontrar(solicitudViaje.getFrecuenciaViaje().getId());
+		Viaje viaje = ((ViajeDAOjpa)FactoryDAO.getViajeDAO()).encontrarPorId(frecuenciaViaje.getViaje().getId());
+		
+		if(viaje.esConductor(SessionUtil.getUsuario())){	
+						
+			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.CANCELADA);
+			solicitudViaje.setFechaFinSolicitud(new Date());
+			FactoryDAO.getSolicitudViajeDAO().modificar(solicitudViaje);
+			
+			Viajero viajero = ((ViajeroDAOjpa)FactoryDAO.getViajeroDAO()).encontrar(solicitudViaje.getViajero().getId());
+			if (((FrecuenciaViajeDAOjpa)FactoryDAO.getFrecuenciaViajeDAO()).cantidadFrecuenciasEnViaje(viajero,viaje) == 1){				
+				viajero.quitarViajePasajero(viaje);				
+				viaje.quitarPasajero(viajero);
+			}			
+			viajero.quitarFrecuenciaPasajero(frecuenciaViaje);
+			FactoryDAO.getViajeroDAO().modificar(viajero);			
+			FactoryDAO.getViajeDAO().modificar(viaje);
+			
+			frecuenciaViaje.agregarPasajeroHistorial(viajero);
+			frecuenciaViaje.setAsientosDisponibles(frecuenciaViaje.getAsientosDisponibles()+1);			
+			FactoryDAO.getFrecuenciaViajeDAO().modificar(frecuenciaViaje);			
+			
+			new NotificacionAction().crearNotificacionSolicitudCancelada(viaje);			
+			return "SUCCESS";
+		}
+		return "sinPermisos";
 	}
 }

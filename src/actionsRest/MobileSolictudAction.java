@@ -70,14 +70,24 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 	
 	@Action("/rechazar")
 	public void RechazarSolicitudViaje() throws NumberFormatException, Exception{
-		if(SessionUtil.checkLogin()){
-			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);			
-			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(Integer.parseInt(request.getParameter("id")));
+		if(SessionUtil.checkLogin()){			
+			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
 			String respuesta=Generics.getGenericSolicitudAction().RechazarSolicitudViaje(solicitudViaje);
 			if(respuesta=="SUCCESS"){
 				this.getModel().add(Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
 			}
 		}
+	}
+	
+	@Action("/cancelar")
+	public void CancelarSolicitudViaje() throws Exception{
+		if(SessionUtil.checkLogin()){
+			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
+			String respuesta=Generics.getGenericSolicitudAction().CancelarSolicitudViaje(solicitudViaje);
+			if(respuesta=="SUCCESS"){
+				this.getModel().add(Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
+			}
+		}		
 	}
 	
 	
