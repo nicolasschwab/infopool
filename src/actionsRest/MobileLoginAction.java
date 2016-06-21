@@ -19,7 +19,7 @@ import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
 import util.Validacion;
-@Action("/sesion")
+
 public class MobileLoginAction implements SessionAware,ModelDriven<ViajeroDto>{
 	
 	private String usr;
@@ -46,7 +46,7 @@ public class MobileLoginAction implements SessionAware,ModelDriven<ViajeroDto>{
 		this.clave = clave;
 	}
 
-	@Action("/login")
+	@Action("/sesion/login")
 	public void index(){
 		if(Validacion.stringNoVacio(this.getClave()) && Validacion.stringNoVacio(this.getUsr()) ){
 			String login=Generics.getGenericLoginAction().iniciarSesionGeneric(this.getUsr(), this.getClave(), FactoryDAO.getUsuarioDAO(), sessionMap);
@@ -56,7 +56,7 @@ public class MobileLoginAction implements SessionAware,ModelDriven<ViajeroDto>{
 		}
 	}
 	
-	@Action("/logout")
+	@Action("/sesion/logout")
 	public void cerrarSesion() {
 		Generics.getGenericLoginAction().cerrarSesionGeneric(sessionMap);
 	}

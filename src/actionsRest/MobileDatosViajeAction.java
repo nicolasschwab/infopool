@@ -9,7 +9,6 @@ import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
 
-@Action("/viaje")
 public class MobileDatosViajeAction implements ModelDriven<ViajeDto>{
 
 	ViajeDto viajeDto;
@@ -132,7 +131,7 @@ public class MobileDatosViajeAction implements ModelDriven<ViajeDto>{
 		this.diaPeriodico = diaPeriodico;
 	}
 	
-	@Action("/alta")
+	@Action("/viaje/alta")
 	public void alta() throws Exception{
 		if(SessionUtil.checkLogin()){
 			this.setModel(Dozer.getMapper().map(Generics.getGenericDatosViajeAction().alta(direccionOrigen, direccionDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico), ViajeDto.class));			

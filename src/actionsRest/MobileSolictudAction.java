@@ -20,7 +20,6 @@ import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
 
-@Action("/solicitud")
 public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>>{
 
 	private int id;
@@ -40,14 +39,14 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 		this.id = id;
 	}
 
-	@Action("/nueva")
+	@Action("/solicitud/nueva")
 	public void RegistroSolicitudViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
 			Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()));
 		}
 	}
 	
-	@Action("/listar")
+	@Action("/solicitud/listar")
 	public void SolicitudesFrecuenciaViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
 			List<SolicitudViaje> solicitudes= Generics.getGenericSolicitudAction().SolicitudesFrecuenciaViaje(idFrecuenciaViaje);
@@ -57,7 +56,7 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 		}
 	}
 	
-	@Action("/aceptar")
+	@Action("/solicitud/aceptar")
 	public void AceptarSolicitudViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
 			SolicitudViaje solicitud= FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
@@ -68,7 +67,7 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 		}
 	}
 	
-	@Action("/rechazar")
+	@Action("/solicitud/rechazar")
 	public void RechazarSolicitudViaje() throws NumberFormatException, Exception{
 		if(SessionUtil.checkLogin()){			
 			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
@@ -79,7 +78,7 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 		}
 	}
 	
-	@Action("/cancelar")
+	@Action("/solicitud/cancelar")
 	public void CancelarSolicitudViaje() throws Exception{
 		if(SessionUtil.checkLogin()){
 			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());

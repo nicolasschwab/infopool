@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.struts2.convention.annotation.Action;
+import org.apache.struts2.convention.annotation.Namespace;
 
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -17,7 +18,7 @@ import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
 import util.Validacion;
-@Action("/viaje")
+
 public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 
 	private List<Viaje> listaBusquedaViajes;
@@ -86,7 +87,7 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		this.id = id;
 	}
 
-	@Action("/buscar")
+	@Action("/viaje/buscar")
 	public void busquedaViaje() throws ParseException{
 		if(SessionUtil.checkLogin()){		
 			this.setListaBusquedaViajes( Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje()));
@@ -100,7 +101,7 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		}
 	}
 	
-	@Action("/detalle")
+	@Action("/viaje/detalle")
 	public void detalle(){
 		if(SessionUtil.checkLogin()){
 			if(Validacion.stringNoVacio(this.getId())){			
@@ -112,7 +113,7 @@ public class MobileViajeAction implements ModelDriven<List<ViajeDto>> {
 		}
 	}
 	
-	@Action("/listar/misViajes")
+	@Action("/viaje/listar/misViajes")
 	public void misViajes(){
 		if(SessionUtil.checkLogin()){			
 			for(Viaje viaje: Generics.getGenericViajeAction().viajesUsuarioConductor()){
