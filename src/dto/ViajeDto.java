@@ -28,7 +28,7 @@ public class ViajeDto {
 	
 	private float kilometros;
 	
-	private String nombreConductor;
+	private ViajeroDto nombreConductor;
 	
 	private String calificacionConductor;
 
@@ -96,11 +96,11 @@ public class ViajeDto {
 		this.eventoAsociado = eventoAsociado;
 	}
 
-	public String getNombreConductor() {
+	public ViajeroDto getNombreConductor() {
 		return nombreConductor;
 	}
 
-	public void setNombreConductor(String nombre) {
+	public void setNombreConductor(ViajeroDto nombre) {
 		this.nombreConductor = nombre;
 	}
 

@@ -30,7 +30,7 @@ public class Conversacion implements Serializable{
 	@Column(name="conversacion_id")
 	private int id;
 	
-	@OneToMany(cascade = {CascadeType.ALL})
+	@OneToMany(cascade = {CascadeType.MERGE})
 	private Collection<Mensaje> mensajes = new ArrayList<Mensaje>();
 	
 	@ManyToMany
@@ -39,7 +39,7 @@ public class Conversacion implements Serializable{
 				inverseJoinColumns={@JoinColumn(name="usuario_id", nullable=false)})  
 	private Collection<Viajero> participantesConversacion = new ArrayList<Viajero>();
 	
-	@ManyToOne(cascade = {CascadeType.ALL})
+	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
 	private Viaje viaje;
 	
 	@Column(nullable=false)
@@ -75,12 +75,18 @@ public class Conversacion implements Serializable{
 		this.id = id;
 	}
 	public Collection<Mensaje> getMensajes() {
+		if(this.mensajes==null){
+			mensajes=new ArrayList();
+		}
 		return mensajes;
 	}
 	public void setMensajes(Collection<Mensaje> mensajes) {
 		this.mensajes = mensajes;
 	}
 	public Collection<Viajero> getParticipantesConversacion() {
+		if(this.participantesConversacion==null){
+			this.participantesConversacion=new ArrayList();
+		}		
 		return participantesConversacion;
 	}
 	public void setParticipantesConversacion(Collection<Viajero> participantesConversacion) {
@@ -110,5 +116,14 @@ public class Conversacion implements Serializable{
 	public void setTipoConversacion(TipoConversacion tipoConversacion) {
 		this.tipoConversacion = tipoConversacion;
 	}	
-	
+	public void agregarParticipantes(Viajero... viajeros){
+		for(Viajero viajero: viajeros){
+			this.getParticipantesConversacion().add(viajero);
+		}
+	}
+	public void agregarMensajes(Mensaje... mensajes){
+		for(Mensaje mensaje: mensajes){
+			this.getMensajes().add(mensaje);
+		}
+	}
 }

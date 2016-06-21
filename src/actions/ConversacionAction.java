@@ -16,6 +16,7 @@ import model.Conversacion;
 import model.Mensaje;
 import model.Viaje;
 import model.Viajero;
+import util.Generics;
 
 public class ConversacionAction  extends ActionSupport{
 	
@@ -117,34 +118,8 @@ public class ConversacionAction  extends ActionSupport{
 	public String crearConversacion() throws NumberFormatException, Exception{
 		String estaLogueado=this.validarSesion(); 
 		if(estaLogueado==SUCCESS){
-			ViajeAction viajeAction=new ViajeAction();
-			Viajero receptor=FactoryDAO.getViajeroDAO().encontrar(Integer.parseInt(receptorID));
-			//if(viajeAction.validarPertenece(viajeId,receptor)){				
-				Conversacion laConversacion=this.getConversacionDAO().encontrarPorViajeEIntegrantes(viajeId,user,receptor);
-				MensajeAction mensajeAction=new MensajeAction();
-				this.setMensaje(mensajeAction.crearMensaje(this.getDetalle()));// creo y persisto el mensaje
-				UsuarioDAO usuarioDAO=FactoryDAO.getUsuarioDAO();
-				if(laConversacion==null){
-					laConversacion=new Conversacion();// en este paso se setea por defecto la fecha de la ultima modificacion
-					laConversacion.setAsunto(this.getAsunto());
-					laConversacion.setViaje(FactoryDAO.getViajeDAO().encontrar(viajeId));
-					Collection<Viajero> participantes = new ArrayList();
-					participantes.add(user);
-					participantes.add(receptor);
-					laConversacion.setParticipantesConversacion(participantes);
-					Collection<Mensaje> mensajes= new ArrayList<Mensaje>();
-					mensajes.add(this.getMensaje());
-					laConversacion.setMensajes(mensajes);
-					conversacionDAO.registrar(laConversacion); // persisto la nueva conversacion
-				}else{ //ya existe una conversacion entre estos usuario para este viaje, se agrega el mensaje a la conversacion
-					Collection<Mensaje> mensajes=laConversacion.getMensajes();
-					mensajes.add(this.getMensaje());
-					laConversacion.setMensajes(mensajes);
-					laConversacion.setFechaUltimaModificacion(new Date());
-					conversacionDAO.modificar(laConversacion); //modifico la conversacion
-				}
-			}
-			
+			Generics.getGenericConversacionAction().crearConversacion(receptorID, viajeId, user, this.getDetalle(), this.getAsunto());
+			}			
 		//}
 		return estaLogueado;
 	}

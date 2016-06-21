@@ -52,7 +52,7 @@
         <b>fechaPublicacion</b>
       </field>
       <field>
-        <a>conductor.nombre</a>
+        <a>conductor</a>
         <b>nombreConductor</b>
       </field>
       <field>

@@ -1,29 +1,24 @@
 package actions;
 
-import implementacionesDAO.FactoryDAO;
-import implementacionesDAO.MensajeDAOjpa;
-import implementacionesDAO.ViajeDAOjpa;
-
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import model.Conversacion;
-import model.Mensaje;
-import model.Usuario;
-import model.Viaje;
-import model.Viajero;
-
 import org.apache.struts2.ServletActionContext;
 
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
+
+import implementacionesDAO.FactoryDAO;
+import implementacionesDAO.MensajeDAOjpa;
+import implementacionesDAO.ViajeDAOjpa;
+import model.Mensaje;
+import model.Usuario;
+import model.Viaje;
+import model.Viajero;
 
 public class MensajeAction extends ActionSupport {
 
