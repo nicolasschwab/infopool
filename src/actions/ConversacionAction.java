@@ -197,17 +197,7 @@ public class ConversacionAction  extends ActionSupport{
 	public String responderMensaje() throws Exception{
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
-			this.setConversacion(conversacionDAO.encontrarPorId(this.getId()));
-			for(Viajero viajero :conversacion.getParticipantesConversacion()){
-				if(viajero.getId()==user.getId()){
-					this.setMensaje(new MensajeAction().crearMensaje(this.getDetalle())); // creo y persisto el mensaje
-					this.getConversacion().getMensajes().add(this.getMensaje());
-					FactoryDAO.getViajeDAO().modificar(user);
-					FactoryDAO.getViajeDAO().modificar(viajero);
-					this.getConversacion().setFechaUltimaModificacion(new Date());
-					conversacionDAO.modificar(this.getConversacion());
-				}
-			}
+			Generics.getGenericConversacionAction().responderMensaje(id, this.getDetalle());
 		}
 		return estaLogueado;		
 	}

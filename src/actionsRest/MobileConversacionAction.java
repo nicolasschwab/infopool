@@ -67,6 +67,12 @@ public class MobileConversacionAction implements ModelDriven<ConversacionDto>{
 			}			
 		}
 	}
+	@Action("/conversacion/responder")
+	public void responderMensaje() throws Exception{
+		if(SessionUtil.checkLogin()){
+			Generics.getGenericConversacionAction().responderMensaje(this.getId(), this.getDetalle());
+		}
+	}
 	
 	private void mapear(Conversacion conversacion){
 		this.setModel(Dozer.getMapper().map(conversacion, ConversacionDto.class));

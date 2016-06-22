@@ -50,4 +50,18 @@ public class GenericConversacionAction {
 		}
 		return conversacion;
 	}
+	
+	public void responderMensaje(int id, String detalle) throws Exception{
+		Conversacion conversacion=FactoryDAO.getConversacionDAO().encontrarPorId(id);
+		for(Viajero viajero :conversacion.getParticipantesConversacion()){
+			if(viajero.getId()==SessionUtil.getUsuario().getId()){
+				Mensaje mensaje=new MensajeAction().crearMensaje(detalle); // creo y persisto el mensaje
+				conversacion.getMensajes().add(mensaje);
+				FactoryDAO.getViajeDAO().modificar(SessionUtil.getUsuario());
+				FactoryDAO.getViajeDAO().modificar(viajero);
+				conversacion.setFechaUltimaModificacion(new Date());
+				FactoryDAO.getConversacionDAO().modificar(conversacion);
+			}
+		}
+	}
 }
