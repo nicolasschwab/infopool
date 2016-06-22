@@ -124,7 +124,7 @@ public class ConversacionAction  extends ActionSupport{
 		return estaLogueado;
 	}
 	
-	public String listarConversaciones(){
+	private String listarConversaciones(){
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
 			List<Conversacion> conversaciones=this.getConversacionDAO().listar(user);
@@ -163,18 +163,7 @@ public class ConversacionAction  extends ActionSupport{
 	public String detalle(){
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){
-			this.setConversacion(conversacionDAO.encontrarPorId(id));
-			if(this.getConversacion()!=null){
-				boolean pertenece=false;
-				for(Viajero viajero :this.getConversacion().getParticipantesConversacion()){
-					if(viajero.getId()==user.getId()){
-						pertenece=true;
-					}
-				}
-				if(!pertenece){
-					this.setConversacion(null);
-				}
-			}			
+			this.setConversacion(Generics.getGenericConversacionAction().detalle(id));		
 			this.listarConversaciones();				
 			for(Conversacion conversacion : this.getMensajeLista()){
 				Mensaje ultimoMensaje=null;

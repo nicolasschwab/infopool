@@ -13,12 +13,20 @@ import util.SessionUtil;
 
 public class MobileConversacionAction implements ModelDriven<ConversacionDto>{
 	
+	int id;
 	String receptorID;
 	int viajeId;
 	String detalle;
 	String asunto;
 	ConversacionDto conversaciondto;
 
+	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getReceptorID() {
 		return receptorID;
 	}
@@ -47,10 +55,23 @@ public class MobileConversacionAction implements ModelDriven<ConversacionDto>{
 	@Action("/conversacion/crear")
 	public void crearConversacion() throws NumberFormatException, Exception{
 		if(SessionUtil.checkLogin()){
-			Conversacion conversacion=Generics.getGenericConversacionAction().crearConversacion(receptorID, viajeId, (Viajero)SessionUtil.getUsuario(), detalle, asunto);
-			this.setModel(Dozer.getMapper().map(conversacion, ConversacionDto.class));
+			this.mapear(Generics.getGenericConversacionAction().crearConversacion(receptorID, viajeId, (Viajero)SessionUtil.getUsuario(), detalle, asunto));
 		}
 	}
+	@Action("/conversacion/detalle")
+	public void detalle(){
+		if(SessionUtil.checkLogin()){
+			Conversacion conversacion=Generics.getGenericConversacionAction().detalle(this.getId());
+			if(conversacion!=null){
+				this.mapear(conversacion);
+			}			
+		}
+	}
+	
+	private void mapear(Conversacion conversacion){
+		this.setModel(Dozer.getMapper().map(conversacion, ConversacionDto.class));
+	}
+	
 	@Override
 	public ConversacionDto getModel() {
 		return conversaciondto;

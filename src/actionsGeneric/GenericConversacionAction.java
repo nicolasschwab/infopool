@@ -1,12 +1,16 @@
 package actionsGeneric;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import actions.MensajeAction;
 import implementacionesDAO.FactoryDAO;
 import model.Conversacion;
 import model.Mensaje;
+import model.Viaje;
 import model.Viajero;
+import util.SessionUtil;
 
 public class GenericConversacionAction {
 
@@ -29,5 +33,21 @@ public class GenericConversacionAction {
 			FactoryDAO.getConversacionDAO().modificar(laConversacion); //modifico la conversacion
 		}
 		return laConversacion;
+	}
+	
+	public Conversacion detalle(int id){
+		Conversacion conversacion=FactoryDAO.getConversacionDAO().encontrarPorId(id);
+		if(conversacion!=null){
+			boolean pertenece=false;
+			for(Viajero viajero :conversacion.getParticipantesConversacion()){
+				if(viajero.getId()==SessionUtil.getUsuario().getId()){
+					pertenece=true;
+				}
+			}
+			if(!pertenece){
+				conversacion=null;
+			}
+		}
+		return conversacion;
 	}
 }
