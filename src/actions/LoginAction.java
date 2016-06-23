@@ -60,13 +60,18 @@ public class LoginAction extends ActionSupport implements SessionAware{
 
 	public String iniciarSesion() {
 		if (!SessionUtil.checkLogin()) {
-			if ((this.getUsuario() == null || this.getUsuario().length() > 0 ) && (this.getClave() == null || this.getClave().length() > 0 )){
-				String respuesta=Generics.getGenericLoginAction().iniciarSesionGeneric(this.getUsuario(),this.getClave(),this.getUsuarioDAO(),sessionMap);
-				switch (respuesta){
-					case "success":
-						return this.finSuccessMetodo();
-					default:
-						return this.finErrorMetodo(respuesta);
+			if ((this.getUsuario() != null ) && (this.getClave() != null )){
+				if(this.getUsuario().length() > 0  && this.getClave().length() > 0 ){				
+					String respuesta=Generics.getGenericLoginAction().iniciarSesionGeneric(this.getUsuario(),this.getClave(),this.getUsuarioDAO(),sessionMap);
+					switch (respuesta){
+						case "success":
+							return this.finSuccessMetodo();
+						default:
+							return this.finErrorMetodo(respuesta);
+					}
+				}
+				else{
+					return this.finErrorMetodo("faltanDatos");
 				}
 			}
 			else{
