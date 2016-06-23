@@ -39,7 +39,7 @@ public class Conversacion implements Serializable{
 				inverseJoinColumns={@JoinColumn(name="usuario_id", nullable=false)})  
 	private Collection<Viajero> participantesConversacion = new ArrayList<Viajero>();
 	
-	@ManyToOne(cascade = {CascadeType.MERGE,CascadeType.REFRESH})
+	@ManyToOne(cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.REFRESH})
 	private Viaje viaje;
 	
 	@Column(nullable=false)
