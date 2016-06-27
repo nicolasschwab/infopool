@@ -37,6 +37,9 @@ public class Notificacion implements Serializable{
 	@Column(nullable=false)
 	private String link;
 	
+	@Column(nullable=false)
+	private String linkRest;
+	
 	@Enumerated(EnumType.STRING)
 	private EstadoNotificacion estado;
 		
@@ -44,7 +47,7 @@ public class Notificacion implements Serializable{
 		super();	
 	}
 	
-	public Notificacion(String mensaje, Usuario emisor, Usuario receptor, Date fechaHora, String tipo, String link, EstadoNotificacion estado) {
+	public Notificacion(String mensaje, Usuario emisor, Usuario receptor, Date fechaHora, String tipo, String link, String linkRest, EstadoNotificacion estado) {
 		super();
 		this.mensaje = mensaje;
 		this.emisor = emisor;
@@ -52,6 +55,7 @@ public class Notificacion implements Serializable{
 		this.fechaHora = fechaHora;
 		this.tipo = tipo;
 		this.link = link;
+		this.linkRest=linkRest;
 		this.estado = estado;
 	}
 
@@ -102,5 +106,12 @@ public class Notificacion implements Serializable{
 	}
 	public void setEstado(EstadoNotificacion estado) {
 		this.estado = estado;
-	}	
+	}
+	public String getLinkRest() {
+		return linkRest;
+	}
+	public void setLinkRest(String linkRest) {
+		this.linkRest = linkRest;
+	}
+	
 }

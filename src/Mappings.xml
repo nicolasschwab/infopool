@@ -59,21 +59,19 @@
         <a>conductor.calificacion</a>
         <b>calificacionConductor</b>
       </field>
-      
-      
-      
-      
-	
-	
-	
-			
-		
-	
-	
-	
-	
-	<!--  private Viajero conductor;-->
-
   </mapping>  
+  
+  <mapping>
+  	<class-a>model.Notificacion</class-a>
+  	<class-b>dto.NotificacionDto</class-b>
+  	<field>
+  		<a>emisor.id</a>
+  		<b>emisorId</b>
+  	</field>
+  	<field>
+  		<a>fechaHora</a>
+  		<b>fecha</b>
+  	</field>
+  </mapping>
 
 </mappings> 

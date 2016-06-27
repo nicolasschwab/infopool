@@ -170,7 +170,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();			
 			this.setMensaje(getText("notificacion.mensaje.viaje.comentario",this.argumentos));		
-			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"ban");
+			this.crearRegistrarNotificacion(receptor, "DetalleViaje.action?id="+elViaje.getId(), "/viaje/detalle.json?id="+elViaje.getId() ,"ban");
 			return true;
 		}else{
 			return false;
@@ -183,7 +183,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();			
 			this.setMensaje(getText("notificacion.mensaje.viaje.salida",this.argumentos));		
-			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"comment");
+			this.crearRegistrarNotificacion(receptor, "DetalleViaje.action?id="+elViaje.getId(), "/viaje/detalle.json?id="+elViaje.getId() ,"comment");
 			return true;
 		}else{
 			return false;
@@ -196,7 +196,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();				
 			this.setMensaje(getText("notificacion.mensaje.viaje.modificacion",this.argumentos));		
-			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"pencil");
+			this.crearRegistrarNotificacion(receptor, "DetalleViaje.action?id="+elViaje.getId(), "/viaje/detalle.json?id="+elViaje.getId() ,"pencil");
 			return true;
 		}else{
 			return false;
@@ -208,7 +208,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[0]=SessionUtil.getUsuario().getUsuario();
 			this.argumentos[1]=elViaje.getDireccionDestino();				
 			this.setMensaje(getText("notificacion.mensaje.viaje.cancelar",this.argumentos));
-			Notificacion notificacion=this.crearNotificacion(receptor, "#?","ban");
+			Notificacion notificacion=this.crearNotificacion(receptor, "#?", "#?","ban");
 			this.registrarNotificacion(notificacion);
 			return true;
 		}else{
@@ -223,7 +223,7 @@ public class NotificacionAction extends ActionSupport {
 			this.setMensaje(getText("notificacion.mensaje.calificacion"));
 			this.setEmisor(FactoryDAO.getViajeroDAO().encontrarUsuarioSistema());
 			this.setReceptor(calificado);
-			this.crearRegistrarNotificacion(this.getReceptor(), "verPerfilViajero?","star");
+			this.crearRegistrarNotificacion(this.getReceptor(), "verPerfilViajero?", "#","star");
 			return true;
 		}else{
 			return false;
@@ -237,7 +237,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];		
 			this.setMensaje(getText("notificacion.mensaje.solicitud.aceptar",this.argumentos));
-			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"check-circle");
+			this.crearRegistrarNotificacion(receptor, "DetalleViaje.action?id="+elViaje.getId(), "/viaje/detalle.json?id="+elViaje.getId() ,"check-circle");
 			return true;
 		}else{
 			return false;
@@ -251,7 +251,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
 			this.setMensaje(getText("notificacion.mensaje.solicitud.rechazar",this.argumentos));
-			this.crearRegistrarNotificacion(receptor, "detalleViaje.action?id="+elViaje.getId(),"times");			
+			this.crearRegistrarNotificacion(receptor, "DetalleViaje.action?id="+elViaje.getId(), "/viaje/detalle.json?id="+elViaje.getId() ,"times");			
 			return true;
 		}else{
 			return false;
@@ -266,7 +266,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
 			this.setMensaje(getText("notificacion.mensaje.solicitud.nueva",this.argumentos));			
-			this.crearRegistrarNotificacion(elViaje.getConductor(), "detalleViaje.action?id="+elViaje.getId(),"flag-o");
+			this.crearRegistrarNotificacion(elViaje.getConductor(), "DetalleViaje.action?id="+elViaje.getId(), "/viaje/detalle.json?id="+elViaje.getId() ,"flag-o");
 			return true;
 		}else{
 			return false;
@@ -281,7 +281,7 @@ public class NotificacionAction extends ActionSupport {
 			this.argumentos[1]=elViaje.getDireccionOrigen().split(",")[0];
 			this.argumentos[2]=elViaje.getDireccionDestino().split(",")[0];
 			this.setMensaje(getText("notificacion.mensaje.solicitud.cancelar",this.argumentos));			
-			this.crearRegistrarNotificacion(elViaje.getConductor(), "detalleViaje.action?id="+elViaje.getId(),"flag-o");
+			this.crearRegistrarNotificacion(elViaje.getConductor(), "DetalleViaje.action?id="+elViaje.getId(),"/viaje/detalle.json?id="+elViaje.getId() ,"flag-o");
 			return true;
 		}else{
 			return false;
@@ -293,7 +293,7 @@ public class NotificacionAction extends ActionSupport {
 		if(SessionUtil.checkLogin()){
 			this.argumentos[0]=this.getUsrLogueado().getUsuario();
 			this.setMensaje(getText("notificacion.mensaje.privado",this.argumentos));
-			this.crearRegistrarNotificacion(receptor, "detalle.action?id="+idMensaje,"comment");
+			this.crearRegistrarNotificacion(receptor, "detalle.action?id="+idMensaje, "/conversacion/detalle.json?id="+idMensaje ,"comment");
 		return true;
 		}else{
 			return false;
@@ -301,8 +301,8 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//Mensajes privados genericos para reusar codigo
-	private void crearRegistrarNotificacion(Usuario receptor, String link,String tipo) throws Exception{
-		Notificacion notificacion=this.crearNotificacion(receptor, link, tipo);
+	private void crearRegistrarNotificacion(Usuario receptor, String link, String linkRest, String tipo) throws Exception{
+		Notificacion notificacion=this.crearNotificacion(receptor, link, linkRest, tipo);
 		this.registrarNotificacion(notificacion);
 	}
 	
@@ -313,13 +313,14 @@ public class NotificacionAction extends ActionSupport {
 	}
 	
 	//Metodo que finalmente crea una notificacion
-	private Notificacion crearNotificacion(Usuario receptor, String link,String elTipo){
+	private Notificacion crearNotificacion(Usuario receptor, String link, String linkRest, String elTipo){
 		Notificacion notificacion=new Notificacion();
 		notificacion.setId(UUID.randomUUID().toString().replaceAll("-",""));
 		notificacion.setEmisor(this.getEmisor());
 		notificacion.setReceptor(receptor);
 		notificacion.setTipo(elTipo);
 		notificacion.setLink((link+"&notif="+notificacion.getId()));
+		notificacion.setLinkRest(linkRest+"&notif="+notificacion.getId());
 		notificacion.setFechaHora(new Date());
 		notificacion.setMensaje(this.getMensaje());		
 		notificacion.setEstado(EstadoNotificacion.NOVISTO);

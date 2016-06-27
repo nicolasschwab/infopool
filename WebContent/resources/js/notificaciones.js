@@ -5,10 +5,10 @@ function actualizarNotificacionesModificando(){
 			Accept:"application/json; charset=utf-8",
 			"Content-Type": "application/json; charset=utf-8"
 		},
-		url : "misNotificacionesActualizar",
+		url : "http://localhost:8080/infopool/notificacion/listar.json?",
 		success:function(response){				
 			$('#bodyNotificaciones').html("");						
-			$.each($.makeArray(response).reverse(),function(k,v){			
+			$.each($.makeArray(response.resultado).reverse(),function(k,v){			
 				elHtml(v);			
 			});
 			//siempre poner el valor en 0
@@ -26,18 +26,18 @@ function actualizarNotificaciones(){
 			Accept:"application/json; charset=utf-8",
 			"Content-Type": "application/json; charset=utf-8"
 		},
-		url : "misNotificaciones",
+		url : "http://localhost:8080/infopool/notificacion/cantidad.json?",
 		success:function(response){				
 			$('#bodyNotificaciones').html("");
 			var noVistas=parseInt(0);			
-			$.each($.makeArray(response).reverse(),function(k,v){
-				if(v.estado=='NOVISTO'){
-					noVistas +=parseInt(1);
-				}				
-				elHtml(v);			
-			});	
+//			$.each($.makeArray(response.resultado).reverse(),function(k,v){
+//				if(v.estado=='NOVISTO'){
+//					noVistas +=parseInt(1);
+//				}				
+//				//elHtml(v);			
+//			});	
 			//poner el valor en lo que quedo el contador
-			$('#circulo').html(noVistas);
+			$('#circulo').html(response.mensaje);
 			mostarCirculo();
 		}
 		
@@ -57,7 +57,7 @@ function elHtml(valor){
 	html2='<a href="'+valor.link+'" class="linkNotificacion ">';
 			html2+='<div class="contenedor '+valor.estado+'">';
 				html2+='<div class="imgNotificacion">';
-					html2+='<img id="foto" class="img-thumbnail foto" src="ImageAction?id='+valor.idEmisor+'">';
+					html2+='<img id="foto" class="img-thumbnail foto" src="ImageAction?id='+valor.emisorId+'">';
 				html2+='</div>';
 				html2+='<div class="infoNotificacion">';
 					html2+='<div id="mensaje">'+valor.mensaje+'</div>';

@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import org.hibernate.HibernateException;
 
 import interfacesDAO.NotificacionDAO;
+import model.EstadoNotificacion;
 import model.Notificacion;
 import model.Usuario;
 import model.Viaje;
@@ -62,5 +63,27 @@ public class NotificacionDAOjpa extends GenericDAOjpa<Notificacion> implements N
 			return null;
 		}
 		return resultados.get(0);	
+	}
+
+	@Override
+	public List<Notificacion> cantidadNoVistas(Usuario usr) {
+		String qString = "select e from "+ this.persistentClass.getSimpleName() +" e where e.receptor.id= :usr and e.estado= :estado ";
+		List<Notificacion> resultados=null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			Query consulta = em.createQuery(qString);
+			consulta.setParameter("usr", usr.getId() );
+			consulta.setParameter("estado", EstadoNotificacion.NOVISTO );
+			resultados = (List<Notificacion>) consulta.getResultList();
+			for(Notificacion notificacion: resultados){
+				notificacion.getEmisor().getId();
+				notificacion.getReceptor().getId();
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return resultados;
 	}
 }
