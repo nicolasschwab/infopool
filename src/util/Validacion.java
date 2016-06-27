@@ -13,4 +13,10 @@ public class Validacion {
 		}
 		return false;
 	}
+
+	public static boolean intNoCeroPositivo(int numero) {
+		return numero>0;
+	}
+
+	
 }

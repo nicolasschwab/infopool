@@ -12,6 +12,7 @@ import org.apache.struts2.convention.annotation.Action;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
+import dto.GenericDto;
 import dto.SolicitudViajeDto;
 import dto.ViajeDto;
 import implementacionesDAO.FactoryDAO;
@@ -20,12 +21,21 @@ import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
 
-public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>>{
+public class MobileSolictudAction implements ModelDriven<GenericDto>{
 
 	private int id;
 	private int idFrecuenciaViaje;	
 	private List<SolicitudViajeDto> listaSolicitudesViajeDto;
+	private String uuid;
+	private GenericDto respuesta;
 	
+	
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 	public int getIdFrecuenciaViaje() {
 		return idFrecuenciaViaje;
 	}	
@@ -41,60 +51,90 @@ public class MobileSolictudAction implements ModelDriven<List<SolicitudViajeDto>
 
 	@Action("/solicitud/nueva")
 	public void RegistroSolicitudViaje() throws Exception{
-		if(SessionUtil.checkLogin()){
-			Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()));
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			String laRespuesta=Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()));
+			if(laRespuesta.equals("INPUT")){
+				this.fail("Ya solicitaste viajar en esta frecuencia!");
+			}else if (laRespuesta.equals("sinPermisos")){
+				this.fail("Ya perteneces a esta frecuencia!");
+			}else {
+				this.success("Solicitud enviada!", null);
+			}
 		}
 	}
 	
 	@Action("/solicitud/listar")
 	public void SolicitudesFrecuenciaViaje() throws Exception{
-		if(SessionUtil.checkLogin()){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			List<SolicitudViaje> solicitudes= Generics.getGenericSolicitudAction().SolicitudesFrecuenciaViaje(idFrecuenciaViaje);
-			for(SolicitudViaje solicitud: solicitudes){
-				this.getModel().add(Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+			if(solicitudes!=null){
+				for(SolicitudViaje solicitud: solicitudes){
+					this.success("",Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+				}	
+			}else{
+				this.fail("No podes ver las solicitudes!");
 			}
+			
 		}
 	}
 	
 	@Action("/solicitud/aceptar")
 	public void AceptarSolicitudViaje() throws Exception{
-		if(SessionUtil.checkLogin()){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			SolicitudViaje solicitud= FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
 			String respuesta= Generics.getGenericSolicitudAction().AceptarSolicitudViaje(solicitud);
 			if(respuesta=="SUCCESS"){
-				
-			}		
+				this.success("Se acepto la solicitud!",Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+			}else if(respuesta=="sinPermisos"){
+				this.fail("No puede para aceptar la solicitud!");
+			}else{
+				this.fail("No hay mas cupos en el viaje!");
+			}
 		}
 	}
 	
 	@Action("/solicitud/rechazar")
 	public void RechazarSolicitudViaje() throws NumberFormatException, Exception{
-		if(SessionUtil.checkLogin()){			
+		if(SessionUtil.checkLoginMobile(this.getUuid())){			
 			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
 			String respuesta=Generics.getGenericSolicitudAction().RechazarSolicitudViaje(solicitudViaje);
 			if(respuesta=="SUCCESS"){
-				this.getModel().add(Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
+				this.success("Se rechazo la solicitud!",Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
+			}else{
+				this.fail("No puede para rechazar la solicitud!");
 			}
 		}
 	}
 	
 	@Action("/solicitud/cancelar")
 	public void CancelarSolicitudViaje() throws Exception{
-		if(SessionUtil.checkLogin()){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			SolicitudViaje solicitudViaje = FactoryDAO.getSolicitudViajeDAO().encontrar(this.getId());
 			String respuesta=Generics.getGenericSolicitudAction().CancelarSolicitudViaje(solicitudViaje);
 			if(respuesta=="SUCCESS"){
-				this.getModel().add(Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
+				this.success("Se cancelo la solicitud!",Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
+			}else{
+				this.fail("No puede cancelar la solicitud!");
 			}
 		}		
 	}
 	
+	private void success(String mensaje, SolicitudViajeDto solicitud){
+		this.getModel().setEstado("1");
+		this.getModel().setMensaje(mensaje);
+		this.getModel().agregarUnicoResutado(solicitud);
+	}
+	private void fail(String mensaje){
+		this.getModel().setEstado("2");
+		this.getModel().setMensaje(mensaje);
+		this.getModel().setResultado(null);
+	}
 	
 	@Override
-	public List<SolicitudViajeDto> getModel() {
-		if(listaSolicitudesViajeDto==null){
-			listaSolicitudesViajeDto= new ArrayList<SolicitudViajeDto>();
+	public GenericDto getModel() {
+		if(respuesta==null){
+			respuesta= new GenericDto<SolicitudViajeDto>();
 		}
-		return listaSolicitudesViajeDto;
+		return respuesta;
 	}
 }

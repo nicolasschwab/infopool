@@ -7,7 +7,7 @@
 	<constant name="struts.url.includeParams" value="none" />
 	<constant name="struts.action.extension" value="xhtml,,xml,json,action"/>
     <constant name="struts.mapper.class" value="org.apache.struts2.dispatcher.mapper.PrefixBasedActionMapper" />
-	<constant name="struts.mapper.prefixMapping" value=" /sesion/login:rest, /sesion/logout:rest, /solicitud/nueva:rest, /solicitud/listar:rest, /solicitud/aceptar:rest, /solicitud/rechazar:rest, /solicitud/cancelar:rest, /viaje/buscar:rest, /viaje/listar/misViajes:rest, /viaje/alta:rest, /viaje/detalle:rest, /conversacion/crear:rest, :struts"/>	
+	<constant name="struts.mapper.prefixMapping" value=" /sesion/login:rest, /sesion/logout:rest, /solicitud/nueva:rest, /solicitud/listar:rest, /solicitud/aceptar:rest, /solicitud/rechazar:rest, /solicitud/cancelar:rest, /viaje/buscar:rest, /viaje/listar/conductor:rest, /viaje/listar/pasajero:rest, /viaje/alta:rest, /viaje/detalle:rest, /conversacion/crear:rest, /usuario/editar:rest, :struts"/>	
 	<constant name="struts.convention.action.suffix" value="Action"/>
     <constant name="struts.convention.action.mapAllMatches" value="true"/>
     <constant name="struts.convention.default.parent.package" value="rest-default"/>
@@ -396,12 +396,12 @@
 			<result name="success" type="redirect" >verPerfilViajero</result>
 		</action>
 		
-		<action name="actualizarContrasena" method="actualizarContrasena" class="actions.DatosUsuarioAction">
-			<result type="json">
-        		<param name="root">respuesta</param>
-   			</result>		
-			<result name="sinPermisos" type="redirect" >cerrarSesion</result>
-		</action>
+<!-- 		<action name="actualizarContrasena" method="actualizarContrasena" class="actions.DatosUsuarioAction"> -->
+<!-- 			<result type="json"> -->
+<!--         		<param name="root">respuesta</param> -->
+<!--    			</result>		 -->
+<!-- 			<result name="sinPermisos" type="redirect" >cerrarSesion</result> -->
+<!-- 		</action> -->
 		<action name="EditarViaje" method="EditarViaje" class="actions.DatosViajeAction">
 			<result name="success" type="redirect">
 				<param name="location">DetalleViaje</param>

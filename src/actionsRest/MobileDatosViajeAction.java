@@ -4,14 +4,18 @@ import org.apache.struts2.convention.annotation.Action;
 
 import com.opensymphony.xwork2.ModelDriven;
 
+import dto.GenericDto;
 import dto.ViajeDto;
 import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
+import util.Validacion;
 
-public class MobileDatosViajeAction implements ModelDriven<ViajeDto>{
+public class MobileDatosViajeAction implements ModelDriven<GenericDto>{
 
-	ViajeDto viajeDto;
+	private ViajeDto viajeDto;
+	private GenericDto respuesta;
+	
 	
 	private String direccionOrigen;
 	private String direccionDestino;
@@ -26,7 +30,17 @@ public class MobileDatosViajeAction implements ModelDriven<ViajeDto>{
 	private String tramoViaje;
 	private String tipoViaje;
 	private String[] diaPeriodico;
+	private String uuid;
 	
+	
+	public String getUuid() {
+		return uuid;
+	}
+
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	public String getDireccionOrigen() {
 		return direccionOrigen;
 	}
@@ -133,16 +147,35 @@ public class MobileDatosViajeAction implements ModelDriven<ViajeDto>{
 	
 	@Action("/viaje/alta")
 	public void alta() throws Exception{
-		if(SessionUtil.checkLogin()){
-			this.setModel(Dozer.getMapper().map(Generics.getGenericDatosViajeAction().alta(direccionOrigen, direccionDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico), ViajeDto.class));			
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			if(Validacion.stringNoVacio(direccionDestino) && Validacion.stringNoVacio(direccionOrigen) && Validacion.stringNoVacio(fechaInicio) && Validacion.intNoCeroPositivo(asientosDisponibles) && Validacion.stringNoVacio(horaPartida)){
+				this.success("Se creo el viaje!",Dozer.getMapper().map(Generics.getGenericDatosViajeAction().alta(direccionOrigen, direccionDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico), ViajeDto.class));
+			}else{
+				this.fail("Complete todos los campos!");
+			}
 		}
 	}
 
-	@Override
-	public ViajeDto getModel() {
-		return viajeDto;
+	private void success(String mensaje, ViajeDto viaje){
+		this.getModel().agregarUnicoResutado(viaje);
+		this.getModel().setEstado("1");
+		this.getModel().setMensaje(mensaje);
+		
 	}
-	public void setModel(ViajeDto viaje){
-		viajeDto=viaje;
+	private void fail(String mensaje){
+		this.getModel().setResultado(null);
+		this.getModel().setEstado("2");
+		this.getModel().setMensaje(mensaje);
+		
+	}
+	@Override
+	public GenericDto getModel() {
+		if(respuesta==null){
+			respuesta= new GenericDto<ViajeDto>();
+		}
+		return respuesta;
+	}
+	public void setModel(GenericDto respuesta){
+		respuesta=respuesta;
 	}
 }

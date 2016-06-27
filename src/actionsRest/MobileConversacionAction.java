@@ -5,22 +5,32 @@ import org.apache.struts2.convention.annotation.Action;
 import com.opensymphony.xwork2.ModelDriven;
 
 import dto.ConversacionDto;
+import dto.GenericDto;
 import model.Conversacion;
 import model.Viajero;
 import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
+import util.Validacion;
 
-public class MobileConversacionAction implements ModelDriven<ConversacionDto>{
+public class MobileConversacionAction implements ModelDriven<GenericDto>{
 	
-	int id;
-	String receptorID;
-	int viajeId;
-	String detalle;
-	String asunto;
-	ConversacionDto conversaciondto;
+	private int id;
+	private String receptorID;
+	private int viajeId;
+	private String detalle;
+	private String asunto;
+	private ConversacionDto conversaciondto;
+	private String uuid;
+	private GenericDto respuesta;
 
 	
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
 	public int getId() {
 		return id;
 	}
@@ -54,37 +64,59 @@ public class MobileConversacionAction implements ModelDriven<ConversacionDto>{
 
 	@Action("/conversacion/crear")
 	public void crearConversacion() throws NumberFormatException, Exception{
-		if(SessionUtil.checkLogin()){
-			this.mapear(Generics.getGenericConversacionAction().crearConversacion(receptorID, viajeId, (Viajero)SessionUtil.getUsuario(), detalle, asunto));
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			if(Validacion.stringNoVacio(receptorID) && Validacion.stringNoVacio(asunto) && Validacion.stringNoVacio(detalle) && Validacion.intNoCeroPositivo(viajeId)){
+				this.success("Se creo la conversacion!",Generics.getGenericConversacionAction().crearConversacion(receptorID, viajeId, (Viajero)SessionUtil.getUsuario(), detalle, asunto));
+			}else{
+				this.fail("Debe completar todos los campos!");
+			}
+			
 		}
 	}
 	@Action("/conversacion/detalle")
 	public void detalle(){
-		if(SessionUtil.checkLogin()){
-			Conversacion conversacion=Generics.getGenericConversacionAction().detalle(this.getId());
-			if(conversacion!=null){
-				this.mapear(conversacion);
-			}			
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			if(Validacion.intNoCeroPositivo(this.getId())){			
+				Conversacion conversacion=Generics.getGenericConversacionAction().detalle(this.getId());
+				if(conversacion!=null){
+					this.success("",conversacion);
+				}else{
+					this.fail("No perteneces a esta conversacion!");
+				}
+			}
 		}
 	}
 	@Action("/conversacion/responder")
 	public void responderMensaje() throws Exception{
-		if(SessionUtil.checkLogin()){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			Generics.getGenericConversacionAction().responderMensaje(this.getId(), this.getDetalle());
 		}
 	}
 	
+	private void success(String mensaje, Conversacion conversacion){
+		this.getModel().setEstado("1");
+		this.getModel().setMensaje(mensaje);
+		this.mapear(conversacion);
+	}
+	private void fail(String mensaje){
+		this.getModel().setEstado("2");
+		this.getModel().setMensaje(mensaje);
+		this.getModel().setResultado(null);
+	}
 	private void mapear(Conversacion conversacion){
-		this.setModel(Dozer.getMapper().map(conversacion, ConversacionDto.class));
+		this.getModel().agregarUnicoResutado(Dozer.getMapper().map(conversacion, ConversacionDto.class));
 	}
 	
 	@Override
-	public ConversacionDto getModel() {
-		return conversaciondto;
+	public GenericDto getModel() {
+		if(respuesta==null){
+			respuesta=new GenericDto<ConversacionDto>();
+		}
+		return respuesta;
 	}
 	
-	public void setModel(ConversacionDto conversaciondto){
-		this.conversaciondto=conversaciondto;
+	public void setModel(GenericDto respuesta){
+		this.respuesta=respuesta;
 	}
 	
 }
