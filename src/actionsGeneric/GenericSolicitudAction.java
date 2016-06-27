@@ -63,7 +63,10 @@ public class GenericSolicitudAction {
 		Viaje viaje = frecuenciaViaje.getViaje();
 		int idViaje = viaje.getId();
 		 
-		if (frecuenciaViaje.getAsientosDisponibles() > 0){				
+		if (frecuenciaViaje.getAsientosDisponibles() > 0 ){
+			if(viaje.esConductor(SessionUtil.getUsuario())){
+				
+			
 			solicitudViaje.setEstadoSolicitud(EstadoSolicitud.ACEPTADA);
 			solicitudViaje.setFechaFinSolicitud(new Date());
 			FactoryDAO.getSolicitudViajeDAO().modificar(solicitudViaje);
@@ -82,6 +85,9 @@ public class GenericSolicitudAction {
 			
 			new NotificacionAction().crearNotificacionSolicitudAceptar(viajero, viaje);
 			return "SUCCESS";
+			}else{
+				return "sinPermisos";
+			}
 		}
 		else{
 			return "INPUT";

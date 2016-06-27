@@ -16,7 +16,9 @@ import dto.GenericDto;
 import dto.SolicitudViajeDto;
 import dto.ViajeDto;
 import implementacionesDAO.FactoryDAO;
+import model.FrecuenciaViaje;
 import model.SolicitudViaje;
+import model.Viaje;
 import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
@@ -63,16 +65,34 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 		}
 	}
 	
-	@Action("/solicitud/listar")
-	public void SolicitudesFrecuenciaViaje() throws Exception{
+	@Action("/solicitud/listar/conductor")
+	public void SolicitudesConductor() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
-			List<SolicitudViaje> solicitudes= Generics.getGenericSolicitudAction().SolicitudesFrecuenciaViaje(idFrecuenciaViaje);
-			if(solicitudes!=null){
-				for(SolicitudViaje solicitud: solicitudes){
-					this.success("",Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
-				}	
-			}else{
-				this.fail("No podes ver las solicitudes!");
+			List<Viaje> viajes= FactoryDAO.getViajeDAO().listarViajesConductor(SessionUtil.getUsuario());
+			//Agrego todas las solicitudes de las frecuencias de los viajes de los cuales sos conductor
+			for(Viaje viaje: viajes){
+				for(FrecuenciaViaje frecuencia: viaje.getFrecuencias()){
+					for(SolicitudViaje solicitud: frecuencia.getSolicitudesViaje()){
+						this.success("", Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+					}
+				}
+			}
+			//Si no se agrego nada, significa que no habia solicitudes
+			if(this.getModel().getResultado().isEmpty()){
+				this.fail("No hay solicitudes en tus viajes como conductor");
+			}
+		}
+	}
+	
+	@Action("/solicitud/listar/pasajero")
+	public void SolicitudesPasajero(){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			List<SolicitudViaje> solicitudes=FactoryDAO.getSolicitudViajeDAO().encontrarPorSolicitante((model.Viajero)SessionUtil.getUsuario());
+			for(SolicitudViaje solicitud: solicitudes){
+				this.success("", Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+			}
+			if(this.getModel().getResultado().isEmpty()){
+				this.fail("No solicitaste unirte a ningun viaje");
 			}
 			
 		}

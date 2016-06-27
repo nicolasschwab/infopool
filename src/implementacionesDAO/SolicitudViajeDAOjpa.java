@@ -9,6 +9,7 @@ import javax.persistence.Query;
 
 import model.FrecuenciaViaje;
 import model.SolicitudViaje;
+import model.Usuario;
 import model.Viaje;
 import model.Viajero;
 
@@ -121,6 +122,23 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 			em.close();
 		}
 		return resultado;		
+	}
+
+	@Override
+	public List<SolicitudViaje> encontrarPorSolicitante(Viajero usuario) {
+		String qString = "select s from "+ this.persistentClass.getSimpleName() +" s where s.viajero = :viajero order by s.fechaInicioSolicitud";
+		List<SolicitudViaje> resultado = null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			Query consulta = em.createQuery(qString);
+			consulta.setParameter("viajero", usuario);
+			resultado = (List<SolicitudViaje>) consulta.getResultList();			
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return resultado;	
 	}
 
 

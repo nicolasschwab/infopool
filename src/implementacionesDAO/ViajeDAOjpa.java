@@ -22,6 +22,8 @@ import model.Viajero;
 
 import org.hibernate.HibernateException;
 
+import dto.SolicitudViajeDto;
+import util.Dozer;
 import util.EntityFactoryUtil;
 
 public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
@@ -210,7 +212,14 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 			String qString = laConsulta;
 			Query consulta = em.createQuery(qString);
 			consulta.setParameter("id", id);
-			resultado = (List<Viaje>) consulta.getResultList();			
+			resultado = (List<Viaje>) consulta.getResultList();
+			for(Viaje viaje: resultado){
+				for(FrecuenciaViaje frecuencia: viaje.getFrecuencias()){
+					for(SolicitudViaje solicitud: frecuencia.getSolicitudesViaje()){
+						solicitud.getFechaInicioSolicitud();
+					}
+				}
+			}
 		}catch(HibernateException e){
 			e.printStackTrace();			
 		}finally{
