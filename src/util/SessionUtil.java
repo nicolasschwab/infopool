@@ -6,6 +6,9 @@ import model.Usuario;
 
 import org.apache.struts2.ServletActionContext;
 
+import actionsRest.MobileLoginAction;
+import implementacionesDAO.FactoryDAO;
+
 public class SessionUtil {
 
 	public static boolean checkLogin(){       
@@ -14,7 +17,23 @@ public class SessionUtil {
             return false;
         }
         return true;
-	}	
+	}
+	
+	public static boolean checkLoginMobile(String uuid){       
+        HttpSession session = ServletActionContext.getRequest().getSession(false);
+        if(session != null && session.getAttribute("usrLogin") != null){
+        	return ((Usuario)session.getAttribute("usrLogin")).getUuid().equals(uuid);
+        }else{
+        	Usuario usr=FactoryDAO.getUsuarioDAO().encontrarPorUUID(uuid);
+        	if(usr!=null){
+        		session = ServletActionContext.getRequest().getSession(false);
+        		session.setAttribute("usrLogin", usr);
+        		return true;
+        	}else{
+        		return false;
+        	}
+        }
+	}
 	
 	public static Usuario getUsuario(){		
 		HttpSession session = ServletActionContext.getRequest().getSession(false);

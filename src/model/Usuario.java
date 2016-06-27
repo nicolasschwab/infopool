@@ -25,7 +25,10 @@ public abstract class Usuario {
 	private String usuario;
 	
 	@Column(nullable=false)
-	private String clave;		
+	private String clave;	
+	
+	@Column(nullable=true)
+	private String uuid;
 	
 	@ManyToMany(mappedBy="participantesConversacion", cascade={CascadeType.PERSIST, CascadeType.REMOVE})
 	private Collection<Conversacion> misConversaciones = new ArrayList<Conversacion>();
@@ -70,6 +73,13 @@ public abstract class Usuario {
 	public void setMisNotificaciones(Collection<Notificacion> misNotificaciones) {
 		this.misNotificaciones = misNotificaciones;
 	}	
+	public String getUuid() {
+		return uuid;
+	}
+	public void setUuid(String uuid) {
+		this.uuid = uuid;
+	}
+
 	public abstract String getPerfil();	
 	public abstract boolean getActivo();
 	public abstract boolean soyAdministrador();
