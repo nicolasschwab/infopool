@@ -7,7 +7,7 @@
 	<constant name="struts.url.includeParams" value="none" />
 	<constant name="struts.action.extension" value="xhtml,,xml,json,action"/>
     <constant name="struts.mapper.class" value="org.apache.struts2.dispatcher.mapper.PrefixBasedActionMapper" />
-	<constant name="struts.mapper.prefixMapping" value=" /sesion/login:rest, /sesion/logout:rest, /solicitud/nueva:rest, /solicitud/listar/pasajero:rest, /solicitud/listar/conductor:rest, /solicitud/aceptar:rest, /solicitud/rechazar:rest, /solicitud/cancelar:rest, /viaje/buscar:rest, /viaje/listar/conductor:rest, /viaje/listar/pasajero:rest, /viaje/alta:rest, /viaje/detalle:rest, /conversacion/crear:rest, /usuario/editar:rest, /notificacion/listar:rest, /notificacion/cantidad:rest, :struts"/>	
+	<constant name="struts.mapper.prefixMapping" value=" /sesion/login:rest, /sesion/logout:rest, /solicitud/nueva:rest, /solicitud/listar/pasajero:rest, /solicitud/listar/conductor:rest, /solicitud/aceptar:rest, /solicitud/rechazar:rest, /solicitud/cancelar:rest, /viaje/buscar:rest, /viaje/listar/conductor:rest, /viaje/listar/pasajero:rest, /viaje/alta:rest, /viaje/detalle:rest, /conversacion/crear:rest, /conversacion/listar:rest ,/usuario/editar:rest, /notificacion/listar:rest, /notificacion/cantidad:rest, :struts"/>
 	<constant name="struts.convention.action.suffix" value="Action"/>
     <constant name="struts.convention.action.mapAllMatches" value="true"/>
     <constant name="struts.convention.default.parent.package" value="rest-default"/>

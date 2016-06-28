@@ -1,11 +1,14 @@
 package actionsRest;
 
+import java.util.List;
+
 import org.apache.struts2.convention.annotation.Action;
 
 import com.opensymphony.xwork2.ModelDriven;
 
 import dto.ConversacionDto;
 import dto.GenericDto;
+import implementacionesDAO.FactoryDAO;
 import model.Conversacion;
 import model.Viajero;
 import util.Dozer;
@@ -90,6 +93,18 @@ public class MobileConversacionAction implements ModelDriven<GenericDto>{
 	public void responderMensaje() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			Generics.getGenericConversacionAction().responderMensaje(this.getId(), this.getDetalle());
+		}
+	}
+	@Action("/conversacion/listar")
+	public void listar(){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			List<Conversacion> conversaciones=FactoryDAO.getConversacionDAO().listar(SessionUtil.getUsuario());
+			for(Conversacion conversacion: conversaciones){
+				this.success("", conversacion);
+			}
+			if(conversaciones.isEmpty()){
+				this.fail("No tienes conversaciones");
+			}
 		}
 	}
 	
