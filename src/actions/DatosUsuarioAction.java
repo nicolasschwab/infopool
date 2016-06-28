@@ -420,59 +420,7 @@ public class DatosUsuarioAction extends ActionSupport implements SessionAware{
 		
 	}
 	
-	public String actualizarContrasena() throws Exception{
-		HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
-		String csrfId=Csrf.getTokenId();
-		String csrfValue=request.getParameter(csrfId);
-		if(SessionUtil.checkLogin()){		
-			if(csrfId!=null){
-				if(csrfValue!=null){
-					if(Csrf.checkValues(csrfId, csrfValue)){
-						if(this.getClaveActualEdicion()!=null & this.getClaveActualEdicion()!=""){
-							if(this.getClaveNuevaEdicion()!=null & this.getClaveNuevaEdicion()!=""){
-								if(this.getRepetirClaveEdicion()!=null & this.getRepetirClaveEdicion()!=""){
-									if(this.getClaveNuevaEdicion().equals(this.getRepetirClaveEdicion())){
-										Usuario user=this.getUsuarioDAO().encontrarPorId(String.valueOf(SessionUtil.getUsuario().getId()));
-										if(user.getClave().equals(this.getClaveActualEdicion())){
-											user.setClave(this.getClaveNuevaEdicion());
-											this.getUsuarioDAO().modificar(user);
-											this.setRespuesta("modificado");
-											return SUCCESS;
-										}else{
-											this.setRespuesta("la clave actual no es la correcta");
-											return SUCCESS;
-										}										
-									}else{
-										this.setRespuesta("las claves no coinciden");
-										return SUCCESS;
-									}
-								}else{
-									this.setRespuesta("la clave no puede estar vacia");
-									return SUCCESS;
-								}
-							}else{
-								this.setRespuesta("la clave no puede estar vacia");
-								return SUCCESS;
-							}
-						}else{
-							this.setRespuesta("la clave no puede estar vacia");
-							return SUCCESS;
-						}
-					}else{
-						this.setRespuesta("la clave no puede estar vacia");
-						return SUCCESS;
-					}
-				}else{
-					this.setRespuesta("la clave no puede estar vacia");
-					return SUCCESS;
-				}
-			}else{
-				this.setRespuesta("la clave no puede estar vacia");
-				return SUCCESS;
-			}
-		}
-		return "sinPermisos";
-	}
+	
 	/*
 	private boolean validarPreferencias(){
 		List<String> pref= new ArrayList<String>();
