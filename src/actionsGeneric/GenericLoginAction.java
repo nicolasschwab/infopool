@@ -32,12 +32,8 @@ public class GenericLoginAction{
 			return "datosIncorrectos";
 		}
 	}	
-	public String cerrarSesionGeneric( SessionMap<String, Object>  sessionMap){
-		if(SessionUtil.checkLogin()){
-			sessionMap.invalidate();
-			return "success";
-		}else{
-			return "sinPermisos";
-		}	
+	public String cerrarSesionGeneric( SessionMap<String, Object>  sessionMap){		
+		sessionMap.invalidate();
+		return "success";			
 	}	
 }

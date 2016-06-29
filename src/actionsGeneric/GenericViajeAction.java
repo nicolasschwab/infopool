@@ -29,23 +29,17 @@ private ViajeDAO viajeDAO;
 	}
 
 
-	public List<Viaje> busquedaViaje() throws ParseException {
-		if (SessionUtil.checkLogin()){
-			return this.busquedaViaje(null,null, null);
-		}
-		return null;
+	public List<Viaje> busquedaViaje() throws ParseException {		
+		return this.busquedaViaje(null,null, null);		
 	}
 	
 	public List<Viaje> busquedaViaje(String dirOrigen, String dirDestino, String fecha) throws ParseException{
-		if (SessionUtil.checkLogin()){
 			if(!Validacion.stringNoVacio(fecha)){
 				fecha = "2016-01-01";
 			}
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			Date fechaViaje = sdf.parse(fecha);
 			return this.getViajeDAO().obtenerViajesBusquedaParametrizada(dirOrigen, dirDestino, fechaViaje);
-		}
-		return null;
 	}
 	
 	public Viaje detalleViaje(String id){
