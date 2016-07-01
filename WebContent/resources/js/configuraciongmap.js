@@ -11,10 +11,12 @@ var mapOptions = {
 var ne = new google.maps.LatLng(-32.212801,-67.609863);
 var sw = new google.maps.LatLng(-37.195331,-69.433594);
 var argentina = new google.maps.LatLngBounds(sw, ne);
-
+var origen;
+var destino;
 var data = {};
 
 function inicializarRegistroViaje() {
+
   map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
   directionsDisplay.setMap(map);
   directionsDisplay.addListener('directions_changed', function() {
@@ -26,16 +28,20 @@ function inicializarRegistroViaje() {
   google.maps.event.addListener(searchBoxO, 'places_changed', function() {
     var places = searchBoxO.getPlaces();
     if (places.length == 0) {
-      return;
-    }
+        return;
+      }
+    origen=places[0].geometry.location;
+    calcularTrayecto(origen,destino);
   });
   var inputD = (document.getElementById('dirDestino')); 
   var searchBoxD = new google.maps.places.SearchBox(inputD);  
   google.maps.event.addListener(searchBoxD, 'places_changed', function() {
     var places = searchBoxD.getPlaces();
     if (places.length == 0) {
-      return;
-    }
+        return;
+      }
+    destino=places[0].geometry.location;
+    calcularTrayecto(origen,destino);
   });
 }
 
@@ -85,21 +91,21 @@ function mostrarRecorridoFrecuencia(frecuencia){
 
 
 /* FUNCIONES DE CALCULO */
-function calcularTrayecto() {
-  var dirOrigen = document.getElementById('dirOrigen').value;
-  var dirDestino = document.getElementById('dirDestino').value;
+function calcularTrayecto(elOrigen,elDestino) {
+//  var dirOrigen = document.getElementById('dirOrigen').value;
+//  var dirDestino = document.getElementById('dirDestino').value;
 
-  if ((dirOrigen != "") && (dirDestino == "")){    
-	  dirDestino = dirOrigen;
+  if ((elOrigen != "") && (elDestino == "")){    
+	  elDestino = elOrigen;
   }
-  if ((dirOrigen == "") && (dirDestino != "")){    
-	  dirOrigen = dirDestino;
+  if ((elOrigen == "") && (elDestino != "")){    
+	  elOrigen = elDestino;
   }
   
-  if ((dirOrigen != "") && (dirDestino != "")){
+  if ((elOrigen != "") && (elDestino != "")){
 	  var request = {
-		  origin: dirOrigen,
-		  destination: dirDestino,    
+		  origin: elOrigen,
+		  destination: elDestino,    
 		  travelMode: google.maps.TravelMode.DRIVING
 	  };
 	  directionsService.route(request, function(response, status) {

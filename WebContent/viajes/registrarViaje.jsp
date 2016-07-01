@@ -27,11 +27,11 @@
 							<legend>Ubicación del Viaje</legend>
 							<div class="form-group">
 								<label><s:text name="viaje.dirorigen" /></label>
-								<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" onchange="javascript:calcularTrayecto();"/>						
+								<s:textfield cssClass="form-control" id="dirOrigen" name="direccionOrigen" />						
 							</div>		
 							<div class="form-group">
 								<label><s:text name="viaje.dirdestino" /></label>
-								<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" onchange="javascript:calcularTrayecto();"/>						
+								<s:textfield cssClass="form-control" id="dirDestino" name="direccionDestino" />						
 							</div>
 							<div class="form-group">
 								<div class="row">									
