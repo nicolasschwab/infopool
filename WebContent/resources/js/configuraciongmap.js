@@ -159,9 +159,23 @@ function calcularUbicacion(dirOrigen) {
 }
 
 function actualizarTrayecto(result,contenedor) {
-  var total = (result.routes[0].legs[0].distance.value)/1000;  
-  document.getElementById('kilometros'+contenedor).value = total;
-  guardarPuntosTrayecto(result,"puntosTrayecto"+contenedor);  
+	origen=result.routes[0].legs[0].start_address;
+	primeraPalabraOrigen=origen.split(",")[1].split(" ")[1];
+	if(primeraPalabraOrigen.length==7 || primeraPalabraOrigen.length==8){
+		origen.split(",")[1].split(" ")[1]="";
+		origen=origen.replace(primeraPalabraOrigen,"");
+	}
+	destino=result.routes[0].legs[0].end_address;
+	primeraPalabraDestino=destino.split(",")[1].split(" ")[1];
+	if(primeraPalabraDestino.length==7 || primeraPalabraDestino.length==8){
+		destino.split(",")[1].split(" ")[1]="";
+		destino=destino.replace(primeraPalabraDestino,"");
+	}
+  	$("#dirOrigen").val(origen);
+  	$("#dirDestino").val(destino);
+  	var total = (result.routes[0].legs[0].distance.value)/1000;  
+  	document.getElementById('kilometros'+contenedor).value = total;
+  	guardarPuntosTrayecto(result,"puntosTrayecto"+contenedor);  
 }
 
 function guardarPuntosTrayecto(result,contenedor){	
