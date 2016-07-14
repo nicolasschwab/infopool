@@ -1,7 +1,11 @@
 package dto;
 
+import java.util.Date;
+
 public class ViajeroDto {
 
+	private int id;
+	
 	private String usuario;
 	
 	private String nombre;	
@@ -11,6 +15,25 @@ public class ViajeroDto {
 	private float calificacion;
 	
 	private String mail;
+	
+	private Date fechaIngresoSistema;
+	
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public Date getFechaIngresoSistema() {
+		return fechaIngresoSistema;
+	}
+
+	public void setFechaIngresoSistema(Date fechaIngresoSistema) {
+		this.fechaIngresoSistema = fechaIngresoSistema;
+	}
 
 	public String getMail() {
 		return mail;

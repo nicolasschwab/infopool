@@ -26,7 +26,7 @@ public class SessionUtil {
         }else{
         	Usuario usr=FactoryDAO.getUsuarioDAO().encontrarPorUUID(uuid);
         	if(usr!=null){
-        		session = ServletActionContext.getRequest().getSession(false);
+        		session = ServletActionContext.getRequest().getSession(true);
         		session.setAttribute("usrLogin", usr);
         		return true;
         	}else{

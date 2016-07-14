@@ -53,7 +53,7 @@
       </field>
       <field>
         <a>conductor</a>
-        <b>nombreConductor</b>
+        <b>conductor</b>
       </field>
       <field>
         <a>conductor.calificacion</a>
