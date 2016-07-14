@@ -4,7 +4,7 @@
 
 <meta name="description" content="">
 <meta name="author" content="voy.con.vos">
-
+<title>Infopool</title>
 <!--font-Awesome-->
 <link rel="stylesheet" href="resources/fonts/css/font-awesome.min.css">
 
