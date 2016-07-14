@@ -71,7 +71,7 @@
 	    						<div class="border">
 			    					<s:iterator value="conversacionVista">
 			    						<s:if test="!conversacion.mensajes.isEmpty()">
-				    						<s:a href="http://localhost:8080/infopool/detalle?id=%{conversacion.id}">
+				    						<s:a href="detalle?id=%{conversacion.id}">
 				    							<s:iterator value="conversacion.participantesConversacion">			    						
 				    								<s:if test="%{#parameters.id[0]==conversacion.id}">
 				    									<div class="mensajeLista seleccionado">

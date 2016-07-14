@@ -5,7 +5,7 @@ function actualizarNotificacionesModificando(){
 			Accept:"application/json; charset=utf-8",
 			"Content-Type": "application/json; charset=utf-8"
 		},
-		url : "http://localhost:8080/infopool/notificacion/listar.json?",
+		url : "notificacion/listar.json?",
 		success:function(response){				
 			$('#bodyNotificaciones').html("");						
 			$.each($.makeArray(response.resultado).reverse(),function(k,v){			
@@ -26,7 +26,7 @@ function actualizarNotificaciones(){
 			Accept:"application/json; charset=utf-8",
 			"Content-Type": "application/json; charset=utf-8"
 		},
-		url : "http://localhost:8080/infopool/notificacion/cantidad.json?",
+		url : "notificacion/cantidad.json?",
 		success:function(response){				
 			$('#bodyNotificaciones').html("");
 			var noVistas=parseInt(0);			

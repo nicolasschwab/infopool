@@ -19,7 +19,10 @@ public class SessionUtil {
         return true;
 	}
 	
-	public static boolean checkLoginMobile(String uuid){       
+	public static boolean checkLoginMobile(String uuid){
+		if(uuid==null){
+			return false;
+		}		
         HttpSession session = ServletActionContext.getRequest().getSession(false);
         if(session != null && session.getAttribute("usrLogin") != null){
         	return ((Usuario)session.getAttribute("usrLogin")).getUuid().equals(uuid);
