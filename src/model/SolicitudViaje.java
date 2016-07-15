@@ -13,6 +13,8 @@ import javax.persistence.ManyToOne;
 
 import org.hibernate.annotations.Type;
 
+import util.SessionUtil;
+
 @Entity
 public class SolicitudViaje implements Serializable{
 	
@@ -96,6 +98,12 @@ public class SolicitudViaje implements Serializable{
 	}
 	public void setFrecuenciaViaje(FrecuenciaViaje frecuenciaViaje) {
 		this.frecuenciaViaje = frecuenciaViaje;
+	}
+	public String validarPertenece(Usuario usuario) {
+		if(usuario.getId()==SessionUtil.getUsuario().getId()){
+			return this.getEstadoSolicitud().toString();
+		}
+		return null;
 	}
 	
 }

@@ -17,6 +17,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Type;
+import org.springframework.util.SystemPropertyUtils;
+
+import util.SessionUtil;
 
 @Entity
 public class FrecuenciaViaje implements Serializable{
@@ -177,5 +180,15 @@ public class FrecuenciaViaje implements Serializable{
 				break;
 			}					
 		}
-	}	
+	}
+	public String isSolicito() {
+		for(SolicitudViaje solicitud: this.getSolicitudesViaje()){
+			String estado= solicitud.validarPertenece(SessionUtil.getUsuario());
+			if(estado!=null){
+				System.out.println(estado);
+				return estado;
+			}						
+		}
+		return "noSolicito";
+	}
 }

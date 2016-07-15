@@ -17,6 +17,7 @@ import model.FrecuenciaViaje;
 import model.HuellaCarbono;
 import model.Mensaje;
 import model.SolicitudViaje;
+import model.Usuario;
 import model.Viaje;
 import model.Viajero;
 
@@ -153,7 +154,9 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 				men.getDetalle();
 			}
 			for(FrecuenciaViaje f : viaje.getFrecuencias()){
-				f.getPasajeros();
+				for(Usuario pasajero: f.getPasajeros()){
+					pasajero.getId();
+				}
 				for (SolicitudViaje solicitud : f.getSolicitudesViaje()) {
 					solicitud.getEstadoSolicitud();
 				}

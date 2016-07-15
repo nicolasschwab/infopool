@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page language="java" import="model.Viaje"%>
+<%@ page language="java" import="model.Usuario"%>
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -91,7 +92,21 @@
 																<s:url id="registroSolicitudURL" action="RegistroSolicitudViaje">
 																	<s:param name="idFrecuenciaViaje" value="%{id}"></s:param>
 																</s:url>
-																<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-sm" role="button">Unirme</s:a>
+																<s:if test="%{solicito=='noSolicito'}">
+																	<s:a href="%{registroSolicitudURL}" cssClass="btn btn-primary btn-sm" role="button">Unirme</s:a>
+																</s:if>
+																<s:if test="%{solicito=='PENDIENTE'}">
+																	<p><strong><s:text name="frecuencia.solicitud.pendiente" /></strong></p>
+																</s:if>
+																<s:if test="%{solicito=='RECHAZADA'}">
+																	<p><strong><s:text name="frecuencia.solicitud.rechazada" /></strong></p>
+																</s:if>
+																<s:if test="%{solicito=='CANCELADA'}">
+																	<p><strong><s:text name="frecuencia.solicitud.cancelada" /></strong></p>
+																</s:if>
+																<s:if test="%{solicito=='ACEPTADA'}">
+																	<p><strong><s:text name="frecuencia.solicitud.aceptada" /></strong></p>
+																</s:if>										
 															</s:if>
 															<s:else>
 																asientos ocupados
