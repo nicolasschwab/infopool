@@ -159,7 +159,15 @@ public class ConversacionAction  extends ActionSupport{
 		FactoryDAO.getConversacionDAO().registrar(foro);
 		return foro;
 	}
-	
+	public static Conversacion crearForoSinPersistir(String asunto,Viaje viaje,Viajero conductor){
+		Conversacion foro=new Conversacion();
+		foro.setAsunto(asunto);
+		foro.setViaje(viaje);
+		List<Viajero> participantes= new ArrayList<Viajero>();
+		participantes.add(conductor);
+		foro.setParticipantesConversacion(participantes);
+		return foro;
+	}
 	public String detalle(){
 		String estaLogueado=this.validarSesion();
 		if(estaLogueado==SUCCESS){

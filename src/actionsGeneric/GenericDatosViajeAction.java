@@ -72,8 +72,8 @@ public class GenericDatosViajeAction {
 		viaje.setTipoViaje(TipoViaje.valueOf(tipoViaje));
 		viaje.setActivo(true);
 		//creo el foro de pasajeros, cuando se acepte una solicitud el ususario debe ser agregado a este foro			
-		viaje.setForoViaje(ConversacionAction.crearForo("Foro de pasajeros", viaje, conductor));			
-		((ViajeDAOjpa)FactoryDAO.getViajeDAO()).modificar(viaje);
+		viaje.setForoViaje(ConversacionAction.crearForoSinPersistir("Foro de pasajeros", viaje, conductor));			
+		((ViajeDAOjpa)FactoryDAO.getViajeDAO()).registrar(viaje);
 		
 		return viaje;
 	}
