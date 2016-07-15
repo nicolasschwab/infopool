@@ -1,6 +1,7 @@
 var rendererOptions = {draggable: true};  
 var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 var directionsService = new google.maps.DirectionsService();
+var geocoder = new google.maps.Geocoder();
 var map;
 var laplata = new google.maps.LatLng(-34.929448, -57.950127); 
 var mapOptions = {
@@ -22,25 +23,65 @@ function inicializarRegistroViaje() {
   directionsDisplay.addListener('directions_changed', function() {
 	  actualizarTrayecto(directionsDisplay.getDirections(),'');
   });
+  map.addListener('click',function(e){
+	  if(origen!=null && destino !=null){
+		  return;
+	  }
+	  if(origen==null){
+		  var latlng = {lat: parseFloat(e.latLng.lat()), lng: parseFloat( e.latLng.lng())};
+		  geocoder.geocode({'location': latlng}, function(results,status){		 
+			 if (status === google.maps.GeocoderStatus.OK) {
+			      if (results[1]) {
+			        map.setZoom(11);
+			        var marker = new google.maps.Marker({
+			          position: latlng,
+			          map: map
+			        });
+			        infowindow.setContent(results[1].formatted_address);
+			        infowindow.open(map, marker);
+			      } else {
+			        //window.alert('No results found');
+			      }
+			    } else {
+			      //window.alert('Geocoder failed due to: ' + status);
+			    }
+		 });
+	  }else{ //destino es null
+		  
+	  }	  
+  });
+	  
   
+  function expandViewportToFitPlace(map, place) {
+	    if (place.geometry.viewport) {
+	      map.fitBounds(place.geometry.viewport);
+	    } else {
+	      map.setCenter(place.geometry.location);
+	      map.setZoom(15);
+	    }
+	  }
   var inputO = (document.getElementById('dirOrigen')); 
   var searchBoxO = new google.maps.places.SearchBox(inputO);  
   google.maps.event.addListener(searchBoxO, 'places_changed', function() {
     var places = searchBoxO.getPlaces();
-    if (places.length == 0) {
+    if (!places[0].geometry) {
+        window.alert("Autocomplete's returned place contains no geometry");
         return;
       }
-    origen=places[0].geometry.location;
+    expandViewportToFitPlace(map, places[0]);
+    origen=places[0].place_id;
     calcularTrayecto(origen,destino);
   });
   var inputD = (document.getElementById('dirDestino')); 
   var searchBoxD = new google.maps.places.SearchBox(inputD);  
   google.maps.event.addListener(searchBoxD, 'places_changed', function() {
     var places = searchBoxD.getPlaces();
-    if (places.length == 0) {
+    if (!places[0].geometry) {
+        window.alert("Autocomplete's returned place contains no geometry");
         return;
       }
-    destino=places[0].geometry.location;
+    expandViewportToFitPlace(map, places[0]);
+    destino=places[0].place_id;
     calcularTrayecto(origen,destino);
   });
 }
@@ -94,26 +135,21 @@ function mostrarRecorridoFrecuencia(frecuencia){
 function calcularTrayecto(elOrigen,elDestino) {
 //  var dirOrigen = document.getElementById('dirOrigen').value;
 //  var dirDestino = document.getElementById('dirDestino').value;
-
-  if ((elOrigen != "") && (elDestino == "")){    
-	  elDestino = elOrigen;
-  }
-  if ((elOrigen == "") && (elDestino != "")){    
-	  elOrigen = elDestino;
-  }
-  
-  if ((elOrigen != "") && (elDestino != "")){
-	  var request = {
-		  origin: elOrigen,
-		  destination: elDestino,    
-		  travelMode: google.maps.TravelMode.DRIVING
-	  };
-	  directionsService.route(request, function(response, status) {
-	      if (status == google.maps.DirectionsStatus.OK) {
+	if(elOrigen==null || elDestino==null){
+		  return;
+	  }
+	  directionsService.route({
+	      origin: {'placeId': elOrigen},
+	      destination: {'placeId': elDestino},
+	      travelMode: google.maps.TravelMode.DRIVING
+	    }, function(response, status) {
+	      if (status === google.maps.DirectionsStatus.OK) {
 	        directionsDisplay.setDirections(response);
+	      } else {
+	        window.alert('Directions request failed due to ' + status);
 	      }
-	  });
-  }
+	    });
+  
 }
 
 function calcPoint() {
