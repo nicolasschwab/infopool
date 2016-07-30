@@ -18,6 +18,8 @@ public class ViajeroDto {
 	
 	private Date fechaIngresoSistema;
 	
+	private Date fechaNacimiento;	
+	
 	
 	public int getId() {
 		return id;
@@ -73,6 +75,16 @@ public class ViajeroDto {
 
 	public void setCalificacion(float calificacion) {
 		this.calificacion = calificacion;
+	}
+
+	public Date getFechaNacimiento() {
+		return fechaNacimiento;
+	}
+
+	public void setFechaNacimiento(Date fechaNacimiento) {
+		this.fechaNacimiento = fechaNacimiento;
 	}	
+	
+	
 	
 }

@@ -5,6 +5,7 @@ import actionsGeneric.GenericDatosViajeAction;
 import actionsGeneric.GenericLoginAction;
 import actionsGeneric.GenericSolicitudAction;
 import actionsGeneric.GenericViajeAction;
+import actionsGeneric.GenericViajeroAction;
 
 public class Generics {
 
@@ -13,6 +14,7 @@ public class Generics {
 	private static GenericLoginAction genericLogin;
 	private static GenericDatosViajeAction genericDatosViaje;
 	private static GenericConversacionAction genericConversacion;
+	private static GenericViajeroAction genericViajero;
 	
 	public static GenericViajeAction getGenericViajeAction(){
 		if(genericViaje==null){
@@ -47,6 +49,13 @@ public class Generics {
 			genericConversacion=new GenericConversacionAction();
 		}
 		return genericConversacion;
+	}
+	
+	public static GenericViajeroAction getGenericViajeroAction(){
+		if(genericViajero==null){
+			genericViajero=new GenericViajeroAction();
+		}
+		return genericViajero;
 	}
 	
 }
