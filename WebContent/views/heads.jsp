@@ -57,6 +57,8 @@
 <script type="text/javascript" src="resources/js/funcionesAltaUsuario.js"></script>
 
 
+
+
 <script type="text/javascript">
     $(function() {        
         
@@ -84,8 +86,8 @@
         
     });    
 </script>
-
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places"></script>
+<!-- <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4ONLIO2speSB3enNoqAvrzgWePwLGee0&signed_in=true&callback=initMap" async defer></script> -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC4ONLIO2speSB3enNoqAvrzgWePwLGee0&v=3.exp&libraries=places"></script>
 
 <script type="text/javascript" src="resources/js/configuraciongmap.js"></script>
 <script type="text/javascript" src="resources/js/funcionesgenerales.js"></script>
