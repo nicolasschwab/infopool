@@ -33,6 +33,34 @@ function mostrarDatosAuto() {
 	return false;
 };
 
+function validarFormatoFecha(elem, id){
+	document.getElementById(id).innerHTML = "";
+	var patter = /^\d{4}-\d{2}-\d{2}$/;
+	if(!patter.test(elem)){
+		document.getElementById(id).innerHTML = "Formato invalido";
+		return true;
+	}
+	return false;
+}
+
+function validarFechaExistente(elem, id){
+	  document.getElementById(id).innerHTML = "";
+      var fechaf = elem.split("-");
+      var day = fechaf[2];
+      var month = fechaf[1];
+      var year = fechaf[0];
+      var date = new Date(year,month,'0');
+      if((day-0)>(date.getDate()-0) || ( 12<month || month<1) ){
+    	  document.getElementById(id).innerHTML = "La fecha no existe";
+    	  return true;
+      }
+      if((2016<year || year<1900)){
+    	  document.getElementById(id).innerHTML = "La fecha es muy chica";
+    	  return true;
+      }
+      return false;	
+}
+
 function validarVacio(elem, id) {
 	document.getElementById(id).innerHTML = "";
 	if (elem == null || elem.length == 0 || /^\s+$/.test(elem)) {
@@ -86,6 +114,12 @@ function validarDatosPersonales() {
 		avanzar = false;
 	}
 	if (validarVacio(fNacimientoUsuario.value, idFNacimientoUsuario)) {
+		avanzar = false;
+	}
+	if (validarFormatoFecha(fNacimientoUsuario.value, idFNacimientoUsuario)) {
+		avanzar = false;
+	}
+	if(validarFechaExistente(fNacimientoUsuario.value, idFNacimientoUsuario)){
 		avanzar = false;
 	}
 	if (validarVacio(telefonoUsuario.value, idTelefonoUsuario)
