@@ -34,7 +34,7 @@
 						<s:textfield cssClass="form-control" name="apellidoUsuario" />
 					</div>
 					<div class="form-group">
-						<label><s:text name="viajero.fechanacimiento" /></label>
+						<label><s:text name="viajero.fechanacimiento" /> (YYYY-MM-DD)</label>
 						<label id="errorfNacimientoUsuario" class="error"></label>						
 						<div class='input-group date datepicker'>
 							<s:textfield cssClass="form-control" label="Fecha de nacimiento"
