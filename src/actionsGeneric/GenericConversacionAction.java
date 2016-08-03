@@ -51,7 +51,7 @@ public class GenericConversacionAction {
 		return conversacion;
 	}
 	
-	public void responderMensaje(int id, String detalle) throws Exception{
+	public Conversacion responderMensaje(int id, String detalle) throws Exception{
 		Conversacion conversacion=FactoryDAO.getConversacionDAO().encontrarPorId(id);
 		for(Viajero viajero :conversacion.getParticipantesConversacion()){
 			if(viajero.getId()==SessionUtil.getUsuario().getId()){
@@ -63,5 +63,6 @@ public class GenericConversacionAction {
 				FactoryDAO.getConversacionDAO().modificar(conversacion);
 			}
 		}
+		return conversacion;
 	}
 }

@@ -92,9 +92,15 @@ public class MobileConversacionAction implements ModelDriven<GenericDto>{
 	@Action("/conversacion/responder")
 	public void responderMensaje() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
-			Generics.getGenericConversacionAction().responderMensaje(this.getId(), this.getDetalle());
+			Conversacion conversacion=Generics.getGenericConversacionAction().responderMensaje(this.getId(), this.getDetalle());
+			if(conversacion!=null){
+				this.success("",conversacion);
+			}else{
+				this.fail("No se pudo enviar el mensaje!");
+			}
 		}
 	}
+
 	@Action("/conversacion/listar")
 	public void listar(){
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
