@@ -1,5 +1,11 @@
 package actionsRest;
 
+import implementacionesDAO.FactoryDAO;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import model.FrecuenciaViaje;
 import model.Viaje;
 import model.Viajero;
 
@@ -12,12 +18,11 @@ import util.Validacion;
 
 import com.opensymphony.xwork2.ModelDriven;
 
+import dto.FrecuenciaViajeDto;
 import dto.GenericDto;
-import dto.ViajeDto;
-import dto.ViajeroDto;
 
-public class MobileViajeroAction implements ModelDriven<GenericDto>{
-	
+public class MobileFrecuenciaAction implements ModelDriven<GenericDto> {
+
 	private GenericDto respuesta;
 	
 	private String id;
@@ -25,12 +30,6 @@ public class MobileViajeroAction implements ModelDriven<GenericDto>{
 	private String uuid;
 	
 	
-	public GenericDto getRespuesta() {
-		return respuesta;
-	}
-	public void setRespuesta(GenericDto respuesta) {
-		this.respuesta = respuesta;
-	}
 	public String getId() {
 		return id;
 	}
@@ -50,13 +49,13 @@ public class MobileViajeroAction implements ModelDriven<GenericDto>{
 		this.viajeId = viajeId;
 	}
 	
-	@Action("/viajero/detalle")
+	@Action("/frecuencia/detalle")
 	public void detalle() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			if(Validacion.stringNoVacio(this.getId())){
-				Viajero viajero = Generics.getGenericViajeroAction().detalleViajero(this.getId());
-				if(viajero!=null){				
-					this.success("", Dozer.getMapper().map(viajero, ViajeroDto.class));
+				FrecuenciaViaje frecuencia = Generics.getGenericFrecuenciaViajeAction().detalleFrecuenciaViaje(Integer.parseInt(this.getId()));
+				if(frecuencia!=null){				
+					this.success("",Dozer.getMapper().map(frecuencia, FrecuenciaViajeDto.class));
 				}else{
 					this.fail("El viajero no existe");
 				}
@@ -66,13 +65,13 @@ public class MobileViajeroAction implements ModelDriven<GenericDto>{
 		}
 	}
 	
-	@Action("/viajero/pasajerosViaje")
-	public void pasajeros(){
+	@Action("/frecuencia/frecuenciasViaje")
+	public void frecuencias(){
 		if(SessionUtil.checkLoginMobile(this.getUuid())){			
 			Viaje viaje=Generics.getGenericViajeAction().detalleViaje(this.getViajeId());
 			if(viaje!=null){				
-				for(Viajero pasajero:viaje.getPasajeros()){
-					this.success("",Dozer.getMapper().map(pasajero, ViajeroDto.class));
+				for(FrecuenciaViaje frecuencia:viaje.getFrecuencias()){
+					this.success("",Dozer.getMapper().map(frecuencia, FrecuenciaViajeDto.class));
 				}				
 			}else{
 				this.fail("El viaje no existe");
@@ -80,10 +79,10 @@ public class MobileViajeroAction implements ModelDriven<GenericDto>{
 		}
 	}
 	
-	private void success(String mensaje, ViajeroDto viajero){
+	private void success(String mensaje, FrecuenciaViajeDto frecuencia){
 		this.getModel().setEstado("1");
 		this.getModel().setMensaje(mensaje);
-		this.getModel().agregarUnicoResutado(viajero);
+		this.getModel().agregarUnicoResutado(frecuencia);
 	}
 	
 	private void fail(String mensaje){
@@ -95,9 +94,9 @@ public class MobileViajeroAction implements ModelDriven<GenericDto>{
 	@Override
 	public GenericDto getModel() {
 		if(respuesta==null){
-			respuesta= new GenericDto<ViajeroDto>();
+			respuesta=new GenericDto<FrecuenciaViajeDto>();
 		}
 		return respuesta;
 	}
-
+	
 }

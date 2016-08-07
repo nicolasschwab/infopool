@@ -15,6 +15,7 @@ import dto.ViajeDto;
 import dto.ViajeroDto;
 import model.Evento;
 import model.Viaje;
+import model.Viajero;
 import util.Dozer;
 import util.Generics;
 import util.SessionUtil;
@@ -158,7 +159,7 @@ public class MobileViajeAction implements ModelDriven<GenericDto> {
 				this.fail("No sos pasajero en ningun viaje");
 			}
 		}
-	}
+	}	
 	
 	private void success(String mensaje, ViajeDto viaje){
 		this.getModel().setEstado("1");

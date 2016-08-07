@@ -59,9 +59,50 @@
         <a>conductor.calificacion</a>
         <b>calificacionConductor</b>
       </field>
-  </mapping>  
+  </mapping>
   
-  <mapping>
+  <mapping wildcard="false"> 
+    <class-a>model.FrecuenciaViaje</class-a>
+    <class-b>dto.FrecuenciaViajeDto</class-b>
+      <field>
+        <a>id</a>
+        <b>id</b>
+      </field>   
+      <field>
+        <a>diaFrecuencia</a>
+        <b>diaFrecuencia</b>
+      </field>
+      <field>
+        <a>estadoFrecuencia</a>
+        <b>estadoFrecuencia</b>
+      </field>
+      <field>
+        <a>horaPartida</a>
+        <b>horaPartida</b>
+      </field>
+      <field>
+        <a>horaRegreso</a>
+        <b>horaRegreso</b>
+      </field>
+      <field>
+        <a>asientosDisponibles</a>
+        <b>asientosDisponibles</b>
+      </field>
+      <field>
+        <a>tramoViaje</a>
+        <b>tramoViaje</b>
+      </field>
+      <field>
+        <a>puntosTrayecto</a>
+        <b>puntosTrayecto</b>
+      </field>      
+      <field>
+        <a>kilometros</a>
+        <b>kilometros</b>
+      </field>
+  </mapping>
+  
+  <mapping>  
   	<class-a>model.Notificacion</class-a>
   	<class-b>dto.NotificacionDto</class-b>
   	<field>

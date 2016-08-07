@@ -1,11 +1,14 @@
 package implementacionesDAO;
 
+import java.util.List;
+
 import interfacesDAO.FrecuenciaViajeDAO;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import model.FrecuenciaViaje;
+import model.SolicitudViaje;
 import model.Viaje;
 import model.Viajero;
 
@@ -67,5 +70,21 @@ public class FrecuenciaViajeDAOjpa extends GenericDAOjpa<FrecuenciaViaje> implem
 			em.close();
 		}
 		return unicaFrecuencia;
+	}
+	
+	public <T> List<FrecuenciaViaje> obtenerFrecuenciasViaje(Integer idViaje){
+		List<FrecuenciaViaje> listadoFrecuencias = null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();
+		try{
+			String qstr = "select f from "+ this.persistentClass.getSimpleName() +" f where f.viaje.id = :viaje";
+			Query q = em.createQuery(qstr);
+			q.setParameter("viaje", idViaje);
+			listadoFrecuencias = (List<FrecuenciaViaje>) q.getResultList();
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return listadoFrecuencias;
 	}
 }

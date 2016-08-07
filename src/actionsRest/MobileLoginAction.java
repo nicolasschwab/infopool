@@ -104,7 +104,7 @@ public class MobileLoginAction implements SessionAware,ModelDriven<GenericDto>{
 		sessionMap = (SessionMap<String, Object>) map;		
 	}
 
-	
+	@Override
 	public GenericDto getModel() {
 		if(model==null){
 			model=new GenericDto();
