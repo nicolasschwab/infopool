@@ -11,8 +11,8 @@ public class FrecuenciaViajeDto {
 	private int id;	
 	private DiasSemana diaFrecuencia;
 	private EstadoFrecuencia estadoFrecuencia;
-	private Time horaPartida;
-	private Time horaRegreso;
+	private String horaPartida;
+	private String horaRegreso;
 	private int asientosDisponibles;
 	private TramoViaje tramoViaje;
     private String puntosTrayecto;
@@ -36,16 +36,16 @@ public class FrecuenciaViajeDto {
 	public void setEstadoFrecuencia(EstadoFrecuencia estadoFrecuencia) {
 		this.estadoFrecuencia = estadoFrecuencia;
 	}
-	public Time getHoraPartida() {
+	public String getHoraPartida() {
 		return horaPartida;
 	}
-	public void setHoraPartida(Time horaPartida) {
+	public void setHoraPartida(String horaPartida) {
 		this.horaPartida = horaPartida;
 	}
-	public Time getHoraRegreso() {
+	public String getHoraRegreso() {
 		return horaRegreso;
 	}
-	public void setHoraRegreso(Time horaRegreso) {
+	public void setHoraRegreso(String horaRegreso) {
 		this.horaRegreso = horaRegreso;
 	}
 	public int getAsientosDisponibles() {
