@@ -22,6 +22,7 @@
 <link href="resources/css/estilosEditarPerfil.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/estilosNotificaciones.css" rel='stylesheet' type='text/css' />
 <link href="resources/css/estilosConversacion.css" rel='stylesheet' type='text/css' />
+<link href="resources/css/mensajesFlotantes.css" rel='stylesheet' type='text/css' />
 
 <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
 <link href='resources/css/ie10-viewport-bug-workaround.css' rel='stylesheet' type='text/css'>

@@ -18,6 +18,7 @@
 						<div class="form-group col-sm-3">						  	
 						  	<s:textfield cssClass="form-control" name="evento" placeholder="Evento"/>
 						</div>
+						<s:hidden id="rango" name="rango" value="100"></s:hidden>
 						<div class="form-group col-sm-1">							
 							<s:submit cssClass="btn btn-default" value="%{getText('global.buscar')}" />
 						</div>

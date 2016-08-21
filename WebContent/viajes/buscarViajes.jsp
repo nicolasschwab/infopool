@@ -7,7 +7,7 @@
 	<%@ include file="../views/heads.jsp"%>
 	<%@ taglib prefix="s" uri="/struts-tags"%>
 </head>
-<body onload="inicializarBusquedaViaje();">
+<body onload="inicializarBusquedaViaje();incializarMapaBusquedaViaje();">
 
 	<jsp:include page="../views/header.jsp">
 		<jsp:param name="itemActivo" value="0" />
@@ -17,8 +17,8 @@
 		<div class="container">
 			<jsp:include page="./menuBusqueda.jsp"></jsp:include>
 			<div class="main row">
-<%-- 				<jsp:include page="./filtros.jsp"></jsp:include> --%>
-				<div class="col-sm-12 padding-right-zero">
+				<jsp:include page="./filtros.jsp"></jsp:include>
+				<div class="col-sm-9 padding-right-zero">
 					<div class="contenido-seccion shadow-box">
 						<div class="boxViajes">
 							<div class="tiposListadoViajes" id="pasajero"><h3 class="titulo-contenido">Resultados de busqueda</h3></div>

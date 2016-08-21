@@ -21,7 +21,7 @@ var marker;
 
 function inicializarRegistroViaje() {
 
-  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);  
+  map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions); 
   directionsDisplay.setMap(map);
   directionsDisplay.addListener('directions_changed', function() {
 	  actualizarTrayecto(directionsDisplay.getDirections(),'');
@@ -39,7 +39,7 @@ function inicializarRegistroViaje() {
 		  geocoder.geocode({'location': latlng}, function(results,status){		 
 			 if (status === google.maps.GeocoderStatus.OK) {
 			      if (results[0]) {
-			    	inputD.attr("value",results[0].formatted_address);
+			    	inputD.attr("value",results[0].address_components[1].long_name+", "+results[0].address_components[2].long_name+", "+results[0].address_components[4].long_name+", "+results[0].address_components[5].long_name);
 			    	destino=results[0].place_id;
 			    	calcularTrayecto(origen,destino);
 			      } else {
@@ -60,7 +60,7 @@ function inicializarRegistroViaje() {
 		  geocoder.geocode({'location': latlng}, function(results,status){		 
 			 if (status === google.maps.GeocoderStatus.OK) {
 			      if (results[0]) {
-			    	inputO.attr("value",results[0].formatted_address);
+			    	inputO.attr("value",results[0].address_components[1].long_name+", "+results[0].address_components[2].long_name+", "+results[0].address_components[4].long_name+", "+results[0].address_components[5].long_name);
 			    	origen=results[0].place_id;
 			    	marker  = new google.maps.Marker({
 			             position: latlng,
@@ -71,7 +71,7 @@ function inicializarRegistroViaje() {
 			    		clickMapaOrigen(e);
 			    	});
 			    	marcadores.push(marker);
-			        infowindow.setContent(results[0].formatted_address);
+			        infowindow.setContent(results[0].address_components[1].long_name+", "+results[0].address_components[2].long_name+", "+results[0].address_components[4].long_name+", "+results[0].address_components[5].long_name);
 			        infowindow.open(map, marker);
 			    	calcularTrayecto(origen,destino);
 			      } else {
@@ -119,6 +119,173 @@ function inicializarRegistroViaje() {
 	  searchBoxD.setBounds(map.getBounds());
 	  });
 }
+
+//----------- funcion para la busqueda de viajes-------
+function incializarMapaBusquedaViaje(){
+	value=$("#distancia").val();
+	$("#distancia").attr("title",value+ " metros");
+	map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+    var inputO = $("#dirOrigen");
+    var inputD = $("#dirDestino");
+    var infowindowOrigen= new google.maps.InfoWindow;
+    var infowindowDestino= new google.maps.InfoWindow;
+    var geocoder = new google.maps.Geocoder;
+
+    
+	map.addListener('click',function(e){
+		if(inputO.attr("value")!="" && inputD.attr("value") !=""){
+			  return;
+		  }
+		  if(inputO.attr("value")==""){
+			  $('#moverMarcadores').fadeIn("slow","linear");
+			  cerrarFlotanteBusqueda();
+			  agregarMarcadorClick(e,inputO,infowindowOrigen);
+			  
+		  }else if(inputD.attr("value")==""){
+			  agregarMarcadorClick(e,inputD,infowindowDestino);			  
+		  }
+	});
+	
+	if(inputO.attr("value")!=""){
+		geocoder.geocode({'address': inputO.attr("value")}, function(results, status) {
+		    if (status === google.maps.GeocoderStatus.OK) {
+		    	agregarMarcador(results[0].geometry.location,inputO,infowindowDestino);
+		    }
+		});		
+	}
+	if(inputD.attr("value")!=""){
+		geocoder.geocode({'address': inputD.attr("value")}, function(results, status) {
+		    if (status === google.maps.GeocoderStatus.OK) {
+		    	agregarMarcador(results[0].geometry.location,inputD,infowindowOrigen);
+		    }
+		});		
+	}
+	
+	var circuloOrigen = new google.maps.Circle({
+	      strokeColor: '#FF0000',
+	      strokeOpacity: 0.8,
+	      strokeWeight: 2,
+	      fillColor: '#FF0000',
+	      fillOpacity: 0.35,
+	      map: map,
+	      center: inputO
+	    });
+	
+	if($("#distancia").val()!=""){
+		circuloOrigen.setRadius($("#distancia").val()*1);
+	}else{
+		circuloOrigen.setRadius(100*1);
+	}
+	var circuloDestino= new google.maps.Circle({
+	      strokeColor: '#FF0000',
+	      strokeOpacity: 0.8,
+	      strokeWeight: 2,
+	      fillColor: '#FF0000',
+	      fillOpacity: 0.35,
+	      map: map,
+	      center: inputD
+	    });
+	if($("#distancia").attr("value")!=""){
+		circuloDestino.setRadius($("#distancia").val()*1);
+	}else{
+		circuloDestino.setRadius(100*1);
+	}
+	function actualizarCirculoOrigen(direccion){
+	  geocoder.geocode({'address': direccion}, function(results,status){		 
+		 if (status === google.maps.GeocoderStatus.OK) {
+		      if (results[0]) {
+		    	  circuloOrigen.setCenter(results[0].geometry.location);
+		      }
+		 }else{
+			 alert(status);
+		 }
+	  });
+	  
+	}
+	function actualizarCirculoDestino(direccion){
+	  geocoder.geocode({'address': direccion}, function(results,status){		 
+		 if (status === google.maps.GeocoderStatus.OK) {
+		      if (results[0]) {
+		    	  circuloDestino.setCenter(results[0].geometry.location);
+		      }
+		 }else{
+			 alert(status);
+		 }
+	  });		
+	}
+	function agregarMarcadorClick(e,input,infowindow){
+		if(e==null || input==null){
+			return;
+		}		
+		var latlng = {lat: parseFloat(e.latLng.lat()), lng: parseFloat( e.latLng.lng())};
+		agregarMarcador(latlng,input,infowindow);	  
+	}
+	
+	function agregarMarcador(latlng,input,infowindow){
+		var valorCampo;
+		geocoder.geocode({'location': latlng}, function(results,status){		 
+			 if (status === google.maps.GeocoderStatus.OK) {
+			      if (results[0]) {
+			    	valorCampo=  results[0].address_components[1].long_name+" "+results[0].address_components[0].long_name+", "+results[0].address_components[2].long_name+", "+results[0].address_components[4].long_name+", "+results[0].address_components[5].long_name;
+			    	input.attr("value",valorCampo);
+			    	marker  = new google.maps.Marker({
+			             position: latlng,
+			             draggable:true,
+			             map: map
+			           });			
+			    	marker.addListener('dragend',function(e){
+			    		var latlng = {lat: parseFloat(e.latLng.lat()), lng: parseFloat( e.latLng.lng())};
+			    		geocoder.geocode({'location': latlng}, function(results,status){		 
+			    			if (status === google.maps.GeocoderStatus.OK) {
+			    				if(results[0]){
+			    					valorCampo=results[0].address_components[1].long_name+" "+results[0].address_components[0].long_name+", "+results[0].address_components[2].long_name+", "+results[0].address_components[4].long_name+", "+results[0].address_components[5].long_name;
+			    					input.attr("value",valorCampo);
+			    					infowindow.setContent(valorCampo);
+			    					actualizarCirculos(input);
+			    				}
+			    			}
+			   			});
+			    	});
+			    	marcadores.push(marker);
+			    	infowindow.setContent(valorCampo);
+			        infowindow.open(map, marker);
+			        actualizarCirculos(input);
+			      } else {
+			        //window.alert('No results found');
+			      }
+			    } else {
+			      //window.alert('Geocoder failed due to: ' + status);
+			    }
+		 });
+	}
+	
+	function actualizarCirculos(input){
+		if(input.selector=='#dirOrigen'){
+			actualizarCirculoOrigen(input.attr("value"));
+		}else if(input.selector=='#dirDestino'){
+			actualizarCirculoDestino(input.attr("value"));
+		}
+	}
+$("#distancia").on("change",function(){
+	$("#rango").attr("value",$("#distancia").val());
+	tamanioRango($("#distancia").val());
+	value=$(this).val();
+	$(this).attr("title",value+ " metros");
+});
+
+	function tamanioRango(valor){
+		circuloOrigen.setMap(null);
+		circuloOrigen.setRadius(null);
+		circuloOrigen.setRadius(valor*1);
+		circuloOrigen.setMap(map);
+		circuloDestino.setMap(null);
+		circuloDestino.setRadius(null);
+		circuloDestino.setRadius(valor*1);
+		circuloDestino.setMap(map);
+	}
+
+}
+
 
 function mostrarRecorridoFrecuencia(frecuencia){
 	  var directionsDisplayF = new google.maps.DirectionsRenderer(rendererOptions);

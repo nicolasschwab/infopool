@@ -22,3 +22,9 @@ function mostarViajesPasajero(){
 	$('.listaViajesPasajero').show();
 	$('#pasajero').css('background-color', 'green');
 }
+function cerrarFlotanteBusqueda(){
+	$('#recorridoFlotante').fadeOut();
+}
+function cerrarMoverMarcadores(){
+	$('#moverMarcadores').fadeOut();
+}

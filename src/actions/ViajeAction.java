@@ -40,6 +40,7 @@ public class ViajeAction extends ActionSupport {
 	private String direccionDestino;
 	private String fechaViaje;
 	private String ubicacionLocal;
+	private String rango;
 	private String evento;
 	
 	/* */ 
@@ -147,8 +148,12 @@ public class ViajeAction extends ActionSupport {
 	public void setListaBusquedaViajes(List<Viaje> listaBusquedaViajes) {
 		this.listaBusquedaViajes = listaBusquedaViajes;
 	}	
-	
-	
+	public String getRango() {
+		return rango;
+	}
+	public void setRango(String rango) {
+		this.rango = rango;
+	}
 	public boolean getSoyViajero() {
 		return soyViajero;
 	}
@@ -168,7 +173,7 @@ public class ViajeAction extends ActionSupport {
 		this.soyPasajero = soyPasajero;
 	}
 	
-	public String busquedaViaje() throws ParseException {
+	public String busquedaViaje() throws Exception {
 		listaBusquedaViajes = Generics.getGenericViajeAction().busquedaViaje();
 		if(listaBusquedaViajes ==null){
 			return "sinPermisos";
@@ -209,7 +214,7 @@ public class ViajeAction extends ActionSupport {
 	
 	public String BusquedaParametrizadaViaje() throws Exception{		
 		if (SessionUtil.checkLogin()){
-			listaBusquedaViajes = Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje());
+			listaBusquedaViajes = Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje(),this.getRango());
 			return SUCCESS;
 		}		
 		return "sinPermisos";

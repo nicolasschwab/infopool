@@ -1,0 +1,33 @@
+.flotante{
+	border: 1px solid #ddd;
+	position:absolute;
+	-webkit-box-shadow: 0 10px 20px -4px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.1);
+	box-shadow: 0 10px 20px -4px rgba(0,0,0,.4),0 0 0 1px rgba(0,0,0,.1);
+	z-index: 10000;
+    background: white;
+    border-radius: 5px;
+    height: 100%;
+    width: 100%;
+    padding-top: 10px;
+    text-align: center;
+    color:black;
+}
+.recorridoFlotante{
+	right: 60%;
+	top: 90px;
+    position: absolute;
+    z-index: 9999;
+    height: 100px;
+    width: 200px;
+}
+.cerrar{
+	position: absolute;
+    color: black;
+    top: 5px;
+    right: 7px;
+    z-index: 100000000;
+    cursor: pointer;
+}
+.mensaje{
+	margin-bottom: 10px;
+}

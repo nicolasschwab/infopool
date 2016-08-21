@@ -30,12 +30,21 @@ public class MobileViajeAction implements ModelDriven<GenericDto> {
 	private String direccionOrigen;
 	private String direccionDestino;
 	private String fechaViaje;
+	private String rango;
 	private String uuid;
 	
 	private GenericDto respuesta;
 	
 	
 	
+	public String getRango() {
+		return rango;
+	}
+
+	public void setRango(String rango) {
+		this.rango = rango;
+	}
+
 	public String getUuid() {
 		return uuid;
 	}
@@ -102,9 +111,9 @@ public class MobileViajeAction implements ModelDriven<GenericDto> {
 	}
 
 	@Action("/viaje/buscar")
-	public void busquedaViaje() throws ParseException{
+	public void busquedaViaje() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){		
-			this.setListaBusquedaViajes( Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje()));
+			this.setListaBusquedaViajes( Generics.getGenericViajeAction().busquedaViaje(this.getDireccionOrigen(),this.getDireccionDestino(),this.getFechaViaje(),this.getRango()));
 			if(this.getListaBusquedaViajes()==null || this.getListaBusquedaViajes().isEmpty()){
 				this.fail("No hay viajes con esas caracteristicas");				
 			}else{

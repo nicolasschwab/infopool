@@ -34,6 +34,19 @@
     </plugins>
   </build>
   <dependencies>
+		<!-- https://mvnrepository.com/artifact/com.google.maps/google-maps-services -->
+		<dependency>
+		    <groupId>com.google.maps</groupId>
+		    <artifactId>google-maps-services</artifactId>
+		    <version>0.1.15</version>
+		</dependency>
+
+		  <dependency>
+		    <groupId>com.grum</groupId>
+		    <artifactId>geocalc</artifactId>
+		    <version>0.5.1</version>
+		</dependency>
+  
   		<!-- Dozer -->
   		<dependency>
 		    <groupId>net.sf.dozer</groupId>
