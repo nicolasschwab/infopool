@@ -22,7 +22,7 @@ public class GenericFrecuenciaViajeAction {
 		this.frecuenciaviajeDAO = frecuenciaviajeDAO;
 	}
 	
-	public FrecuenciaViaje detalleFrecuenciaViaje(int id) throws Exception{
+	public FrecuenciaViaje detalleFrecuenciaViaje(Integer id) throws Exception{
 		return this.getFrecuenciaViajeDAO().encontrar(id);
 	}
 	

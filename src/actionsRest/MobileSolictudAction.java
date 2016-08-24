@@ -30,6 +30,7 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 	private List<SolicitudViajeDto> listaSolicitudesViajeDto;
 	private String uuid;
 	private GenericDto respuesta;
+	private String puntoEncuentro;
 	
 	
 	public String getUuid() {
@@ -50,11 +51,17 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 	public void setId(int id) {
 		this.id = id;
 	}
+	public String getPuntoEncuentro(){
+		return puntoEncuentro;
+	}
+	public void setPuntoEncuentro(String puntoEncuentro){
+		this.puntoEncuentro = puntoEncuentro;
+	}
 
 	@Action("/solicitud/nueva")
 	public void RegistroSolicitudViaje() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
-			String laRespuesta=Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()));
+			String laRespuesta=Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()),this.getPuntoEncuentro());
 			if(laRespuesta.equals("INPUT")){
 				this.fail("Ya solicitaste viajar en esta frecuencia!");
 			}else if (laRespuesta.equals("sinPermisos")){
@@ -134,6 +141,25 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 			if(respuesta=="SUCCESS"){
 				this.success("Se cancelo la solicitud!",Dozer.getMapper().map(solicitudViaje, SolicitudViajeDto.class));
 			}else{
+				this.fail("No puede cancelar la solicitud!");
+			}
+		}		
+	}
+
+	@Action("/solicitud/cancelarFrecuencia")
+	public void CancelarSolicitudFrecuenciaViaje() throws Exception{
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			String respuesta = null;
+			FrecuenciaViaje frecuenciaViaje = FactoryDAO.getFrecuenciaViajeDAO().encontrar(idFrecuenciaViaje);
+			for(SolicitudViaje solicitud: frecuenciaViaje.getSolicitudesViaje()){			
+				if ((solicitud.getViajero().equals(SessionUtil.getUsuario())) && (solicitud.getEstadoSolicitud().equals("ACEPTADA") || (solicitud.getEstadoSolicitud().equals("PENDIENTE")))){
+					respuesta=Generics.getGenericSolicitudAction().CancelarSolicitudViaje(solicitud);
+					if(respuesta=="SUCCESS"){
+						this.success("Se cancelo la solicitud!",Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
+					}
+				}
+			}
+			if(respuesta==null){
 				this.fail("No puede cancelar la solicitud!");
 			}
 		}		

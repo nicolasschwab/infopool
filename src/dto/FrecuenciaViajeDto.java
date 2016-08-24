@@ -1,7 +1,5 @@
 package dto;
 
-import java.sql.Time;
-
 import model.DiasSemana;
 import model.EstadoFrecuencia;
 import model.TramoViaje;

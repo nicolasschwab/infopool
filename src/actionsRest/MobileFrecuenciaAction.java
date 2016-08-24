@@ -78,6 +78,22 @@ public class MobileFrecuenciaAction implements ModelDriven<GenericDto> {
 			}
 		}
 	}
+
+	@Action("/frecuencia/pasajeroFrecuencia")
+	public void pasajeroFrecuencia() throws Exception{
+		if(SessionUtil.checkLoginMobile(this.getUuid())){			
+			FrecuenciaViaje frecuencia = Generics.getGenericFrecuenciaViajeAction().detalleFrecuenciaViaje(Integer.parseInt(this.getId()));
+			if(frecuencia!=null){
+				String message = "Viajero";				
+				if (frecuencia.esPasajero(SessionUtil.getUsuario())){
+					message = "Pasajero";
+				}
+				this.success(message,Dozer.getMapper().map(frecuencia, FrecuenciaViajeDto.class));
+			}else{
+				this.fail("La frecuencia no existe");
+			}
+		}
+	}
 	
 	private void success(String mensaje, FrecuenciaViajeDto frecuencia){
 		this.getModel().setEstado("1");

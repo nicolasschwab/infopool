@@ -98,6 +98,16 @@ public class MobileLoginAction implements SessionAware,ModelDriven<GenericDto>{
 		}
 		
 	}
+
+	@Action("/sesion/checkLogin")
+	public void checkLogin() throws Exception{		
+		String login = Generics.getGenericLoginAction().validarSesionGeneric(this.getUuid());
+		if (login=="success"){			
+			this.setearModel("1", "sesion activa", null);
+		}else{
+			this.setearModel("2", "sesion expirada!", null);
+		}		
+	}
 	
 	@Override
 	public void setSession(Map<String, Object> map) {

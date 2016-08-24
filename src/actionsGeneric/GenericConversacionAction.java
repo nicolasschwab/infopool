@@ -54,8 +54,9 @@ public class GenericConversacionAction {
 	public Conversacion responderMensaje(int id, String detalle) throws Exception{
 		Conversacion conversacion=FactoryDAO.getConversacionDAO().encontrarPorId(id);
 		for(Viajero viajero :conversacion.getParticipantesConversacion()){
-			if(viajero.getId()==SessionUtil.getUsuario().getId()){
-				Mensaje mensaje=new MensajeAction().crearMensaje(detalle); // creo y persisto el mensaje
+			if(viajero.getId()==SessionUtil.getUsuario().getId()){				
+				Mensaje mensaje=new Mensaje(new Date(),detalle,"pendiente",viajero);
+				FactoryDAO.getMensajeDAO().registrar(mensaje);
 				conversacion.getMensajes().add(mensaje);
 				FactoryDAO.getViajeDAO().modificar(SessionUtil.getUsuario());
 				FactoryDAO.getViajeDAO().modificar(viajero);

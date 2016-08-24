@@ -7,6 +7,7 @@ import org.apache.struts2.interceptor.SessionAware;
 
 import com.opensymphony.xwork2.ActionSupport;
 
+import implementacionesDAO.FactoryDAO;
 import interfacesDAO.UsuarioDAO;
 import model.Usuario;
 import util.Csrf;
@@ -35,5 +36,13 @@ public class GenericLoginAction{
 	public String cerrarSesionGeneric( SessionMap<String, Object>  sessionMap){		
 		sessionMap.invalidate();
 		return "success";			
+	}
+	public String validarSesionGeneric(String uuid){
+		Usuario user = FactoryDAO.getUsuarioDAO().encontrarPorUUID(uuid);
+		if (user != null) {			
+			return "success";
+		} else {
+			return "datosIncorrectos";
+		}
 	}	
 }

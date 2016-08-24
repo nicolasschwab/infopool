@@ -138,7 +138,7 @@ public class SolicitudViajeAction extends ActionSupport{
 		if (SessionUtil.checkLogin()) {			
 			HttpServletRequest request = (HttpServletRequest) ActionContext.getContext().get(ServletActionContext.HTTP_REQUEST);
 			String idFrecuencia=request.getParameter("idFrecuenciaViaje");
-			String respuesta= Generics.getGenericSolicitudAction().RegistroSolicitudViaje(idFrecuencia);
+			String respuesta= Generics.getGenericSolicitudAction().RegistroSolicitudViaje(idFrecuencia,null);
 			idViaje=((FrecuenciaViaje) FactoryDAO.getFrecuenciaViajeDAO().encontrar(Integer.parseInt(idFrecuencia))).getViaje().getId();
 			switch(respuesta){
 				case "SUCCESS":

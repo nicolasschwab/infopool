@@ -26,7 +26,7 @@ import util.SessionUtil;
 
 public class GenericSolicitudAction {
 
-	public String RegistroSolicitudViaje(String idFrecuencia) throws Exception{
+	public String RegistroSolicitudViaje(String idFrecuencia, String puntoEncuentro) throws Exception{
 		Viajero viajero = (Viajero)SessionUtil.getUsuario();
 		viajero = (Viajero)SessionUtil.getUsuario();
 		FrecuenciaViaje frecuenciaViaje = FactoryDAO.getFrecuenciaViajeDAO().encontrar(Integer.parseInt(idFrecuencia));
@@ -34,7 +34,7 @@ public class GenericSolicitudAction {
 		if (!viaje.esConductor(viajero) || !viaje.esPasajero(viajero)){				
 			boolean tieneSolicitudPendiente = FactoryDAO.getSolicitudViajeDAO().tieneSolicitudEstado(viajero,frecuenciaViaje);
 			if(!tieneSolicitudPendiente){					
-				SolicitudViaje solicitudViaje = new SolicitudViaje(new Date(),null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,null);					
+				SolicitudViaje solicitudViaje = new SolicitudViaje(new Date(),null,EstadoSolicitud.PENDIENTE,viajero,frecuenciaViaje,puntoEncuentro);
 				FactoryDAO.getSolicitudViajeDAO().registrar(solicitudViaje);
 				new NotificacionAction().crearNotificacionSolicitudNueva(viaje);
 				return "SUCCESS";				

@@ -16,6 +16,8 @@ public class SolicitudViajeDto {
 	private EstadoSolicitud estadoSolicitud;
 	
 	private ViajeroDto viajero;
+
+	private String puntoEncuentro;
 	
 
 	public int getId() {
@@ -56,6 +58,14 @@ public class SolicitudViajeDto {
 
 	public void setViajero(ViajeroDto viajero) {
 		this.viajero = viajero;
+	}
+
+	public String getPuntoEncuentro() {
+		return puntoEncuentro;
+	}
+
+	public void setPuntoEncuentro(String puntoEncuentro) {
+		this.puntoEncuentro = puntoEncuentro;
 	}
 	
 	
