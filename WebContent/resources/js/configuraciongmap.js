@@ -185,15 +185,20 @@ function incializarMapaBusquedaViaje(){
 	      map: map,
 	      center: inputD
 	    });
-	if($("#distancia").attr("value")!=""){
+	if($("#distancia").val()!=""){
 		circuloDestino.setRadius($("#distancia").val()*1);
 	}else{
 		circuloDestino.setRadius(100*1);
 	}
 	function actualizarCirculoOrigen(direccion){
+	  if(direccion == ""){
+		circuloOrigen.setMap(null);
+		return;
+	  }
 	  geocoder.geocode({'address': direccion}, function(results,status){		 
 		 if (status === google.maps.GeocoderStatus.OK) {
 		      if (results[0]) {
+		    	  circuloOrigen.setMap(map);
 		    	  circuloOrigen.setCenter(results[0].geometry.location);
 		      }
 		 }else{
@@ -203,9 +208,14 @@ function incializarMapaBusquedaViaje(){
 	  
 	}
 	function actualizarCirculoDestino(direccion){
+	  if(direccion == ""){
+		circuloDestino.setMap(null);
+		return;
+	  }
 	  geocoder.geocode({'address': direccion}, function(results,status){		 
 		 if (status === google.maps.GeocoderStatus.OK) {
 		      if (results[0]) {
+		    	  circuloDestino.setMap(map);
 		    	  circuloDestino.setCenter(results[0].geometry.location);
 		      }
 		 }else{
@@ -243,6 +253,10 @@ function incializarMapaBusquedaViaje(){
 			    					infowindow.setContent(valorCampo);
 			    					actualizarCirculos(input);
 			    				}
+			    			}else{
+			    				input.attr("value","");
+			    				actualizarCirculos(input);
+			    				alert("Google no reconoce esa ubicacion. Recorda poner el marcador sobre una calle!");
 			    			}
 			   			});
 			    	});
@@ -286,6 +300,11 @@ $("#distancia").on("change",function(){
 
 }
 
+function validateForm(){
+	 var valor =$("#distancia").val();
+	$("#rango").attr("value", valor);
+	return true;
+}
 
 function mostrarRecorridoFrecuencia(frecuencia){
 	  var directionsDisplayF = new google.maps.DirectionsRenderer(rendererOptions);

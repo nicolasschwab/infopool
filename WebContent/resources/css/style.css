@@ -283,9 +283,6 @@ body {
 	float:right;
 	padding: 3px;
 }
-.menu-seccion{	
-	font-size: 12px;
-}
 .menu-seccion a{
 	cursor: pointer;
 }
@@ -820,4 +817,7 @@ input[type=range]::-ms-fill-upper {
 }
 .rangeBusquedaViaje{
 	margin-bottom:10px;
+}
+.menu-div{
+	margin-top: 10px;
 }

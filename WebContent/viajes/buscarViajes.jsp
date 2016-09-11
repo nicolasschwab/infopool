@@ -15,10 +15,16 @@
 
 	<div class="main_bg">
 		<div class="container">
-			<jsp:include page="./menuBusqueda.jsp"></jsp:include>
-			<div class="main row">
+			<div class="row">
+				<p class="header-title">Viajes</p>
+			</div>
+			<div class="row">
+				<jsp:include page="./menuBusqueda.jsp"></jsp:include>
 				<jsp:include page="./filtros.jsp"></jsp:include>
-				<div class="col-sm-9 padding-right-zero">
+			</div>			
+			<div class="main row">
+				
+				<div class="col-sm-12 padding-right-zero">
 					<div class="contenido-seccion shadow-box">
 						<div class="boxViajes">
 							<div class="tiposListadoViajes" id="pasajero"><h3 class="titulo-contenido">Resultados de busqueda</h3></div>
