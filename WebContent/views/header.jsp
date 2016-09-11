@@ -10,7 +10,7 @@
 				<span class="icon-bar"></span> 
 				<span class="icon-bar"></span>
 			</button>
-			<a class="navbar-brand logo" href="Inicio">VOY.CON.VOS</a>
+			<a class="navbar-brand logo" href="Inicio">Infopool</a>
 		</div>
 		<jsp:include page="../views/menu.jsp">
    			<jsp:param name="itemActivo" value="${param.itemActivo}"/>
