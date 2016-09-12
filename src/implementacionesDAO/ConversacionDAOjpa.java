@@ -9,7 +9,9 @@ import javax.persistence.Query;
 
 import model.Conversacion;
 import model.Mensaje;
+import model.TipoConversacion;
 import model.Usuario;
+import model.Viaje;
 import model.Viajero;
 
 import org.hibernate.HibernateException;
@@ -108,6 +110,63 @@ public class ConversacionDAOjpa extends GenericDAOjpa<Conversacion> implements C
 		return conver;
 	}
 	
+	public Conversacion encontrarPorViaje(Viaje viaje){
+		Conversacion conver=null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where :viaje = u.viaje";
+			Query consulta = em.createQuery(qString);
+			consulta.setParameter("viaje",viaje);
+			List<Conversacion> resultado = (List<Conversacion>) consulta.getResultList();
+			if (resultado.size() > 0){
+				conver = (Conversacion) resultado.get(0);
+				conver.getMensajes();
+				for(Mensaje men : conver.getMensajes()){
+					men.getDetalle();
+				}
+				for(Viajero usr : conver.getParticipantesConversacion()){
+					usr.getNombre();
+				}
+				conver.getViaje().getDireccionDestino();
+				for(Viajero viajero :conver.getParticipantesConversacion()){
+					viajero.getNombre();
+				}
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return conver;
+	}
+		
+	public Conversacion encontrarPorIntegrantes(Usuario emisor, Usuario receptor, TipoConversacion tipoConversacion){
+		Conversacion conver=null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			String qString = "select u from "+ this.persistentClass.getSimpleName() +" u where :emisor IN elements(u.participantesConversacion) and :receptor IN elements(u.participantesConversacion) and u.tipoConversacion = :tipoConversacion";
+			Query consulta = em.createQuery(qString);
+			consulta.setParameter("emisor",emisor);
+			consulta.setParameter("receptor",receptor);
+			consulta.setParameter("tipoConversacion", tipoConversacion);
+			List<Conversacion> resultado = (List<Conversacion>) consulta.getResultList();
+			if (resultado.size() > 0){
+				conver = (Conversacion) resultado.get(0);
+				conver.getMensajes();
+				for(Mensaje men : conver.getMensajes()){
+					men.getDetalle();
+				}
+				for(Viajero usr : conver.getParticipantesConversacion()){
+					usr.getNombre();
+				}
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return conver;
+	}
 
 }
 

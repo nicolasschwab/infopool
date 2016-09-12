@@ -15,6 +15,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import model.CoordenadasLatLng;
 import model.Evento;
 import model.Usuario;
 import model.Viaje;
@@ -32,6 +33,8 @@ public class EventoAction extends ActionSupport {
 	public String fechaHora;
 	public String web;
 	public String ubicacion;
+	/*public Double ubicacionLatitud;
+	public Double ubicacionLongitud;*/
 	public String horaComienzo;
 	public String horaFin;
 	public String descripcion;
@@ -68,7 +71,19 @@ public class EventoAction extends ActionSupport {
 	}
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}	
+	/*public Double getUbicacionLatitud() {
+		return ubicacionLatitud;
 	}
+	public void setUbicacionLatitud(Double ubicacionLatitud) {
+		this.ubicacionLatitud = ubicacionLatitud;
+	}
+	public Double getUbicacionLongitud() {
+		return ubicacionLongitud;
+	}
+	public void setUbicacionLongitud(Double ubicacionLongitud) {
+		this.ubicacionLongitud = ubicacionLongitud;
+	}*/
 	public EventoDAOjpa getEventoDAO() {
 		return eventoDAO;
 	}
@@ -117,7 +132,9 @@ public class EventoAction extends ActionSupport {
 						EventoDAO evento = FactoryDAO.getEventoDAO();				
 						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm");
 						Date fechaeve = sdf.parse(this.getFechaHora());
-						Evento eve = new Evento(this.getNombre(),fechaeve,Time.valueOf(this.getHoraComienzo()+":00"),Time.valueOf(this.getHoraFin()+":00"),this.getWeb(),this.getUbicacion(),this.getDescripcion(),true);				
+						/*CoordenadasLatLng puntoUbicacion = new CoordenadasLatLng(this.getUbicacionLatitud(), this.getUbicacionLongitud());
+						Evento eve = new Evento(this.getNombre(),fechaeve,Time.valueOf(this.getHoraComienzo()+":00"),Time.valueOf(this.getHoraFin()+":00"),this.getWeb(),this.getUbicacion(),puntoUbicacion,this.getDescripcion(),true);*/						
+						Evento eve = new Evento(this.getNombre(),fechaeve,Time.valueOf(this.getHoraComienzo()+":00"),Time.valueOf(this.getHoraFin()+":00"),this.getWeb(),this.getUbicacion(),this.getDescripcion(),true);
 						evento.registrar(eve);
 						return SUCCESS;										
 					}else{

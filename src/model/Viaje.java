@@ -31,8 +31,14 @@ public class Viaje implements Serializable{
 	@Column(nullable = false)
 	private String direccionOrigen;
 	
+	/*@Column(nullable = false)
+	private CoordenadasLatLng puntoOrigen;*/
+	
 	@Column(nullable = false)
 	private String direccionDestino;
+	
+	/*@Column(nullable = false)
+	private CoordenadasLatLng puntoDestino;*/
 	
 	@Column
 	@Type(type="text")
@@ -80,6 +86,11 @@ public class Viaje implements Serializable{
 	public Viaje() {
 		super();
 	}	
+	/*public Viaje(String direccionOrigen, CoordenadasLatLng puntoOrigen, String direccionDestino, CoordenadasLatLng puntoDestino,
+			String puntosTrayecto, Date fechaPublicacion, Date fechaInicio, Date fechaFin,
+			Evento eventoAsociado, Conversacion foroViaje, Collection<FrecuenciaViaje> frecuencias,
+			Viajero conductor, TipoViaje tipoViaje, String descripcion, float kilometros,
+			boolean activo) {*/
 	public Viaje(String direccionOrigen, String direccionDestino,
 			String puntosTrayecto, Date fechaPublicacion, Date fechaInicio, Date fechaFin,
 			Evento eventoAsociado, Conversacion foroViaje, Collection<FrecuenciaViaje> frecuencias,
@@ -87,7 +98,9 @@ public class Viaje implements Serializable{
 			boolean activo) {
 		super();
 		this.direccionOrigen = direccionOrigen;
+		/*this.puntoOrigen = puntoOrigen;*/
 		this.direccionDestino = direccionDestino;
+		/*this.puntoDestino = puntoDestino;*/
 		this.puntosTrayecto = puntosTrayecto;
 		this.fechaPublicacion = fechaPublicacion;
 		this.fechaInicio = fechaInicio;
@@ -113,13 +126,25 @@ public class Viaje implements Serializable{
 	}
 	public void setDireccionOrigen(String direccionOrigen) {
 		this.direccionOrigen = direccionOrigen;
+	}	
+	/*public CoordenadasLatLng getPuntoOrigen() {
+		return puntoOrigen;
 	}
+	public void setPuntoOrigen(CoordenadasLatLng puntoOrigen) {
+		this.puntoOrigen = puntoOrigen;
+	}*/
 	public String getDireccionDestino() {
 		return direccionDestino;
 	}
 	public void setDireccionDestino(String direccionDestino) {
 		this.direccionDestino = direccionDestino;
+	}	
+	/*public CoordenadasLatLng getPuntoDestino() {
+		return puntoDestino;
 	}
+	public void setPuntoDestino(CoordenadasLatLng puntoDestino) {
+		this.puntoDestino = puntoDestino;
+	}*/
 	public String getPuntosTrayecto() {
 		return puntosTrayecto;
 	}

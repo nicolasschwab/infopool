@@ -38,6 +38,9 @@ public class Evento implements Serializable{
 	@Column(nullable=false)
 	private String ubicacion;	
 	
+	/*@Column
+	private CoordenadasLatLng puntoUbicacion;*/
+	
 	@Column(length = 1023)
 	private String descripcion;
 	
@@ -50,6 +53,8 @@ public class Evento implements Serializable{
 	public Evento() {
 		super();
 	}
+	/*public Evento(String nombre, Date fecha, Time horaInicio, Time horaFin,
+			String web, String ubicacion, CoordenadasLatLng puntoUbicacion, String descripcion, boolean activo) {*/
 	public Evento(String nombre, Date fecha, Time horaInicio, Time horaFin,
 			String web, String ubicacion, String descripcion, boolean activo) {
 		super();
@@ -59,6 +64,7 @@ public class Evento implements Serializable{
 		this.horaFin = horaFin;
 		this.web = web;
 		this.ubicacion = ubicacion;
+		//this.puntoUbicacion = puntoUbicacion;
 		this.descripcion = descripcion;
 		this.activo = activo;
 	}
@@ -104,7 +110,13 @@ public class Evento implements Serializable{
 	}
 	public void setUbicacion(String ubicacion) {
 		this.ubicacion = ubicacion;
+	}	
+	/*public CoordenadasLatLng getPuntoUbicacion() {
+		return puntoUbicacion;
 	}
+	public void setPuntoUbicacion(CoordenadasLatLng puntoUbicacion) {
+		this.puntoUbicacion = puntoUbicacion;
+	}*/
 	public String getDescripcion() {
 		return descripcion;
 	}

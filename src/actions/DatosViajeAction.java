@@ -15,6 +15,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import model.Conversacion;
+import model.CoordenadasLatLng;
 import model.DiasSemana;
 import model.EstadoFrecuencia;
 import model.FrecuenciaViaje;
@@ -41,6 +42,10 @@ public class DatosViajeAction extends ActionSupport{
 	
 	//DATOS FORMULARIO
 	private String direccionOrigen;
+	/*private double latOrigen;
+	private double lngOrigen;
+	private double latDestino;
+	private double lngDestino;*/
 	private String direccionDestino;
 	private String puntosTrayecto;
 	private String fechaInicio;
@@ -194,7 +199,10 @@ public class DatosViajeAction extends ActionSupport{
 			if (!Validacion.stringNoVacio(this.getDireccionOrigen()) || !Validacion.stringNoVacio(this.getDireccionDestino())){
 				return INPUT;
 			}
-			Generics.getGenericDatosViajeAction().alta(direccionOrigen, direccionDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico);
+			/*CoordenadasLatLng puntoOrigen = new CoordenadasLatLng(latOrigen,lngOrigen);
+			CoordenadasLatLng puntoDestino = new CoordenadasLatLng(latDestino,lngDestino);
+			Generics.getGenericDatosViajeAction().alta(direccionOrigen,puntoOrigen, direccionDestino, puntoDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico);*/
+			Generics.getGenericDatosViajeAction().alta(direccionOrigen,direccionDestino,puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico);
 			return SUCCESS;			
 		}
 		else{			

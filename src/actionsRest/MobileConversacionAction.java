@@ -10,6 +10,7 @@ import dto.ConversacionDto;
 import dto.GenericDto;
 import implementacionesDAO.FactoryDAO;
 import model.Conversacion;
+import model.Usuario;
 import model.Viajero;
 import util.Dozer;
 import util.Generics;
@@ -18,7 +19,7 @@ import util.Validacion;
 
 public class MobileConversacionAction implements ModelDriven<GenericDto>{
 	
-	private int id;
+	private int id;	
 	private String receptorID;
 	private int viajeId;
 	private String detalle;
@@ -110,6 +111,34 @@ public class MobileConversacionAction implements ModelDriven<GenericDto>{
 			}
 			if(conversaciones.isEmpty()){
 				this.fail("No tienes conversaciones");
+			}
+		}
+	}	
+	
+	@Action("/conversacion/viajeros")
+	public void viajeros(){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){
+			Viajero emisor = (Viajero) SessionUtil.getUsuario();
+			Viajero receptor = (Viajero) FactoryDAO.getUsuarioDAO().encontrarPorId(this.getReceptorID());						
+			Conversacion conversacion = Generics.getGenericConversacionAction().obtenerConversacionViajeros(emisor, receptor);
+			if(conversacion!=null){
+				this.success("",conversacion);
+			}else{
+				this.fail("No perteneces a esta conversacion!");
+			}			
+		}
+	}
+	
+	@Action("/conversacion/foroViaje")
+	public void foroViaje(){
+		if(SessionUtil.checkLoginMobile(this.getUuid())){			
+			if(Validacion.intNoCeroPositivo(this.getViajeId())){			
+				Conversacion conversacion = Generics.getGenericConversacionAction().obtenerForoViaje(this.getViajeId());
+				if(conversacion!=null){
+					this.success("",conversacion);
+				}else{
+					this.fail("No perteneces a esta conversacion!");
+				}
 			}
 		}
 	}

@@ -15,6 +15,7 @@ import com.opensymphony.xwork2.ActionContext;
 import actions.ConversacionAction;
 import implementacionesDAO.FactoryDAO;
 import implementacionesDAO.ViajeDAOjpa;
+import model.CoordenadasLatLng;
 import model.DiasSemana;
 import model.EstadoFrecuencia;
 import model.FrecuenciaViaje;
@@ -25,11 +26,9 @@ import model.Viajero;
 import util.SessionUtil;
 
 public class GenericDatosViajeAction {
-
 	
-
-	
-	public Viaje alta(String direccionOrigen, String direccionDestino, String puntosTrayecto, String fechaInicio, String fechaFin, String descripcion, float kilometros, String horaPartida, String horaRegreso, int asientosDisponibles, String tramoViaje, String tipoViaje, String[] diaPeriodico) throws Exception{		
+	/*public Viaje alta(String direccionOrigen, CoordenadasLatLng puntoOrigen, String direccionDestino, CoordenadasLatLng puntoDestino, String puntosTrayecto, String fechaInicio, String fechaFin, String descripcion, float kilometros, String horaPartida, String horaRegreso, int asientosDisponibles, String tramoViaje, String tipoViaje, String[] diaPeriodico) throws Exception{*/		
+	public Viaje alta(String direccionOrigen, String direccionDestino, String puntosTrayecto, String fechaInicio, String fechaFin, String descripcion, float kilometros, String horaPartida, String horaRegreso, int asientosDisponibles, String tramoViaje, String tipoViaje, String[] diaPeriodico) throws Exception{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");			
 		Date fInicio = null;
 		Date fFin = null;
@@ -61,7 +60,9 @@ public class GenericDatosViajeAction {
 		fInicio = sdf.parse(fechaInicio);			
 		viaje.setFechaPublicacion(new Date());
 		viaje.setDireccionOrigen(direccionOrigen);
+		//viaje.setPuntoOrigen(puntoOrigen);
 		viaje.setDireccionDestino(direccionDestino);
+		//viaje.setPuntoDestino(puntoDestino);
 		viaje.setPuntosTrayecto(puntosTrayecto);
 		viaje.setFechaInicio(fInicio);
 		viaje.setFechaFin(fFin);

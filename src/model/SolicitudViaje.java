@@ -42,9 +42,15 @@ public class SolicitudViaje implements Serializable{
 	@Type(type="text")
     private String puntoEncuentro;
 	
+	/*@Column
+	private CoordenadasLatLng puntoEncuentro;*/
+	
 	public SolicitudViaje() {
 		super();
 	}
+	/*public SolicitudViaje(Date fechaInicioSolicitud, Date fechaFinSolicitud,
+			EstadoSolicitud estadoSolicitud, Viajero viajero,
+			FrecuenciaViaje frecuenciaViaje, CoordenadasLatLng puntoEncuentro) {*/
 	public SolicitudViaje(Date fechaInicioSolicitud, Date fechaFinSolicitud,
 			EstadoSolicitud estadoSolicitud, Viajero viajero,
 			FrecuenciaViaje frecuenciaViaje, String puntoEncuentro) {
@@ -87,6 +93,12 @@ public class SolicitudViaje implements Serializable{
 	public void setViajero(Viajero viajero) {
 		this.viajero = viajero;
 	}	
+	/*public CoordenadasLatLng getPuntoEncuentro() {
+		return puntoEncuentro;
+	}
+	public void setPuntoEncuentro(CoordenadasLatLng puntoEncuentro) {
+		this.puntoEncuentro = puntoEncuentro;
+	}*/
 	public String getPuntoEncuentro() {
 		return puntoEncuentro;
 	}

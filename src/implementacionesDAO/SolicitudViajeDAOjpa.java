@@ -140,6 +140,27 @@ public class SolicitudViajeDAOjpa extends GenericDAOjpa<SolicitudViaje> implemen
 		}
 		return resultado;	
 	}
+	
+	@Override
+	public List<SolicitudViaje> encontrarPorConductor(Viajero usuario) {		
+		String qString = "select s from "+ this.persistentClass.getSimpleName() +" s where s.frecuenciaViaje.viaje.conductor = :viajero order by s.fechaInicioSolicitud";
+		List<SolicitudViaje> resultado = null;
+		EntityManager em = EntityFactoryUtil.getEm().createEntityManager();		
+		try{			
+			Query consulta = em.createQuery(qString);
+			consulta.setParameter("viajero", usuario);
+			resultado = (List<SolicitudViaje>) consulta.getResultList();
+			for (SolicitudViaje sv : resultado){
+				sv.getFrecuenciaViaje().getId();
+				sv.getFrecuenciaViaje().getViaje().getId();
+			}
+		}catch(HibernateException e){
+			e.printStackTrace();			
+		}finally{
+			em.close();
+		}
+		return resultado;	
+	}
 
 
 

@@ -8,6 +8,8 @@ import actions.MensajeAction;
 import implementacionesDAO.FactoryDAO;
 import model.Conversacion;
 import model.Mensaje;
+import model.TipoConversacion;
+import model.Usuario;
 import model.Viaje;
 import model.Viajero;
 import util.SessionUtil;
@@ -64,6 +66,19 @@ public class GenericConversacionAction {
 				FactoryDAO.getConversacionDAO().modificar(conversacion);
 			}
 		}
+		return conversacion;
+	}
+	
+	//OBTENER CONVERSACION DE UN VIAJE EN PARTICULAR
+	public Conversacion obtenerForoViaje(int viajeId){
+		Viaje viaje = (Viaje)FactoryDAO.getViajeDAO().encontrarPorId(viajeId);
+		Conversacion conversacion=FactoryDAO.getConversacionDAO().encontrarPorViaje(viaje);		
+		return conversacion;
+	}
+	
+	//OBTENER CONVERSACION ENTRE VIAJEROS Y PRIVADO
+	public Conversacion obtenerConversacionViajeros(Viajero emisor, Viajero receptor){		
+		Conversacion conversacion=FactoryDAO.getConversacionDAO().encontrarPorIntegrantes(emisor, receptor, TipoConversacion.PRIVADA);		
 		return conversacion;
 	}
 }

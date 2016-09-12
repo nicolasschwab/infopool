@@ -220,6 +220,8 @@ public class ViajeDAOjpa extends GenericDAOjpa<Viaje> implements ViajeDAO {
 				for(FrecuenciaViaje frecuencia: viaje.getFrecuencias()){
 					for(SolicitudViaje solicitud: frecuencia.getSolicitudesViaje()){
 						solicitud.getFechaInicioSolicitud();
+						solicitud.getFrecuenciaViaje().getId();
+						solicitud.getFrecuenciaViaje().getViaje().getId();
 					}
 				}
 			}

@@ -3,6 +3,7 @@ package dto;
 import java.util.Date;
 
 import model.EstadoSolicitud;
+import model.FrecuenciaViaje;
 
 public class SolicitudViajeDto {
 
@@ -16,6 +17,8 @@ public class SolicitudViajeDto {
 	private EstadoSolicitud estadoSolicitud;
 	
 	private ViajeroDto viajero;
+
+	private FrecuenciaViajeDto frecuenciaViaje;
 
 	private String puntoEncuentro;
 	
@@ -58,6 +61,14 @@ public class SolicitudViajeDto {
 
 	public void setViajero(ViajeroDto viajero) {
 		this.viajero = viajero;
+	}
+
+	public FrecuenciaViajeDto getFrecuenciaViaje(){
+		return frecuenciaViaje;
+	}	
+
+	public void setFrecuenciaViaje(FrecuenciaViajeDto frecuenciaViaje){
+		this.frecuenciaViaje = frecuenciaViaje;
 	}
 
 	public String getPuntoEncuentro() {

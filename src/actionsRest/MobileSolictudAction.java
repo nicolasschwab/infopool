@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -16,6 +18,7 @@ import dto.GenericDto;
 import dto.SolicitudViajeDto;
 import dto.ViajeDto;
 import implementacionesDAO.FactoryDAO;
+import model.CoordenadasLatLng;
 import model.FrecuenciaViaje;
 import model.SolicitudViaje;
 import model.Viaje;
@@ -31,6 +34,8 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 	private String uuid;
 	private GenericDto respuesta;
 	private String puntoEncuentro;
+	private double puntoLatitud;
+	private double puntoLongitud;
 	
 	
 	public String getUuid() {
@@ -51,17 +56,25 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getPuntoEncuentro(){
-		return puntoEncuentro;
+	public double getPuntoLatitud(){
+		return puntoLatitud;
 	}
-	public void setPuntoEncuentro(String puntoEncuentro){
-		this.puntoEncuentro = puntoEncuentro;
+	public void setPuntoLatitud(double puntoLatitud){
+		this.puntoLatitud = puntoLatitud;
+	}	
+	public double getPuntoLongitud() {
+		return puntoLongitud;
 	}
-
+	public void setPuntoLongitud(double puntoLongitud) {
+		this.puntoLongitud = puntoLongitud;
+	}
+	
 	@Action("/solicitud/nueva")
 	public void RegistroSolicitudViaje() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
-			String laRespuesta=Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()),this.getPuntoEncuentro());
+			CoordenadasLatLng puntoEncuentro = new CoordenadasLatLng(puntoLatitud,puntoLongitud);
+			Gson gson = new GsonBuilder().create();			
+			String laRespuesta=Generics.getGenericSolicitudAction().RegistroSolicitudViaje(String.valueOf(this.getIdFrecuenciaViaje()),gson.toJson(puntoEncuentro));
 			if(laRespuesta.equals("INPUT")){
 				this.fail("Ya solicitaste viajar en esta frecuencia!");
 			}else if (laRespuesta.equals("sinPermisos")){
@@ -75,7 +88,7 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 	@Action("/solicitud/listar/conductor")
 	public void SolicitudesConductor() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
-			List<Viaje> viajes= FactoryDAO.getViajeDAO().listarViajesConductor(SessionUtil.getUsuario());
+			/*List<Viaje> viajes= FactoryDAO.getViajeDAO().encontrarPorConductor(SessionUtil.getUsuario());
 			//Agrego todas las solicitudes de las frecuencias de los viajes de los cuales sos conductor
 			for(Viaje viaje: viajes){
 				for(FrecuenciaViaje frecuencia: viaje.getFrecuencias()){
@@ -83,6 +96,10 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 						this.success("", Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
 					}
 				}
+			}*/
+			List<SolicitudViaje> solicitudes=FactoryDAO.getSolicitudViajeDAO().encontrarPorConductor((model.Viajero)SessionUtil.getUsuario());
+			for(SolicitudViaje solicitud: solicitudes){
+				this.success("", Dozer.getMapper().map(solicitud, SolicitudViajeDto.class));
 			}
 			//Si no se agrego nada, significa que no habia solicitudes
 			if(this.getModel().getResultado().isEmpty()){
@@ -164,6 +181,8 @@ public class MobileSolictudAction implements ModelDriven<GenericDto>{
 			}
 		}		
 	}
+	
+	
 	
 	private void success(String mensaje, SolicitudViajeDto solicitud){
 		this.getModel().setEstado("1");

@@ -1,5 +1,7 @@
 package actionsRest;
 
+import model.CoordenadasLatLng;
+
 import org.apache.struts2.convention.annotation.Action;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -16,8 +18,11 @@ public class MobileDatosViajeAction implements ModelDriven<GenericDto>{
 	private ViajeDto viajeDto;
 	private GenericDto respuesta;
 	
-	
 	private String direccionOrigen;
+	private double latOrigen;
+	private double lngOrigen;
+	private double latDestino;
+	private double lngDestino;
 	private String direccionDestino;
 	private String puntosTrayecto;
 	private String fechaInicio;
@@ -149,7 +154,10 @@ public class MobileDatosViajeAction implements ModelDriven<GenericDto>{
 	public void alta() throws Exception{
 		if(SessionUtil.checkLoginMobile(this.getUuid())){
 			if(Validacion.stringNoVacio(direccionDestino) && Validacion.stringNoVacio(direccionOrigen) && Validacion.stringNoVacio(fechaInicio) && Validacion.intNoCeroPositivo(asientosDisponibles) && Validacion.stringNoVacio(horaPartida)){
-				this.success("Se creo el viaje!",Dozer.getMapper().map(Generics.getGenericDatosViajeAction().alta(direccionOrigen, direccionDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico), ViajeDto.class));
+				/*CoordenadasLatLng puntoOrigen = new CoordenadasLatLng(latOrigen,lngOrigen);
+				CoordenadasLatLng puntoDestino = new CoordenadasLatLng(latDestino,lngDestino);
+				this.success("Se creo el viaje!",Dozer.getMapper().map(Generics.getGenericDatosViajeAction().alta(direccionOrigen,puntoOrigen, direccionDestino, puntoDestino, puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico), ViajeDto.class));*/
+				this.success("Se creo el viaje!",Dozer.getMapper().map(Generics.getGenericDatosViajeAction().alta(direccionOrigen,direccionDestino,puntosTrayecto, fechaInicio, fechaFin, descripcion, kilometros, horaPartida, horaRegreso, asientosDisponibles, tramoViaje, tipoViaje, diaPeriodico), ViajeDto.class));
 			}else{
 				this.fail("Complete todos los campos!");
 			}

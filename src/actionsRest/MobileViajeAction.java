@@ -35,8 +35,6 @@ public class MobileViajeAction implements ModelDriven<GenericDto> {
 	
 	private GenericDto respuesta;
 	
-	
-	
 	public String getRango() {
 		return rango;
 	}
